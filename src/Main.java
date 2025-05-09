@@ -1,4 +1,5 @@
-import equipement.armure.Harnois;
+import de.De;
+import equipement.armure.lourde.Harnois;
 
 public class Main {
     public static void main(String[] args){
