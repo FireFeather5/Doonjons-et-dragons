@@ -37,6 +37,6 @@ public class De {
 
     @Override
     public String toString() {
-        return _name;
+        return "Dé : " + this._name;
     }
 }
