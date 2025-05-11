@@ -140,7 +140,7 @@ package equipement
     {
         abstract class Arme <<abstract>>
         {
-            - _range
+            - _range : Integer
             + <<create>> Arme(name : String, degats : De, range : Integer)
             + getRange() : Integer
             + toString() : String
@@ -153,12 +153,12 @@ package equipement
                 + <<create>> ArmeCourante(name : String, degats : De)
             }
 
-            class Baton
+            class Baton extends ArmeCourante
             {
                 + <<create>> Baton()
             }
 
-            class MasseArme
+            class MasseArme extends ArmeCourante
             {
                 + <<create>> MasseArme()
             }
@@ -171,17 +171,17 @@ package equipement
                 + <<create>> ArmeDistance(nom : String, degats : De, portee : Integer)
             }
 
-            class ArbaleteLegere
+            class ArbaleteLegere extends ArmeDistance
             {
                 + <<create>> ArbaleteLegere()
             }
 
-            class ArcCourt
+            class ArcCourt extends ArmeDistance
             {
                 + <<create>> ArcCourt()
             }
 
-            class Fronde
+            class Fronde extends ArmeDistance
             {
                 + <<create>> Fronde()
             }
@@ -196,12 +196,12 @@ package equipement
                 + getForceBonus() : Integer
             }
 
-            class EpeeLongue
+            class EpeeLongue extends ArmeGuerre
             {
                 + <<create>> EpeeLongue()
             }
 
-            class Rapiere
+            class Rapiere extends ArmeGuerre
             {
                 + <<create>> Rapiere()
             }
@@ -225,12 +225,12 @@ package equipement
                 + <<create>> ArmureLegere(name : String, armorClass : Integer)
             }
 
-            class ArmureEcaille
+            class ArmureEcaille extends ArmureLegere
             {
                 + <<create>> ArmureEcaille()
             }
 
-            class DemiPlate
+            class DemiPlate extends ArmureLegere
             {
                 + <<create>> DemiPlate()
             }
@@ -244,12 +244,12 @@ package equipement
                 + getSpeedMalus() : Integer
             }
 
-            class CotteMaille
+            class CotteMaille extends ArmureLourde
             {
                 + <<create>> CotteMaille()
             }
 
-            class Harnois
+            class Harnois extends ArmureLourde
             {
                 + <<create>> Harnois()
             }
@@ -266,23 +266,12 @@ Monstre .> Personnage : <<use>>
 Personnage .> Monstre : <<use>>
 
 Arme -up-|> Equipement
-Arme .-left-> De : <<uses>> + getDegats()
+Arme .-left-> De : <<uses>>
 ArmeCourante -up-|> Arme
-Baton -up-|> ArmeCourante
-MasseArme -up-|> ArmeCourante
 ArmeDistance -up-|> Arme
-ArbaleteLegere -up-|> ArmeDistance
-ArcCourt -up-|> ArmeDistance
-Fronde -up-|> ArmeDistance
 ArmeGuerre -up-|> Arme
-EpeeLongue -up-|> ArmeGuerre
-Rapiere -up-|> ArmeGuerre
 Armure -up-|> Equipement
 ArmureLegere -up-|> Armure
-ArmureEcaille -up-|> ArmureLegere
-DemiPlate -up-|> ArmureLegere
 ArmureLourde -up-|> Armure
-CotteMaille -up-|> ArmureLourde
-Harnois -up-|> ArmureLourde
 
 @enduml
