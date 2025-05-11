@@ -127,11 +127,38 @@ package personnages
     }
 }
 
+class MJ
+{
+    + createDJ()
+    + addObst()
+    + createMons()
+    + posJ()
+    + posM()
+    + posEquip()
+    + presContext()
+}
+
+class Donjon
+{
+    - _tc1 : Integer
+    - _tc2 : Integer
+    - _donjon : String[*]
+    + <<create>> Donjon(tc1 : Integer, tc2 : Integer)
+    + addObst(case : Integer[2])
+    + posJ(case : Integer[2], perso : Personnage)
+    + posM(case : Integer[2], mons : Monstre)
+    + posEquip(case : Integer[2], equip : Equipement)
+}
+
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
 Personnage "*" *--> "1\nn_race" Races : fait parti de >
 Personnage "*" *--> "1\nn_classe" Classe : fait parti de >
 Personnage .> De : <<instantiate/call>>
 Monstre .> Personnage : <<use>>
 Personnage .> Monstre : <<use>>
+
+MJ .> Donjon : <<instantiate/call>>
+MJ .> Personnage : <<use>>
+MJ .> Monstre : <<use>>
 
 @enduml
