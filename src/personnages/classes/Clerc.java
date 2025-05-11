@@ -4,7 +4,7 @@ public class Clerc implements Classe {
 
     private static int _pv = 16;
 
-    public int Pv()
+    public int pv()
     {
         return _pv;
     }

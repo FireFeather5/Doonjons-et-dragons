@@ -4,7 +4,7 @@ public class Guerrier implements Classe {
 
     private static int _pv = 20;
 
-    public int Pv()
+    public int pv()
     {
         return _pv;
     }

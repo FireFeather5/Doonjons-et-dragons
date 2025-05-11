@@ -3,6 +3,7 @@ package personnages;
 import personnages.races.*;
 import personnages.classes.*;
 import de.*;
+import monstres.*;
 
 public class Personnage {
 
@@ -29,17 +30,42 @@ public class Personnage {
 
         for (int i = 0; i < 5; i++)
         {
-            _stats[i] += _race.Augment()[i];
+            _stats[i] += _race.augment()[i];
         }
 
-        _stats[0] += _classe.Pv();
+        _stats[0] += _classe.pv();
 
-        for (int i = 0; i < 5; i++)
+        /*for (int k = 0; k < 5; k++)
         {
-            System.out.println(_stats[i]);
-        }
+            System.out.println(_stats[k]);
+        }*/
 
     }
 
+    public void sEquiper()
+    {
+        // besoin des classes armements
+    }
+
+    public void seDeplacer()
+    {
+        // besoin de la classe qui gère le donjon
+    }
+
+    public void attaquer(Monstre mons, Integer dist)
+    {
+
+    }
+
+    public void ramasser()
+    {
+        // besoin de la classe qui gère le donjon et des classes armements
+    }
+
+
+    @Override
+    public String toString() {
+        return _nom;
+    }
 
 }
