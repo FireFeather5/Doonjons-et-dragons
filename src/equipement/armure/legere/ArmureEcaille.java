@@ -1,7 +1,7 @@
 package equipement.armure.legere;
 
-public class Armure_ecaille extends Armure_legere {
-    public Armure_ecaille() {
+public class ArmureEcaille extends ArmureLegere {
+    public ArmureEcaille() {
         super(9, "Armure d'écaille");
     }
 }

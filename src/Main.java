@@ -1,5 +1,12 @@
 import de.De;
+import equipement.Equipement;
+import equipement.arme.distance.ArbaleteLegere;
+import equipement.arme.distance.ArmeDistance;
+import equipement.armure.Armure;
+import equipement.armure.lourde.ArmureLourde;
 import equipement.armure.lourde.Harnois;
+
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
@@ -7,11 +14,17 @@ public class Main {
         De de = new De(2, 20);
         System.out.println(de);
 
-        for (int i = 0; i < 10; i++){
-            System.out.println("Lancé " + (i+1) + " de " + de + " : " + de.roll());
-        }
+        ArrayList<Equipement> inventaire = new ArrayList<Equipement>();
 
-        Harnois harnois = new Harnois();
-        System.out.println(harnois.get_speed_malus() + " malus");
+        ArmureLourde harnois = new Harnois();
+
+        harnois.getSpeedMalus();
+        ArmeDistance arbalete = new ArbaleteLegere();
+
+
+        inventaire.add(harnois);
+        inventaire.add(arbalete);
+
+        System.out.println(inventaire);
     }
 }

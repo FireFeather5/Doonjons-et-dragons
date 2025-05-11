@@ -2,8 +2,8 @@ package equipement.arme.distance;
 
 import de.De;
 
-public class Arc_court extends Distance {
-    public Arc_court() {
+public class ArcCourt extends ArmeDistance {
+    public ArcCourt() {
         super("Arc court", new De(1, 6), 16);
     }
 }

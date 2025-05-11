@@ -1,19 +1,21 @@
 package equipement.armure;
 
-public abstract class Armure {
-    private final int _armor_class;
-    private final String _name;
+import equipement.Equipement;
+
+public abstract class Armure extends Equipement {
+    private final int armorClass;
 
     public Armure(int armor_class, String name) {
-        this._armor_class = armor_class;
+        this.armorClass = armor_class;
         this._name = name;
     }
 
-    public String getName() {
-        return this._name;
+    public int getArmorClass() {
+        return this.armorClass;
     }
 
-    public int get_armor_class() {
-        return this._armor_class;
+    @Override
+    public String toString() {
+        return this._name + ", classe d'armure : " + this.armorClass;
     }
 }

@@ -1,12 +1,12 @@
 package equipement.arme;
 
 import de.De;
+import equipement.Equipement;
 
-public abstract class Arme {
+public abstract class Arme extends Equipement {
 
-    private String _name;
-    private De _degats;
-    private int _range;
+    private final De _degats;
+    private final int _range;
 
     public Arme(String name, De degats, int range) {
         _name = name;
@@ -14,15 +14,16 @@ public abstract class Arme {
         _range = range;
     }
 
-    public String getName() {
-        return _name;
-    };
-
     public De getDegats() {
         return _degats;
-    };
+    }
 
     public int getRange() {
         return _range;
-    };
+    }
+
+    @Override
+    public String toString() {
+        return this._name + ", dégats : " + this._degats + ", portée : " + this._range;
+    }
 }

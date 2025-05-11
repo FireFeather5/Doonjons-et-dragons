@@ -1,7 +1,7 @@
 package equipement.armure.legere;
 
-public class Demi_plate extends Armure_legere {
-    public Demi_plate() {
+public class DemiPlate extends ArmureLegere {
+    public DemiPlate() {
         super(10, "Demi-plate");
     }
 }
