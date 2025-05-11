@@ -1,0 +1,137 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+
+
+package de
+{
+    class De
+    {
+        - _name : String
+        - _number : Integer
+        - _faces : Integer
+        + <<create>> De()
+        + <<create>> De(faces : Integer)
+        + <<create>> De(number : Integer, faces : Integer)
+        + roll() : Integer
+        + toString() : String
+    }
+}
+
+package monstres
+{
+    class Monstre
+    {
+        - _espece : String
+        - _numero : Integer
+        - _portAtt : Integer
+        - _stats : Integer[6]
+        + <<create>> Monstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
+        + seDeplacer()
+        + attaquer(pers : Personnage, dist : Integer)
+        + toString() : String
+    }
+}
+
+package personnages
+{
+    package classes
+    {
+        interface Classe <<interface>>
+        {
+            + {abstract} pv() : Integer
+            + {abstract} toString() : String
+        }
+        class Clerc implements Classe
+        {
+        //doit etre amélioré
+            - {static} _pv : Integer
+            + pv
+            + toString() : String
+        }
+        class Guerrier implements Classe
+        {
+        //doit etre amélioré
+            - {static} _pv : Integer
+            + pv
+            + toString() : String
+        }
+        class Magicien implements Classe
+        {
+        //doit etre amélioré
+            - {static} _pv : Integer
+            + pv
+            + toString() : String
+        }
+        class Roublard implements Classe
+        {
+        //doit etre amélioré
+            - {static} _pv : Integer
+            + pv
+            + toString() : String
+        }
+    }
+
+    package races
+    {
+        interface Races <<interface>>
+        {
+            + {abstract} augment() : Integer[5]
+            + {abstract} toString() : String
+        }
+        class Elfes implements Races
+        {
+        //doit etre amélioré
+            - {static} _stats : Integer[5]
+            + augment() : Integer[5]
+            + toString() : String
+        }
+        class Halfelins implements Races
+        {
+        //doit etre amélioré
+            - {static} _stats : Integer[5]
+            + augment() : Integer[5]
+            + toString() : String
+        }
+        class Humain implements Races
+        {
+        //doit etre amélioré
+            - {static} _stats : Integer[5]
+            + augment() : Integer[5]
+            + toString() : String
+        }
+        class Nain implements Races
+        {
+        //doit etre amélioré
+            - {static} _stats : Integer[5]
+            + augment() : Integer[5]
+            + toString() : String
+        }
+    }
+
+    class Personnage
+    {
+        - _nom : String
+        - _stats : Integer[5]
+        + <<create>> Personnage(nom : String, race : Races, classe : Classe)
+        + sEquiper(equipement : Equipement // nom non final)
+        + seDplacer(cases : Integer)
+        + attaquer(mons : Monstre, dist : Integer)
+        + ramasser()
+        + toString() : String
+    }
+}
+
+Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
+Personnage "*" *--> "1\nn_race" Races : fait parti de >
+Personnage "*" *--> "1\nn_classe" Classe : fait parti de >
+Personnage .> De : <<instantiate/call>>
+Monstre .> Personnage : <<use>>
+Personnage .> Monstre : <<use>>
+
+@enduml

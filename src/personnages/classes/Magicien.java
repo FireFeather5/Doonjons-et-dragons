@@ -4,7 +4,7 @@ public class Magicien implements Classe {
 
     private static int _pv = 12;
 
-    public int Pv()
+    public int pv()
     {
         return _pv;
     }
