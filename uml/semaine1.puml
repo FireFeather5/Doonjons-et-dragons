@@ -31,7 +31,8 @@ package monstres
         - _numero : Integer
         - _portAtt : Integer
         - _stats : Integer[6]
-        + <<create>> Monstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
+        + <<create>> Monstre()
+        + creaMonstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
         + seDeplacer()
         + attaquer(pers : Personnage, dist : Integer)
         + toString() : String
@@ -129,12 +130,13 @@ package personnages
 
 class MJ
 {
-    + createDJ()
-    + addObst()
-    + createMons()
-    + posJ()
-    + posM()
-    + posEquip()
+    + createDJ(DJ : Donjon)
+    + choisPos(txt : String) : Integer[2]
+    + addObst(DJ : Donjon)
+    + createMons(mons : Monstre)
+    + posJ(DJ : Donjon, perso : Personnage)
+    + posM(DJ : Donjon, mons : Monstre)
+    + posEquip(DJ : Donjon, equip : Equipement)
     + presContext()
 }
 
@@ -143,11 +145,13 @@ class Donjon
     - _tc1 : Integer
     - _tc2 : Integer
     - _donjon : String[*]
-    + <<create>> Donjon(tc1 : Integer, tc2 : Integer)
-    + addObst(case : Integer[2])
-    + posJ(case : Integer[2], perso : Personnage)
-    + posM(case : Integer[2], mons : Monstre)
-    + posEquip(case : Integer[2], equip : Equipement)
+    + <<create>> Donjon()
+    + creaDonjon(tc1 : Integer, tc2 : Integer)
+    + addObst(pc1 : Integer, pc2 : Integer) : Boolean
+    + posJ(pc1 : Integer, pc2 : Integer, perso : Personnage) : Boolean
+    + posM(pc1 : Integer, pc2 : Integer, mons : Monstre) : Boolean
+    + posEquip(pc1 : Integer, pc2 : Integer, equip : Equipement) : Boolean
+    + afficherDJ()
 }
 
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
@@ -157,8 +161,8 @@ Personnage .> De : <<instantiate/call>>
 Monstre .> Personnage : <<use>>
 Personnage .> Monstre : <<use>>
 
-MJ .> Donjon : <<instantiate/call>>
-MJ .> Personnage : <<use>>
-MJ .> Monstre : <<use>>
+MJ .> Donjon : <<use/call>>
+MJ .> Personnage : <<use/call>>
+MJ .> Monstre : <<instantiate/use/call>>
 
 @enduml

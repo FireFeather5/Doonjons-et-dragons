@@ -8,9 +8,17 @@ public class Main {
     public static void main(String[] args){
         System.out.println("Bienvenue dans DOOnjon et Dragons");
 
-        Monstre m1 = new Monstre("dragon", 5, new De(2, 15), new De(3, 6));
-        Personnage p1 = new Personnage("moi", new Elfes(), new Guerrier());
+        MJ test = new MJ();
+        Donjon tesssst = new Donjon();
+        Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
+        Monstre pjpegfs = new Monstre();
 
-        m1.attaquer(p1, 3);
+        test.createDJ(tesssst);
+        test.addObst(tesssst);
+        test.createM(pjpegfs);
+        test.posJ(tesssst, fesmfjeio);
+        test.posM(tesssst, pjpegfs);
+        tesssst.afficherDJ();
+
     }
 }

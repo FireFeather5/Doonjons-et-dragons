@@ -13,7 +13,12 @@ public class Monstre {
     //a modifier
     //private armure _classe;
 
-    public Monstre(String espece, int portAtt, De degAtt, De charac)
+    public Monstre()
+    {
+
+    }
+
+    public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
     {
         _espece = espece;
         _portAtt = portAtt;
@@ -32,10 +37,10 @@ public class Monstre {
             _stats[1] = 0;
         }
 
-        for (int i = 0; i < 6; i++)
+        /*for (int i = 0; i < 6; i++)
         {
             System.out.println("Mo " + _stats[i]);
-        }
+        }*/
     }
 
     public void seDeplacer()

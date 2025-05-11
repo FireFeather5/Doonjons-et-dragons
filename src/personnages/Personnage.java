@@ -62,6 +62,11 @@ public class Personnage {
         // besoin de la classe qui gère le donjon et des classes armements
     }
 
+    public String getN()
+    {
+        return _nom.substring(0, 3);
+    }
+
 
     @Override
     public String toString() {
