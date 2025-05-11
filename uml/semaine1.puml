@@ -127,11 +127,162 @@ package personnages
     }
 }
 
+
+package equipement
+{
+    abstract class Equipement <<abstract>>
+    {
+        # _name : String
+        + getName() : String
+    }
+
+    package arme
+    {
+        abstract class Arme <<abstract>>
+        {
+            - _range
+            + <<create>> Arme(name : String, degats : De, range : Integer)
+            + getRange() : Integer
+            + toString() : String
+        }
+
+        package courante
+        {
+            abstract class ArmeCourante <<abstract>>
+            {
+                + <<create>> ArmeCourante(name : String, degats : De)
+            }
+
+            class Baton
+            {
+                + <<create>> Baton()
+            }
+
+            class MasseArme
+            {
+                + <<create>> MasseArme()
+            }
+        }
+
+        package distance
+        {
+            abstract class ArmeDistance <<abstract>>
+            {
+                + <<create>> ArmeDistance(nom : String, degats : De, portee : Integer)
+            }
+
+            class ArbaleteLegere
+            {
+                + <<create>> ArbaleteLegere()
+            }
+
+            class ArcCourt
+            {
+                + <<create>> ArcCourt()
+            }
+
+            class Fronde
+            {
+                + <<create>> Fronde()
+            }
+        }
+
+        package guerre
+        {
+            abstract class ArmeGuerre <<abstract>>
+            {
+                + <<create>> ArmeGuerre(name : String, degats : De)
+                + getSpeedMalus() : Integer
+                + getForceBonus() : Integer
+            }
+
+            class EpeeLongue
+            {
+                + <<create>> EpeeLongue()
+            }
+
+            class Rapiere
+            {
+                + <<create>> Rapiere()
+            }
+        }
+    }
+
+    package armure
+    {
+        abstract class Armure <<abstract>>
+        {
+            - _armorClass : Integer
+            + <<create>> Armure(name : String, armorClass : Integer)
+            + getArmorClass() : Integer
+            + toString() : String
+        }
+
+        package legere
+        {
+            abstract class ArmureLegere <<abstract>>
+            {
+                + <<create>> ArmureLegere(name : String, armorClass : Integer)
+            }
+
+            class ArmureEcaille
+            {
+                + <<create>> ArmureEcaille()
+            }
+
+            class DemiPlate
+            {
+                + <<create>> DemiPlate()
+            }
+        }
+
+        package lourde
+        {
+            abstract class ArmureLourde
+            {
+                + <<create>> ArmureLourde(name : String, armorClass : Integer)
+                + getSpeedMalus() : Integer
+            }
+
+            class CotteMaille
+            {
+                + <<create>> CotteMaille()
+            }
+
+            class Harnois
+            {
+                + <<create>> Harnois()
+            }
+        }
+    }
+}
+
+
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
 Personnage "*" *--> "1\nn_race" Races : fait parti de >
 Personnage "*" *--> "1\nn_classe" Classe : fait parti de >
 Personnage .> De : <<instantiate/call>>
 Monstre .> Personnage : <<use>>
 Personnage .> Monstre : <<use>>
+
+Arme -up-|> Equipement
+Arme .-left-> De : <<uses>> + getDegats()
+ArmeCourante -up-|> Arme
+Baton -up-|> ArmeCourante
+MasseArme -up-|> ArmeCourante
+ArmeDistance -up-|> Arme
+ArbaleteLegere -up-|> ArmeDistance
+ArcCourt -up-|> ArmeDistance
+Fronde -up-|> ArmeDistance
+ArmeGuerre -up-|> Arme
+EpeeLongue -up-|> ArmeGuerre
+Rapiere -up-|> ArmeGuerre
+Armure -up-|> Equipement
+ArmureLegere -up-|> Armure
+ArmureEcaille -up-|> ArmureLegere
+DemiPlate -up-|> ArmureLegere
+ArmureLourde -up-|> Armure
+CotteMaille -up-|> ArmureLourde
+Harnois -up-|> ArmureLourde
 
 @enduml

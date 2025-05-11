@@ -2,6 +2,6 @@ package equipement.armure.lourde;
 
 public class Harnois extends ArmureLourde {
     public Harnois() {
-        super(12, "Harnois");
+        super("Harnois", 12);
     }
 }

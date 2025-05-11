@@ -5,8 +5,8 @@ import equipement.Equipement;
 public abstract class Armure extends Equipement {
     private final int armorClass;
 
-    public Armure(int armor_class, String name) {
-        this.armorClass = armor_class;
+    public Armure(String name, int armorClass) {
+        this.armorClass = armorClass;
         this._name = name;
     }
 
