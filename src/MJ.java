@@ -15,8 +15,8 @@ public class MJ {
         String tc1s = sc.nextLine();
         System.out.println("taille cote 2");
         String tc2s = sc.nextLine();
-        int tc1 = Integer.parseInt(tc1s);
-        int tc2 = Integer.parseInt(tc2s);
+        int tc2 = Integer.parseInt(tc1s);
+        int tc1 = Integer.parseInt(tc2s);
 
         if (((15 <= tc1) && (tc1 <= 25)) && ((15 <= tc2) && (tc2 <= 25)))
         {
@@ -29,25 +29,19 @@ public class MJ {
         }
     }
 
-    public int[] choixPos(String txt)
+    public String choixPos(String txt)
     {
-        int[] pos = new int[2];
+        System.out.println("position " + txt);
+        String pc = sc.nextLine();
 
-        System.out.println("position côté 1" + txt);
-        String pc1s = sc.nextLine();
-        System.out.println("position côté 2" + txt);
-        String pc2s = sc.nextLine();
-        pos[0] = Integer.parseInt(pc1s);
-        pos[1] = Integer.parseInt(pc2s);
-
-        return pos;
+        return pc;
     }
 
     public void addObst(Donjon DJ)
     {
-        int[] pos = choixPos(" de l'obstacle");
+        String pos = choixPos(" de l'obstacle");
 
-        boolean test = DJ.addObst(pos[0], pos[1]);
+        boolean test = DJ.addObst(pos);
 
         if (!test)
         {
@@ -77,9 +71,9 @@ public class MJ {
 
     public void posJ(Donjon DJ, Personnage perso)
     {
-        int[] pos = choixPos(" de " + perso.getN());
+        String pos = choixPos(" de " + perso.getN());
 
-        boolean test = DJ.posJ(pos[0], pos[1], perso);
+        boolean test = DJ.posJ(pos, perso);
 
         if (!test)
         {
@@ -90,9 +84,9 @@ public class MJ {
 
     public void posM(Donjon DJ, Monstre mons)
     {
-        int[] pos = choixPos(" de " + mons.toString());
+        String pos = choixPos(" de " + mons.toString());
 
-        boolean test = DJ.posM(pos[0], pos[1], mons);
+        boolean test = DJ.posM(pos, mons);
 
         if (!test)
         {

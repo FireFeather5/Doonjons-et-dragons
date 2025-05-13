@@ -4,6 +4,8 @@ import de.De;
 import personnages.*;
 import donjon.Donjon;
 
+import java.util.Scanner;
+
 public class Monstre {
     private String _espece;
     private int _numero;    //a voir plus tard
@@ -11,7 +13,9 @@ public class Monstre {
     private De _degAtt;
     private int[] _stats = {0, 0, 0, 0, 0, 0};
     //                  pv, for, dex, vit, ini, arm
-    //a modifier
+    private int[] _pos = {0, 0};
+
+    Scanner sc = new Scanner(System.in);
 
     public Monstre()
     {
@@ -43,16 +47,48 @@ public class Monstre {
         }*/
     }
 
-    public void seDeplacer(Donjon DJ)
+    public void position(int pos1, int pos2)
     {
-        int[] pos = DJ.getPos(this.toString());
+        _pos[0] = pos1;
+        _pos[1] = pos2;
+    }
 
-        int lonD = _stats[4]/3;
+    public void action(Donjon DJ)
+    {
+        System.out.println("choisir une case où se déplacer");
+        String pc = sc.nextLine();
 
-        DJ.deplacer(this.toString(), lonD);
+        boolean val = seDeplacer(pc, DJ);
 
+        if (val)
+        {
+            System.out.println("Déplacement effectué");
+        }
+        else {
+            action(DJ);     //a modifier (ne fonctionnera pas quand les autre fonctions seront implémentées
+        }
+    }
 
+    public boolean seDeplacer(String dep, Donjon DJ)
+    {
+        int distDep = _stats[4]/3;
 
+        int[] pos = DJ.posInt(dep);
+
+        int[] posOld = new int[2];
+        posOld[0] = _pos[0];
+        posOld[1] = _pos[1];
+
+        if (((pos[0] > _pos[0] - distDep) && (pos[0] < _pos[0] + distDep)) && ((pos[1] > _pos[1] - distDep) && (pos[1] < _pos[1] + distDep)))
+        {
+            boolean val = DJ.posM(dep, this);
+            if (val)
+            {
+                DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
+                return true;
+            }
+        }
+        return false;           //si faux, redemander une position
     }
 
     public void attaquer(Personnage pers, int dist)

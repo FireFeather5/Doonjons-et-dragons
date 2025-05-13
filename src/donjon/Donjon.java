@@ -8,12 +8,12 @@ import java.util.ArrayList;
 public class Donjon {
     private int _tc1;
     private int _tc2;
-    private ArrayList<String[]> _pos;
+    private String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private String[][] _donjon;
 
     public Donjon()
     {
-        _pos = new ArrayList<String[]>();
+
     }
 
     public void creaDonjon(int tc1, int tc2)
@@ -31,113 +31,98 @@ public class Donjon {
         }
     }
 
-    public boolean addObst(int pc1, int pc2)
+    public int[] posInt(String pos)
     {
-        if (((_tc1 >= pc1) && (pc1 >= 1)) && ((_tc2 >= pc2) && (pc2 >= 1)))
+        String pos1 = pos.substring(0, 1);
+        String pos2 = pos.substring(1);
+
+        int[] posi = new int[2];
+
+        for (int i = 0; i < 26; i++)
         {
-            if (_donjon[pc1 - 1][pc2 - 1].equals(" . "))
+            if (pos1.equals(_ord[i]))
             {
-                _donjon[pc1-1][pc2-1] = "[ ]";
+                posi[1] = i+1;
+            }
+        }
+        posi[0] = Integer.parseInt(pos2);
+
+        //System.out.println(posi[1] + "    " + posi[0]);
+
+        return posi;
+    }
+
+    public boolean addObst(String pos)
+    {
+        int[] pc = posInt(pos);
+
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
+        {
+            if (_donjon[pc[0] - 1][pc[1] - 1].equals(" . "))
+            {
+                _donjon[pc[0]-1][pc[1]-1] = "[ ]";
                 return true;
             }
         }
         return false;
     }
 
-    public boolean posJ(int pc1, int pc2, Personnage perso)
+    public boolean posJ(String pos, Personnage perso)
     {
+        int[] pc = posInt(pos);
 
-        if (((_tc1 >= pc1) && (pc1 >= 1)) && ((_tc2 >= pc2) && (pc2 >= 1)))
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (_donjon[pc1 - 1][pc2 - 1].equals(" . "))
+            if (_donjon[pc[0] - 1][pc[1] - 1].equals(" . "))
             {
-                _donjon[pc1 - 1][pc2 - 1] = perso.getN();
+                perso.position(pc[0], pc[1]);            //donne sa position au monstre
+                _donjon[pc[0] - 1][pc[1] - 1] = perso.getN();
                 return true;
             }
         }
         return false;
     }
 
-    public boolean posM(int pc1, int pc2, Monstre mons)
+    public boolean posM(String pos, Monstre mons)
     {
-        if (((_tc1 >= pc1) && (pc1 >= 1)) && ((_tc2 >= pc2) && (pc2 >= 1)))
+        int[] pc = posInt(pos);
+
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (_donjon[pc1 - 1][pc2 - 1].equals(" . "))
+            if (_donjon[pc[0] - 1][pc[1] - 1].equals(" . "))
             {
-                /*_pos1[0] = mons.toString();
-                _pos1[1] = Integer.toString(pc1);
-                _pos1[2] = Integer.toString(pc2);
-                _pos.add(_pos1);*/
-                _donjon[pc1 - 1][pc2 - 1] = " Xv";
+                mons.position(pc[0], pc[1]);            //donne sa position au monstre
+                _donjon[pc[0] - 1][pc[1] - 1] = " Xv";
                 return true;
             }
         }
         return false;
     }
 
-    public int[] getPos(String nom)
+    public void emptyCase(int[] pc)
     {
-        int[] pos = new int[2];
-        for (int i = 0; i < _pos.size(); i++)
-        {
-            if (_pos.get(i)[0].equals(nom))
-            {
-                pos[0] = Integer.parseInt(_pos.get(i)[1]);
-                pos[1] = Integer.parseInt(_pos.get(i)[2]);
-            }
-        }
-        return pos;
+        _donjon[pc[0]-1][pc[1]-1] = " . ";
     }
 
-    public void deplacer(String nom, int lonD)
-    {
-        int[] pos = this.getPos(nom);
-
-        String[][] dep = new String[lonD*2][lonD*2];
-
-        for (int i = -lonD; i < lonD; i++)
-        {
-            for (int j = -lonD; j < lonD; j++)
-            {
-                if ((i != 0) || (j!=0))
-                {
-                    dep[i + lonD][j + lonD] = " O ";
-                }
-                else
-                {
-                    dep[i + lonD][j + lonD] = " X ";
-                }
-                System.out.print(dep[i + lonD][j + lonD]);
-                // il faut réussir à aligner dep sur _donjon, puis test si cases vides, puiis demander quelle case choisie
-            }
-            System.out.print("\n");
-        }
-
-    }
 
     public void afficherDJ()
     {
         System.out.print("    ");
         for (int k = 1; k <= _tc2; k++)
         {
-            if (k < 10) {
-                System.out.print(" " + k + " ");
-            }
-            else
-            {
-                System.out.print(" " + k);
-            }
+                System.out.print(" " + _ord[k-1] + " ");
         }
         System.out.print("\n");
         for (int i = 0; i < _tc1; i++)
         {
-            if (i+1 < 10) {
-                System.out.print(" " + (i + 1) + "  ");
+            if (i < 9) {
+                System.out.print(" " + (i+1) + "  ");
             }
             else
             {
-                System.out.print(" " + (i + 1) + " ");
+                System.out.print(" " + (i+1) + " ");
             }
+
             for (int j = 0; j < _tc2; j++)
             {
                 System.out.print(_donjon[i][j]);

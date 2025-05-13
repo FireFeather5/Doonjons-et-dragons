@@ -14,12 +14,20 @@ public class Main {
         Monstre pjpegfs = new Monstre();
 
         test.createDJ(tesssst);
+
+        tesssst.afficherDJ();
+
         test.addObst(tesssst);
         test.createM(pjpegfs);
         test.posJ(tesssst, fesmfjeio);
         test.posM(tesssst, pjpegfs);
+
         tesssst.afficherDJ();
 
-        pjpegfs.seDeplacer(tesssst);
+        pjpegfs.action(tesssst);
+        fesmfjeio.action(tesssst);
+
+        tesssst.afficherDJ();
+
     }
 }
