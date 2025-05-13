@@ -1,4 +1,5 @@
 import de.De;
+import donjon.Donjon;
 import monstres.Monstre;
 import personnages.Personnage;
 

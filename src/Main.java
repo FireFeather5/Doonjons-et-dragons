@@ -1,4 +1,4 @@
-import de.De;
+import donjon.Donjon;
 import personnages.*;
 import personnages.classes.*;
 import personnages.races.*;
@@ -20,5 +20,6 @@ public class Main {
         test.posM(tesssst, pjpegfs);
         tesssst.afficherDJ();
 
+        pjpegfs.seDeplacer(tesssst);
     }
 }

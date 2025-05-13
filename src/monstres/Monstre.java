@@ -2,6 +2,7 @@ package monstres;
 
 import de.De;
 import personnages.*;
+import donjon.Donjon;
 
 public class Monstre {
     private String _espece;
@@ -11,7 +12,6 @@ public class Monstre {
     private int[] _stats = {0, 0, 0, 0, 0, 0};
     //                  pv, for, dex, vit, ini, arm
     //a modifier
-    //private armure _classe;
 
     public Monstre()
     {
@@ -43,9 +43,16 @@ public class Monstre {
         }*/
     }
 
-    public void seDeplacer()
+    public void seDeplacer(Donjon DJ)
     {
-        // besoin de la classe qui gère le donjon
+        int[] pos = DJ.getPos(this.toString());
+
+        int lonD = _stats[4]/3;
+
+        DJ.deplacer(this.toString(), lonD);
+
+
+
     }
 
     public void attaquer(Personnage pers, int dist)
