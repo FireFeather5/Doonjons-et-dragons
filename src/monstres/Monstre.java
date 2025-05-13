@@ -4,14 +4,12 @@ import de.De;
 import personnages.*;
 
 public class Monstre {
-    private String _espece;
+    private final String _espece;
     private int _numero;    //a voir plus tard
-    private int _portAtt;
-    private De _degAtt;
-    private int[] _stats = {0, 0, 0, 0, 0, 0};
-    //                  pv, for, dex, vit, ini, arm
-    //a modifier
-    //private armure _classe;
+    private final int _portAtt;
+    private final De _degAtt;
+    private final int[] _stats = {0, 0, 0, 0, 0, 0};
+    //                          pv, for, dex, vit, ini, arm
 
     public Monstre(String espece, int portAtt, De degAtt, De charac)
     {
@@ -58,6 +56,10 @@ public class Monstre {
             System.out.println("Cible trop loin");
         }
         // besoin des classes armement pour faire le reste
+    }
+
+    public int getArmorClass() {
+        return this._stats[5];
     }
 
     @Override

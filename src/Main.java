@@ -67,5 +67,7 @@ public class Main {
         System.out.println(p1.getStat());
         System.out.println("Inventaire : " + p1.getStock());
         System.out.println("Equipee : " + p1.getPorte());
+
+        p1.attaquer(m1, 1);
     }
 }

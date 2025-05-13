@@ -2,6 +2,7 @@ package personnages;
 
 import equipement.Equipement;
 import equipement.arme.Arme;
+import equipement.arme.distance.ArmeDistance;
 import equipement.arme.guerre.ArmeGuerre;
 import equipement.armure.Armure;
 import equipement.armure.lourde.ArmureLourde;
@@ -104,9 +105,35 @@ public class Personnage {
         // besoin de la classe qui gère le donjon
     }
 
-    public void attaquer(Monstre mons, Integer dist)
-    {
+    private Arme getArmeEquipe() {
+        for (Equipement equip : this._porte) {
+            if (equip instanceof Arme) {
+                return (Arme) equip;
+            }
+        }
+        return null;
+    }
 
+    public void attaquer(Monstre mons, Integer dist) {
+        if (this.getArmeEquipe() != null) {
+            Arme arme = getArmeEquipe();
+            for (Equipement equip : this._porte) {
+                if (equip instanceof Arme) {
+                    arme = (Arme) equip;
+                }
+            }
+            int atk = arme.getDegats().roll();
+            if (arme instanceof ArmeDistance) {
+                atk += this._stats[2];
+            }
+            else {
+                atk += this._stats[1];
+            }
+            System.out.println(this._nom + " attaque a hauteur de " + atk + " dégats !");
+        }
+        else {
+            System.out.println("Vous n'avez pas d'arme équipée");
+        }
     }
 
     public void ramasser()
