@@ -16,6 +16,6 @@ public abstract class Armure extends Equipement {
 
     @Override
     public String toString() {
-        return this._name + ", classe d'armure : " + this.armorClass;
+        return this._name + " [classe d'armure : " + this.armorClass + "]";
     }
 }

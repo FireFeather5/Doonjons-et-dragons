@@ -24,6 +24,6 @@ public abstract class Arme extends Equipement {
 
     @Override
     public String toString() {
-        return this._name + ", dégats : " + this._degats + ", portée : " + this._range;
+        return this._name + " [dégats : " + this._degats + ", portée : " + this._range + "] ";
     }
 }
