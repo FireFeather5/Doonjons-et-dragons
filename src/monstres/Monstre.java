@@ -13,8 +13,9 @@ public class Monstre {
     private De _degAtt;
     private final int[] _stats = {0, 0, 0, 0, 0, 0};
     //                          pv, for, dex, vit, ini, arm
+    private De _deChar;
 
-    private int[] _pos = {0, 0};
+    private final int[] _pos = {0, 0};
 
     Scanner sc = new Scanner(System.in);
 
@@ -25,13 +26,14 @@ public class Monstre {
 
     public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
     {
+        this._deChar = charac;
         _espece = espece;
         _portAtt = portAtt;
         _degAtt = degAtt;
 
         for (int i = 0; i < 6; i++)
         {
-            _stats[i] += charac.roll() + 3;
+            _stats[i] += this._deChar.roll() + 3;
         }
         if (_portAtt == 1)
         {
@@ -94,16 +96,18 @@ public class Monstre {
 
     public void attaquer(Personnage pers, int dist)
     {
-        De deAtt = new De(1, 20);
+        this._deChar.changeDe(1, 20);
         if (_portAtt >= dist)
         {
-            int touche = deAtt.roll() + _stats[1] + _stats[2];
-            int atk = this._degAtt.roll();
-            // un des deux est forcément à 0 donc on peut directement ajouter les deux
-            // (évite un if else)
+            int touche = this._deChar.roll() + _stats[1] + _stats[2];
             System.out.println("Touche : " + touche);
-            System.out.println("Atk : " + atk);
-            pers.seFaitAttaquer(atk);
+            if (touche > pers.getArmorClass()) {
+                int atk = this._degAtt.roll();
+                // un des deux est forcément à 0 donc on peut directement ajouter les deux
+                // (évite un if else)
+                pers.seFaitAttaquer(atk);
+                System.out.println("Atk : " + atk);
+            }
         }
         else
         {

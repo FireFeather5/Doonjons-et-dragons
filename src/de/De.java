@@ -4,9 +4,9 @@ import java.util.Random;
 
 public class De {
 
-    private final String _name;
-    private final int _number;
-    private final int _faces;
+    private String _name;
+    private int _number;
+    private int _faces;
 
     public De() {
         _name = "1d6";
@@ -21,7 +21,7 @@ public class De {
     }
 
     public De(int number, int faces) {
-        _name = number+"d"+faces;
+        _name = number + "d" + faces;
         _number = number;
         _faces = faces;
     }
@@ -30,9 +30,15 @@ public class De {
         Random rand = new Random();
         int total = 0;
         for (int i = 0; i < this._number; i++) {
-            total += rand.nextInt(this._faces);
+            total += rand.nextInt(1, this._faces + 1);
         }
         return total;
+    }
+
+    public void changeDe(int nombre, int faces) {
+        this._name = + nombre + "d" + faces;
+        this._number = nombre;
+        this._faces = faces;
     }
 
     @Override
