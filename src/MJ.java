@@ -1,9 +1,9 @@
 import de.De;
 import donjon.Donjon;
-import donjon.Obstacle;
-import equipement.Equipement;
-import monstres.Monstre;
-import personnages.Personnage;
+import entite.Obstacle;
+import entite.equipement.Equipement;
+import entite.Monstre;
+import entite.personnages.Personnage;
 
 import java.util.Scanner;
 
@@ -73,7 +73,7 @@ public class MJ {
 
     public void posJ(Donjon DJ, Personnage perso)
     {
-        String pos = choixPos(" de " + perso.getN());
+        String pos = choixPos(" de " + perso.aff());
 
         boolean test = DJ.posJ(pos, perso);
 

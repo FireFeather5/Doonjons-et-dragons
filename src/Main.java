@@ -1,19 +1,8 @@
 import donjon.Donjon;
-import de.De;
-import equipement.Equipement;
-import equipement.arme.courante.Baton;
-import equipement.arme.distance.ArbaleteLegere;
-import equipement.arme.distance.ArmeDistance;
-import equipement.arme.guerre.Rapiere;
-import equipement.armure.legere.DemiPlate;
-import equipement.armure.lourde.ArmureLourde;
-import equipement.armure.lourde.CotteMaille;
-import equipement.armure.lourde.Harnois;
-import java.util.ArrayList;
-import personnages.*;
-import personnages.classes.*;
-import personnages.races.*;
-import monstres.*;
+import entite.Monstre;
+import entite.personnages.Personnage;
+import entite.personnages.classes.Roublard;
+import entite.personnages.races.Humain;
 
 public class Main {
     public static void main(String[] args){

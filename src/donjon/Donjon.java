@@ -1,26 +1,27 @@
 package donjon;
 
-import monstres.Monstre;
-import personnages.Personnage;
-
-import java.util.ArrayList;
+import entite.Entite;
+import entite.Obstacle;
+import entite.Monstre;
+import entite.personnages.Personnage;
 
 public class Donjon {
     private int _tc1;
     private int _tc2;
     private static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-    private Object[][] _donjon;
+    private Entite[][] _donjon;
+    private AffichDJ _affDJ;
 
     public Donjon()
     {
-
     }
 
     public void creaDonjon(int tc1, int tc2)
     {
         _tc1 = tc1;
         _tc2 = tc2;
-        _donjon = new Object[_tc1][_tc2];
+        _donjon = new Entite[_tc1][_tc2];
+        _affDJ = new AffichDJ(_tc1, _tc2);
 
         for (int i = 0; i < _tc1; i++)
         {
@@ -61,7 +62,7 @@ public class Donjon {
             if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
                 obst.position(pc[0], pc[1]);            //donne sa position au monstre
-                _donjon[pc[0]-1][pc[1]-1] = "[ ]";
+                _donjon[pc[0]-1][pc[1]-1] = obst;
                 return true;
             }
         }
@@ -77,7 +78,7 @@ public class Donjon {
             if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
                 perso.position(pc[0], pc[1]);            //donne sa position au monstre
-                _donjon[pc[0] - 1][pc[1] - 1] = perso.getN();
+                _donjon[pc[0] - 1][pc[1] - 1] = perso;
                 return true;
             }
         }
@@ -93,7 +94,7 @@ public class Donjon {
             if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
                 mons.position(pc[0], pc[1]);            //donne sa position au monstre
-                _donjon[pc[0] - 1][pc[1] - 1] = " Xv";
+                _donjon[pc[0] - 1][pc[1] - 1] = mons;
                 return true;
             }
         }
@@ -108,28 +109,7 @@ public class Donjon {
 
     public void afficherDJ()
     {
-        System.out.print("    ");
-        for (int k = 1; k <= _tc2; k++)
-        {
-                System.out.print(" " + _ord[k-1] + " ");
-        }
-        System.out.print("\n");
-        for (int i = 0; i < _tc1; i++)
-        {
-            if (i < 9) {
-                System.out.print(" " + (i+1) + "  ");
-            }
-            else
-            {
-                System.out.print(" " + (i+1) + " ");
-            }
-
-            for (int j = 0; j < _tc2; j++)
-            {
-                System.out.print(_donjon[i][j]);
-            }
-            System.out.print("\n");
-        }
+        _affDJ.afficherDJ(_donjon);
     }
 
 }

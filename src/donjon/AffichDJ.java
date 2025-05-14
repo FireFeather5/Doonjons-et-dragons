@@ -1,5 +1,7 @@
 package donjon;
 
+import entite.Entite;
+
 public class AffichDJ {
     private int _tc1;
     private int _tc2;
@@ -10,10 +12,31 @@ public class AffichDJ {
     {
         _tc1 = tc1;
         _tc2 = tc2;
+        _donjon = new String[_tc1][_tc2];
     }
 
-    public void afficherDJ()
+    public void rempDJ(Entite[][] dj)
     {
+        for (int i = 0; i < _tc1; i++)
+        {
+            for (int j = 0; j < _tc2; j++)
+            {
+                if (dj[i][j]!=null)
+                {
+                    _donjon[i][j] = dj[i][j].aff();
+                }
+                else
+                {
+                    _donjon[i][j] = " . ";
+                }
+            }
+        }
+    }
+
+    public void afficherDJ(Entite[][] dj)
+    {
+        rempDJ(dj);
+
         System.out.print("    ");
         for (int k = 1; k <= _tc2; k++)
         {
