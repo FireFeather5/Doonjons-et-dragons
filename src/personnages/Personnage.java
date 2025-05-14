@@ -3,6 +3,7 @@ package personnages;
 import donjon.Donjon;
 import equipement.Equipement;
 import equipement.arme.Arme;
+import equipement.arme.distance.ArmeDistance;
 import equipement.arme.guerre.ArmeGuerre;
 import equipement.armure.Armure;
 import equipement.armure.lourde.ArmureLourde;
@@ -21,14 +22,14 @@ public class Personnage {
     private final Races _race;
     private final Classe _classe;
     private final int[] _stats = {0, 0, 0, 0, 0};
-                        //pv, for, dex, vit, ini
+                             //pv, for, dex, vit, ini
     private int[] _pos = {0, 0};
 
     Scanner sc = new Scanner(System.in);
 
 
     private final ArrayList<Equipement> _stock;
-    private final ArrayList<Equipement> _porte;
+    private final ArrayList<Equipement> _equipee;
 
     public Personnage(String nom, Races race, Classe classe)
     {
@@ -36,7 +37,7 @@ public class Personnage {
         _race = race;
         _classe = classe;
         _stock = new ArrayList<>();
-        _porte = new ArrayList<>();
+        _equipee = new ArrayList<>();
 
         De deChar = new De(4, 4);
         for (int j = 1; j < 5; j++)
@@ -108,8 +109,8 @@ public class Personnage {
     }
 
     public void seDesequiper(Equipement equipement) {
-        if (this._porte.contains(equipement)) {
-            this._porte.remove(equipement);
+        if (this._equipee.contains(equipement)) {
+            this._equipee.remove(equipement);
             if (equipement instanceof ArmeGuerre) {
                 this._stats[3] += ((ArmeGuerre) equipement).getSpeedMalus();
                 this._stats[1] -= ((ArmeGuerre) equipement).getForceBonus();
@@ -133,7 +134,7 @@ public class Personnage {
             else if (equipement instanceof ArmureLourde) {
                 this._stats[3] -= ((ArmureLourde) equipement).getSpeedMalus();
             }
-            for (Equipement equip : this._porte) {
+            for (Equipement equip : this._equipee) {
                 if (equip instanceof Arme && equipement instanceof Arme) {
                     this.seDesequiper((Arme) equip);
                     break;
@@ -143,7 +144,7 @@ public class Personnage {
                     break;
                 }
             }
-            this._porte.add(equipement);
+            this._equipee.add(equipement);
             this._stock.remove(equipement);
         }
         else {
@@ -151,9 +152,45 @@ public class Personnage {
         }
     }
 
-    public void attaquer(Monstre mons, Integer dist)
-    {
+    private Arme getArmeEquipe() {
+        for (Equipement equip : this._equipee) {
+            if (equip instanceof Arme) {
+                return (Arme) equip;
+            }
+        }
+        return null;
+    }
 
+    public void attaquer(Monstre mons, Integer dist) {
+        Arme arme = getArmeEquipe();
+        if (arme != null) {
+            int touche = new De(20).roll();
+            if (arme instanceof ArmeDistance) {
+                touche += this._stats[2];
+            }
+            else {
+                touche += this._stats[1];
+            }
+            if (arme.getRange() >= dist) {
+                if (touche > mons.getArmorClass()) {
+                    int atk = arme.getDegats().roll();
+                    System.out.println(this._nom + " touche le monstre (jet de touche : " + touche + ")");
+                    System.out.println(this._nom + " attaque a hauteur de " + atk + " dégats !");
+                    mons.seFaitAttaquer(atk);
+                } else
+                    System.out.println(this._nom + " ne touche pas le monstre (jet de touche : " + touche + ")");
+            }
+            else {
+                System.out.println(this._nom + " n'a pas la portee");
+            }
+        }
+        else {
+            System.out.println("Vous n'avez pas d'arme équipée");
+        }
+    }
+
+    public void seFaitAttaquer(int degats) {
+        this._stats[0] -= degats;
     }
 
     public void ramasser()
@@ -170,9 +207,9 @@ public class Personnage {
         return "pv : " + this._stats[0] + ", force : " + this._stats[1] + ", dexterite : " + this._stats[2] + ", vitesse : " + this._stats[3] + ", initiative : " + this._stats[4];
     }
 
-    public String getPorte() {
+    public String getEquipee() {
         String porte = "";
-        for (Equipement equip : this._porte) {
+        for (Equipement equip : this._equipee) {
             porte += equip.toString() + " ";
         }
         return porte;
