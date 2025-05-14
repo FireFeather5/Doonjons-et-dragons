@@ -46,10 +46,13 @@ public class Monstre {
         De deAtt = new De(1, 20);
         if (_portAtt >= dist)
         {
-            int atk = deAtt.roll() + _stats[1] + _stats[2];
+            int touche = deAtt.roll() + _stats[1] + _stats[2];
+            int atk = this._degAtt.roll();
             // un des deux est forcément à 0 donc on peut directement ajouter les deux
             // (évite un if else)
-            System.out.println("atk : " + atk);
+            System.out.println("Touche : " + touche);
+            System.out.println("Atk : " + atk);
+            pers.seFaitAttaquer(atk);
         }
         else
         {
@@ -60,6 +63,14 @@ public class Monstre {
 
     public int getArmorClass() {
         return this._stats[5];
+    }
+
+    public void seFaitAttaquer(int degats) {
+        this._stats[0] -= degats;
+    }
+
+    public String getStat() {
+        return "pv : " + this._stats[0] + ", force : " + this._stats[1] + ", dexterite : " + this._stats[2] + ", vitesse : " + this._stats[3] + ", initiative : " + this._stats[4] + ", CA : " + this._stats[5];
     }
 
     @Override
