@@ -1,3 +1,4 @@
+import donjon.Donjon;
 import de.De;
 import equipement.Equipement;
 import equipement.arme.courante.Baton;
@@ -18,6 +19,21 @@ public class Main {
     public static void main(String[] args){
         System.out.println("Bienvenue dans DOOnjon et Dragons");
 
+        MJ test = new MJ();
+        Donjon tesssst = new Donjon();
+        Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
+        Monstre pjpegfs = new Monstre();
+
+        test.createDJ(tesssst);
+
+        tesssst.afficherDJ();
+
+        test.addObst(tesssst);
+        test.createM(pjpegfs);
+        test.posJ(tesssst, fesmfjeio);
+        test.posM(tesssst, pjpegfs);
+
+        tesssst.afficherDJ();
         ArrayList<Equipement> inventaire = new ArrayList<>();
 
         ArmureLourde harnois = new Harnois();
@@ -31,10 +47,13 @@ public class Main {
         System.out.println(inventaire);
 
 
-        Monstre m1 = new Monstre("dragon", 5, new De(2, 15), new De(3, 6));
         Personnage p1 = new Personnage("moi", new Elfes(), new Guerrier());
 
-        m1.attaquer(p1, 3);
+        pjpegfs.action(tesssst);
+        fesmfjeio.action(tesssst);
+
+        tesssst.afficherDJ();
+
 
 
         CotteMaille cotteMaille = new CotteMaille();

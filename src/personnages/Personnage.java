@@ -1,5 +1,6 @@
 package personnages;
 
+import donjon.Donjon;
 import equipement.Equipement;
 import equipement.arme.Arme;
 import equipement.arme.guerre.ArmeGuerre;
@@ -10,6 +11,8 @@ import personnages.classes.*;
 import de.*;
 import monstres.*;
 
+import java.util.Scanner;
+
 import java.util.ArrayList;
 
 public class Personnage {
@@ -19,6 +22,10 @@ public class Personnage {
     private final Classe _classe;
     private final int[] _stats = {0, 0, 0, 0, 0};
                         //pv, for, dex, vit, ini
+    private int[] _pos = {0, 0};
+
+    Scanner sc = new Scanner(System.in);
+
 
     private final ArrayList<Equipement> _stock;
     private final ArrayList<Equipement> _porte;
@@ -50,6 +57,51 @@ public class Personnage {
         }*/
 
     }
+
+    public void position(int pos1, int pos2)
+    {
+        _pos[0] = pos1;
+        _pos[1] = pos2;
+    }
+
+    public void action(Donjon DJ)
+    {
+        System.out.println("choisir une case où se déplacer");
+        String pc = sc.nextLine();
+
+        boolean val = seDeplacer(pc, DJ);
+
+        if (val)
+        {
+            System.out.println("Déplacement effectué");
+        }
+        else {
+            action(DJ);     //a modifier (ne fonctionnera pas quand les autre fonctions seront implémentées
+        }
+    }
+
+    public boolean seDeplacer(String dep, Donjon DJ)
+    {
+        int distDep = _stats[4]/3;
+
+        int[] pos = DJ.posInt(dep);
+
+        int[] posOld = new int[2];
+        posOld[0] = _pos[0];
+        posOld[1] = _pos[1];
+
+        if (((pos[0] > _pos[0] - distDep) && (pos[0] < _pos[0] + distDep)) && ((pos[1] > _pos[1] - distDep) && (pos[1] < _pos[1] + distDep)))
+        {
+            boolean val = DJ.posJ(dep, this);
+            if (val)
+            {
+                DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
+                return true;
+            }
+        }
+        return false;           //si faux, redemander une position
+    }
+
 
     public void recuperer(Equipement equipement) {
         this._stock.add(equipement);
@@ -99,11 +151,6 @@ public class Personnage {
         }
     }
 
-    public void seDeplacer()
-    {
-        // besoin de la classe qui gère le donjon
-    }
-
     public void attaquer(Monstre mons, Integer dist)
     {
 
@@ -112,6 +159,11 @@ public class Personnage {
     public void ramasser()
     {
         // besoin de la classe qui gère le donjon et des classes armements
+    }
+
+    public String getN()
+    {
+        return _nom.substring(0, 3);
     }
 
     public String getStat() {
