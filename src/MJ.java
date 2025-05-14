@@ -9,6 +9,11 @@ public class MJ {
 
     Scanner sc = new Scanner(System.in);
 
+    public MJ()
+    {
+
+    }
+
     public void createDJ(Donjon DJ)
     {
         System.out.println("taille cote 1");
@@ -93,5 +98,11 @@ public class MJ {
             System.out.println("Erreur dans la selection de la position");
             this.posM(DJ, mons);
         }
+    }
+
+    public void presContext()
+    {
+        System.out.println("Quel est le context ?");
+        String context = sc.nextLine();
     }
 }

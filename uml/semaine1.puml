@@ -130,28 +130,35 @@ package personnages
 
 class MJ
 {
+    + <<create>> MJ()
     + createDJ(DJ : Donjon)
-    + choisPos(txt : String) : Integer[2]
+    + choisPos(txt : String) : String
     + addObst(DJ : Donjon)
-    + createMons(mons : Monstre)
+    + createM(mons : Monstre)
     + posJ(DJ : Donjon, perso : Personnage)
     + posM(DJ : Donjon, mons : Monstre)
     + posEquip(DJ : Donjon, equip : Equipement)
     + presContext()
 }
 
-class Donjon
+package donjon
 {
-    - _tc1 : Integer
-    - _tc2 : Integer
-    - _donjon : String[*]
-    + <<create>> Donjon()
-    + creaDonjon(tc1 : Integer, tc2 : Integer)
-    + addObst(pc1 : Integer, pc2 : Integer) : Boolean
-    + posJ(pc1 : Integer, pc2 : Integer, perso : Personnage) : Boolean
-    + posM(pc1 : Integer, pc2 : Integer, mons : Monstre) : Boolean
-    + posEquip(pc1 : Integer, pc2 : Integer, equip : Equipement) : Boolean
-    + afficherDJ()
+    class Donjon
+    {
+        - _tc1 : Integer
+        - _tc2 : Integer
+        - _ord : String[26]
+        - _donjon : String[*]
+        + <<create>> Donjon()
+        + creaDonjon(tc1 : Integer, tc2 : Integer)
+        + posInt(pos : String) : Integer[]
+        + addObst(pos : String) : Boolean
+        + posJ(pos : String, perso : Personnage) : Boolean
+        + posM(pos : String, mons : Monstre) : Boolean
+        + posEquip(pos : String, equip : Equipement) : Boolean
+        + emptyCase(pc : Integer[])
+        + afficherDJ()
+    }
 }
 
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
