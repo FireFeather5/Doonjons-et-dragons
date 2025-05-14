@@ -10,6 +10,7 @@ import personnages.races.*;
 import personnages.classes.*;
 import de.*;
 import monstres.*;
+import statistiques.Position;
 
 import java.util.Scanner;
 
@@ -22,13 +23,12 @@ public class Personnage {
     private final Classe _classe;
     private final int[] _stats = {0, 0, 0, 0, 0};
                         //pv, for, dex, vit, ini
-    private int[] _pos = {0, 0};
+    private Position _pos;
+    private final ArrayList<Equipement> _stock;
+    private final ArrayList<Equipement> _porte;
 
     Scanner sc = new Scanner(System.in);
 
-
-    private final ArrayList<Equipement> _stock;
-    private final ArrayList<Equipement> _porte;
 
     public Personnage(String nom, Races race, Classe classe)
     {
@@ -37,6 +37,8 @@ public class Personnage {
         _classe = classe;
         _stock = new ArrayList<>();
         _porte = new ArrayList<>();
+
+        _pos = new Position();
 
         De deChar = new De(4, 4);
         for (int j = 1; j < 5; j++)
@@ -60,8 +62,7 @@ public class Personnage {
 
     public void position(int pos1, int pos2)
     {
-        _pos[0] = pos1;
-        _pos[1] = pos2;
+        _pos.changPos(pos1, pos2);
     }
 
     public void action(Donjon DJ)
@@ -87,10 +88,10 @@ public class Personnage {
         int[] pos = DJ.posInt(dep);
 
         int[] posOld = new int[2];
-        posOld[0] = _pos[0];
-        posOld[1] = _pos[1];
+        posOld[0] = _pos.getAbscisse();
+        posOld[1] = _pos.getOrdonnee();
 
-        if (((pos[0] > _pos[0] - distDep) && (pos[0] < _pos[0] + distDep)) && ((pos[1] > _pos[1] - distDep) && (pos[1] < _pos[1] + distDep)))
+        if (((pos[0] > _pos.getAbscisse() - distDep) && (pos[0] < _pos.getAbscisse() + distDep)) && ((pos[1] > _pos.getOrdonnee() - distDep) && (pos[1] < _pos.getOrdonnee() + distDep)))
         {
             boolean val = DJ.posJ(dep, this);
             if (val)
@@ -101,7 +102,6 @@ public class Personnage {
         }
         return false;           //si faux, redemander une position
     }
-
 
     public void recuperer(Equipement equipement) {
         this._stock.add(equipement);

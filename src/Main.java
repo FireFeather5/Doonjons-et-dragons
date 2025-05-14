@@ -34,7 +34,15 @@ public class Main {
         test.posM(tesssst, pjpegfs);
 
         tesssst.afficherDJ();
-        ArrayList<Equipement> inventaire = new ArrayList<>();
+
+        pjpegfs.action(tesssst);
+        fesmfjeio.action(tesssst);
+
+        tesssst.afficherDJ();
+
+
+
+        /*ArrayList<Equipement> inventaire = new ArrayList<>();
 
         ArmureLourde harnois = new Harnois();
 
@@ -48,12 +56,6 @@ public class Main {
 
 
         Personnage p1 = new Personnage("moi", new Elfes(), new Guerrier());
-
-        pjpegfs.action(tesssst);
-        fesmfjeio.action(tesssst);
-
-        tesssst.afficherDJ();
-
 
 
         CotteMaille cotteMaille = new CotteMaille();
@@ -85,6 +87,6 @@ public class Main {
 
         System.out.println(p1.getStat());
         System.out.println("Inventaire : " + p1.getStock());
-        System.out.println("Equipee : " + p1.getPorte());
+        System.out.println("Equipee : " + p1.getPorte());*/
     }
 }

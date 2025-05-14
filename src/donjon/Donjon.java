@@ -9,7 +9,7 @@ public class Donjon {
     private int _tc1;
     private int _tc2;
     private static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-    private String[][] _donjon;
+    private Object[][] _donjon;
 
     public Donjon()
     {
@@ -20,13 +20,13 @@ public class Donjon {
     {
         _tc1 = tc1;
         _tc2 = tc2;
-        _donjon = new String[_tc1][_tc2];
+        _donjon = new Object[_tc1][_tc2];
 
         for (int i = 0; i < _tc1; i++)
         {
             for (int j = 0; j < _tc2; j++)
             {
-                _donjon[i][j] = " . ";
+                _donjon[i][j] = null;
             }
         }
     }
@@ -52,14 +52,15 @@ public class Donjon {
         return posi;
     }
 
-    public boolean addObst(String pos)
+    public boolean addObst(String pos, Obstacle obst)
     {
         int[] pc = posInt(pos);
 
         if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (_donjon[pc[0] - 1][pc[1] - 1].equals(" . "))
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
+                obst.position(pc[0], pc[1]);            //donne sa position au monstre
                 _donjon[pc[0]-1][pc[1]-1] = "[ ]";
                 return true;
             }
@@ -73,7 +74,7 @@ public class Donjon {
 
         if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (_donjon[pc[0] - 1][pc[1] - 1].equals(" . "))
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
                 perso.position(pc[0], pc[1]);            //donne sa position au monstre
                 _donjon[pc[0] - 1][pc[1] - 1] = perso.getN();
@@ -89,7 +90,7 @@ public class Donjon {
 
         if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (_donjon[pc[0] - 1][pc[1] - 1].equals(" . "))
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
                 mons.position(pc[0], pc[1]);            //donne sa position au monstre
                 _donjon[pc[0] - 1][pc[1] - 1] = " Xv";
@@ -101,7 +102,7 @@ public class Donjon {
 
     public void emptyCase(int[] pc)
     {
-        _donjon[pc[0]-1][pc[1]-1] = " . ";
+        _donjon[pc[0]-1][pc[1]-1] = null;
     }
 
 
