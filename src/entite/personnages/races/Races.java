@@ -1,6 +1,8 @@
 package entite.personnages.races;
 
+import statistiques.Stats;
+
 public interface Races {
 
-    public int[] augment();
+    public Stats stat();
 }

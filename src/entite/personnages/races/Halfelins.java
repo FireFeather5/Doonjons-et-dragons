@@ -1,12 +1,20 @@
 package entite.personnages.races;
 
+import statistiques.Stats;
+
 public class Halfelins implements Races {
 
-    private static int[] _stats = {0, 0, 4, 2, 0};
-    //augmente la dex de 4 et la vit de 2
+    private static Stats _stat;
 
-    public int[] augment()
+    public Halfelins()
     {
-        return _stats;
+        _stat = new Stats();
+        _stat.dex(4);
+        _stat.vit(2);
+    }
+
+    public Stats stat()
+    {
+        return _stat;
     }
 }

@@ -10,10 +10,9 @@ import entite.equipement.arme.Arme;
 import entite.equipement.arme.guerre.ArmeGuerre;
 import entite.equipement.armure.Armure;
 import entite.equipement.armure.lourde.ArmureLourde;
-import entite.personnages.races.*;
-import entite.personnages.classes.*;
 import de.*;
 import statistiques.Position;
+import statistiques.Stats;
 
 import java.util.Scanner;
 
@@ -24,7 +23,7 @@ public class Personnage implements Entite {
     private final String _nom;
     private final Races _race;
     private final Classe _classe;
-    private final int[] _stats = {0, 0, 0, 0, 0};
+    private final Stats _stats;
                         //pv, for, dex, vit, ini
     private Position _pos;
     private final ArrayList<Equipement> _stock;
@@ -40,26 +39,18 @@ public class Personnage implements Entite {
         _classe = classe;
         _stock = new ArrayList<>();
         _porte = new ArrayList<>();
-
+        _stats = new Stats();
         _pos = new Position();
 
+        _stats.pv(_classe.pv());
+        _stats.add(_race.stat());
+
         De deChar = new De(4, 4);
-        for (int j = 1; j < 5; j++)
-        {
-            _stats[j] += deChar.roll() + 3;
-        }
 
-        for (int i = 0; i < 5; i++)
-        {
-            _stats[i] += _race.augment()[i];
-        }
-
-        _stats[0] += _classe.pv();
-
-        /*for (int k = 0; k < 5; k++)
-        {
-            System.out.println(_stats[k]);
-        }*/
+        _stats.forc(deChar.roll() + 3);
+        _stats.dex(deChar.roll() + 3);
+        _stats.vit(deChar.roll() + 3);
+        _stats.ini(deChar.roll() + 3);
 
     }
 
@@ -86,7 +77,7 @@ public class Personnage implements Entite {
 
     public boolean seDeplacer(String dep, Donjon DJ)
     {
-        int distDep = _stats[4]/3;
+        int distDep = _stats.retVit()/3;
 
         int[] pos = DJ.posInt(dep);
 
@@ -110,7 +101,7 @@ public class Personnage implements Entite {
         this._stock.add(equipement);
     }
 
-    public void seDesequiper(Equipement equipement) {
+    /*public void seDesequiper(Equipement equipement) {
         if (this._porte.contains(equipement)) {
             this._porte.remove(equipement);
             if (equipement instanceof ArmeGuerre) {
@@ -152,7 +143,7 @@ public class Personnage implements Entite {
         else {
             System.out.println("ERREUR : l'equipement n'est pas dans l'inventaire");
         }
-    }
+    }*/
 
     public void attaquer(Monstre mons, Integer dist)
     {
@@ -165,7 +156,7 @@ public class Personnage implements Entite {
     }
 
     public String getStat() {
-        return "pv : " + this._stats[0] + ", force : " + this._stats[1] + ", dexterite : " + this._stats[2] + ", vitesse : " + this._stats[3] + ", initiative : " + this._stats[4];
+        return "pv : " + _stats.retPv() + ", force : " + _stats.retFor() + ", dexterite : " + _stats.retDex() + ", vitesse : " + _stats.retVit() + ", initiative : " + _stats.retIni()  + ", classe d'armure : " + _stats.retArm();
     }
 
     public String getPorte() {

@@ -1,13 +1,23 @@
 package entite.personnages.races;
 
+import statistiques.Stats;
+
 public class Humain implements Races {
 
-    private static int[] _stats = {2, 2, 2, 2, 2};
-    //augmente toutes les stats de 2
+    private static Stats _stat;
 
-    public int[] augment()
+    public Humain()
     {
-        return _stats;
+        _stat = new Stats();
+        _stat.forc(2);
+        _stat.dex(2);
+        _stat.vit(2);
+        _stat.ini(2);
+    }
+
+    public Stats stat()
+    {
+        return _stat;
     }
 
 }

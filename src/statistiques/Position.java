@@ -6,7 +6,8 @@ public class Position {
 
     public Position()
     {
-
+        _abscisse = 0;
+        _ordonnee = 0;
     }
 
     public void changPos(int pos1, int pos2)

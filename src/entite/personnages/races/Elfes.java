@@ -1,12 +1,19 @@
 package entite.personnages.races;
 
+import statistiques.Stats;
+
 public class Elfes implements Races {
 
-    private static int[] _stats = {0, 0, 6, 0, 0};
-    //augmente la dex de 6
+    private static Stats _stat;
 
-    public int[] augment()
+    public Elfes()
     {
-        return _stats;
+        _stat = new Stats();
+        _stat.dex(6);
+    }
+
+    public Stats stat()
+    {
+        return _stat;
     }
 }
