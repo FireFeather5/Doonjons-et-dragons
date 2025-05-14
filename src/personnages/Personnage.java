@@ -1,6 +1,11 @@
 package personnages;
 
 import donjon.Donjon;
+import equipement.Equipement;
+import equipement.arme.Arme;
+import equipement.arme.guerre.ArmeGuerre;
+import equipement.armure.Armure;
+import equipement.armure.lourde.ArmureLourde;
 import personnages.races.*;
 import personnages.classes.*;
 import de.*;
@@ -8,23 +13,30 @@ import monstres.*;
 
 import java.util.Scanner;
 
+import java.util.ArrayList;
+
 public class Personnage {
 
-    private String _nom;
-    private Races _race;
-    private Classe _classe;
-    private int[] _stats = {0, 0, 0, 0, 0};
+    private final String _nom;
+    private final Races _race;
+    private final Classe _classe;
+    private final int[] _stats = {0, 0, 0, 0, 0};
                         //pv, for, dex, vit, ini
     private int[] _pos = {0, 0};
 
     Scanner sc = new Scanner(System.in);
 
 
+    private final ArrayList<Equipement> _stock;
+    private final ArrayList<Equipement> _porte;
+
     public Personnage(String nom, Races race, Classe classe)
     {
         _nom = nom;
         _race = race;
         _classe = classe;
+        _stock = new ArrayList<>();
+        _porte = new ArrayList<>();
 
         De deChar = new De(4, 4);
         for (int j = 1; j < 5; j++)
@@ -91,11 +103,53 @@ public class Personnage {
     }
 
 
-    public void sEquiper()
-    {
-        // besoin des classes armements
+    public void recuperer(Equipement equipement) {
+        this._stock.add(equipement);
     }
 
+    public void seDesequiper(Equipement equipement) {
+        if (this._porte.contains(equipement)) {
+            this._porte.remove(equipement);
+            if (equipement instanceof ArmeGuerre) {
+                this._stats[3] += ((ArmeGuerre) equipement).getSpeedMalus();
+                this._stats[1] -= ((ArmeGuerre) equipement).getForceBonus();
+            }
+            else if (equipement instanceof ArmureLourde) {
+                this._stats[3] += ((ArmureLourde) equipement).getSpeedMalus();
+            }
+            this._stock.add(equipement);
+        }
+        else {
+            System.out.println("ERREUR : l'equipement n'est pas équipée");
+        }
+    }
+
+    public void sEquiper(Equipement equipement) {
+        if (this._stock.contains(equipement)) {
+            if (equipement instanceof ArmeGuerre) {
+                this._stats[3] -= ((ArmeGuerre) equipement).getSpeedMalus();
+                this._stats[1] += ((ArmeGuerre) equipement).getForceBonus();
+            }
+            else if (equipement instanceof ArmureLourde) {
+                this._stats[3] -= ((ArmureLourde) equipement).getSpeedMalus();
+            }
+            for (Equipement equip : this._porte) {
+                if (equip instanceof Arme && equipement instanceof Arme) {
+                    this.seDesequiper((Arme) equip);
+                    break;
+                }
+                else if (equip instanceof Armure && equipement instanceof Armure) {
+                    this.seDesequiper((Armure) equip);
+                    break;
+                }
+            }
+            this._porte.add(equipement);
+            this._stock.remove(equipement);
+        }
+        else {
+            System.out.println("ERREUR : l'equipement n'est pas dans l'inventaire");
+        }
+    }
 
     public void attaquer(Monstre mons, Integer dist)
     {
@@ -112,6 +166,25 @@ public class Personnage {
         return _nom.substring(0, 3);
     }
 
+    public String getStat() {
+        return "pv : " + this._stats[0] + ", force : " + this._stats[1] + ", dexterite : " + this._stats[2] + ", vitesse : " + this._stats[3] + ", initiative : " + this._stats[4];
+    }
+
+    public String getPorte() {
+        String porte = "";
+        for (Equipement equip : this._porte) {
+            porte += equip.toString() + " ";
+        }
+        return porte;
+    }
+
+    public String getStock() {
+        String porte = "";
+        for (Equipement equip : this._stock) {
+            porte += equip.toString() + " ";
+        }
+        return porte;
+    }
 
     @Override
     public String toString() {

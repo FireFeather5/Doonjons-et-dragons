@@ -161,12 +161,152 @@ package donjon
     }
 }
 
+
+package equipement
+{
+    abstract class Equipement <<abstract>>
+    {
+        # _name : String
+        + getName() : String
+    }
+
+    package arme
+    {
+        abstract class Arme <<abstract>>
+        {
+            - _range : Integer
+            + <<create>> Arme(name : String, degats : De, range : Integer)
+            + getRange() : Integer
+            + toString() : String
+        }
+
+        package courante
+        {
+            abstract class ArmeCourante <<abstract>>
+            {
+                + <<create>> ArmeCourante(name : String, degats : De)
+            }
+
+            class Baton extends ArmeCourante
+            {
+                + <<create>> Baton()
+            }
+
+            class MasseArme extends ArmeCourante
+            {
+                + <<create>> MasseArme()
+            }
+        }
+
+        package distance
+        {
+            abstract class ArmeDistance <<abstract>>
+            {
+                + <<create>> ArmeDistance(nom : String, degats : De, portee : Integer)
+            }
+
+            class ArbaleteLegere extends ArmeDistance
+            {
+                + <<create>> ArbaleteLegere()
+            }
+
+            class ArcCourt extends ArmeDistance
+            {
+                + <<create>> ArcCourt()
+            }
+
+            class Fronde extends ArmeDistance
+            {
+                + <<create>> Fronde()
+            }
+        }
+
+        package guerre
+        {
+            abstract class ArmeGuerre <<abstract>>
+            {
+                + <<create>> ArmeGuerre(name : String, degats : De)
+                + getSpeedMalus() : Integer
+                + getForceBonus() : Integer
+            }
+
+            class EpeeLongue extends ArmeGuerre
+            {
+                + <<create>> EpeeLongue()
+            }
+
+            class Rapiere extends ArmeGuerre
+            {
+                + <<create>> Rapiere()
+            }
+        }
+    }
+
+    package armure
+    {
+        abstract class Armure <<abstract>>
+        {
+            - _armorClass : Integer
+            + <<create>> Armure(name : String, armorClass : Integer)
+            + getArmorClass() : Integer
+            + toString() : String
+        }
+
+        package legere
+        {
+            abstract class ArmureLegere <<abstract>>
+            {
+                + <<create>> ArmureLegere(name : String, armorClass : Integer)
+            }
+
+            class ArmureEcaille extends ArmureLegere
+            {
+                + <<create>> ArmureEcaille()
+            }
+
+            class DemiPlate extends ArmureLegere
+            {
+                + <<create>> DemiPlate()
+            }
+        }
+
+        package lourde
+        {
+            abstract class ArmureLourde
+            {
+                + <<create>> ArmureLourde(name : String, armorClass : Integer)
+                + getSpeedMalus() : Integer
+            }
+
+            class CotteMaille extends ArmureLourde
+            {
+                + <<create>> CotteMaille()
+            }
+
+            class Harnois extends ArmureLourde
+            {
+                + <<create>> Harnois()
+            }
+        }
+    }
+}
+
+
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
 Personnage "*" *--> "1\nn_race" Races : fait parti de >
 Personnage "*" *--> "1\nn_classe" Classe : fait parti de >
 Personnage .> De : <<instantiate/call>>
 Monstre .> Personnage : <<use>>
 Personnage .> Monstre : <<use>>
+
+Arme -up-|> Equipement
+Arme .-left-> De : <<uses>>
+ArmeCourante -up-|> Arme
+ArmeDistance -up-|> Arme
+ArmeGuerre -up-|> Arme
+Armure -up-|> Equipement
+ArmureLegere -up-|> Armure
+ArmureLourde -up-|> Armure
 
 MJ .> Donjon : <<use/call>>
 MJ .> Personnage : <<use/call>>
