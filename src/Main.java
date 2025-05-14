@@ -19,7 +19,8 @@ public class Main {
         System.out.println("Bienvenue dans DOOnjon et Dragons");
 
 
-        Monstre m1 = new Monstre("dragon", 5, new De(2, 15), new De(3, 6));
+        Monstre m1 = new Monstre();
+        m1.creaMonstre("dragon", 5, new De(2, 15), new De(3, 6));
         Personnage p1 = new Personnage("moi", new Elfes(), new Guerrier());
 
 
