@@ -12,25 +12,23 @@ public class Main {
         Donjon tesssst = new Donjon();
         Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
         Monstre pjpegfs = new Monstre();
+        Monstre jpeg = new Monstre();
 
         test.createDJ(tesssst);
 
         tesssst.afficherDJ();
 
-        test.addObst(tesssst);
         test.createM(pjpegfs);
+        test.createM(jpeg);
         test.posJ(tesssst, fesmfjeio);
         test.posM(tesssst, pjpegfs);
+        test.posM(tesssst, jpeg);
 
         tesssst.afficherDJ();
 
-        pjpegfs.action(tesssst);
-        System.out.println(pjpegfs.getStat());
+        System.out.println("Nom du monstre 1 : " + pjpegfs);
+        System.out.println("Nom du monstre 2 : " + jpeg);
 
-        fesmfjeio.action(tesssst);
-        System.out.println(fesmfjeio.getStat());
-
-        tesssst.afficherDJ();
 
 
 

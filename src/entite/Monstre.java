@@ -10,11 +10,10 @@ import java.util.Scanner;
 
 public class Monstre implements Entite{
     private String _espece;
-    private int _numero;    //a voir plus tard
+    private int _numero = 1;    //a voir plus tard
     private int _portAtt;
     private De _degAtt;
     private Stats _stats;
-    //                  pv, for, dex, vit, ini, arm
     private Position _pos;
 
     private De _deChar;
@@ -30,7 +29,7 @@ public class Monstre implements Entite{
     public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
     {
         _deChar = charac;
-        _espece = espece;
+        _espece = espece + " " + this._numero;
         _portAtt = portAtt;
         _degAtt = degAtt;
 
@@ -49,6 +48,16 @@ public class Monstre implements Entite{
         {
             _stats.forc(0);
             _stats.dex(_deChar.roll());
+        }
+    }
+
+    public void multiMonstre() {
+        this._numero ++;
+        String[] nom = this._espece.split(" ");
+        nom[nom.length-1] = String.valueOf(this._numero);
+        this._espece = "";
+        for (String s : nom) {
+            this._espece += s + " ";
         }
     }
 
@@ -137,7 +146,6 @@ public class Monstre implements Entite{
 
     @Override
     public String toString() {
-        return _espece + _numero;
+        return this._espece;
     }
-
 }
