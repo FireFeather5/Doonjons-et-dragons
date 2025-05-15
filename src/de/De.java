@@ -36,7 +36,7 @@ public class De {
     }
 
     public void changeDe(int nombre, int faces) {
-        this._name = + nombre + "d" + faces;
+        this._name = nombre + "d" + faces;
         this._number = nombre;
         this._faces = faces;
     }

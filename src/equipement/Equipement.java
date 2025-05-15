@@ -1,7 +1,7 @@
 package equipement;
 
 public abstract class Equipement {
-    private String _name;
+    private final String _name;
     private final int _speedMalus;
     private final int _forceBonus;
 
