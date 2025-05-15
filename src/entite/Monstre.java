@@ -1,14 +1,14 @@
-package entite;
+package monstres;
 
 import de.De;
-import entite.personnages.Personnage;
+import personnages.*;
 import donjon.Donjon;
 import statistiques.Position;
 import statistiques.Stats;
 
 import java.util.Scanner;
 
-public class Monstre implements Entite{
+public class Monstre {
     private String _espece;
     private int _numero;    //a voir plus tard
     private int _portAtt;
@@ -16,6 +16,8 @@ public class Monstre implements Entite{
     private Stats _stats;
     //                  pv, for, dex, vit, ini, arm
     private Position _pos;
+
+    private De _deChar;
 
     Scanner sc = new Scanner(System.in);
 
@@ -27,25 +29,26 @@ public class Monstre implements Entite{
 
     public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
     {
+        this._deChar = charac;
         _espece = espece;
         _portAtt = portAtt;
         _degAtt = degAtt;
 
 
-        _stats.pv(charac.roll());
-        _stats.vit(charac.roll());
-        _stats.ini(charac.roll());
-        _stats.arm(charac.roll());
+        _stats.pv(_deChar.roll());
+        _stats.vit(_deChar.roll());
+        _stats.ini(_deChar.roll());
+        _stats.arm(_deChar.roll());
 
         if (_portAtt == 1)
         {
             _stats.dex(0);
-            _stats.forc(charac.roll());
+            _stats.forc(_deChar.roll());
         }
         else
         {
             _stats.forc(0);
-            _stats.dex(charac.roll());
+            _stats.dex(_deChar.roll());
         }
     }
 
@@ -94,19 +97,32 @@ public class Monstre implements Entite{
 
     public void attaquer(Personnage pers, int dist)
     {
-        De deAtt = new De(1, 20);
+        this._deChar.changeDe(1, 20);
         if (_portAtt >= dist)
         {
-            int atk = deAtt.roll() + _stats.retFor() + _stats.retDex();
-            // un des deux est forcément à 0 donc on peut directement ajouter les deux
-            // (évite un if else)
-            System.out.println("atk : " + atk);
+            int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
+            System.out.println("Touche : " + touche);
+            if (touche > pers.getArmorClass()) {
+                int atk = this._degAtt.roll();
+                // un des deux est forcément à 0 donc on peut directement ajouter les deux
+                // (évite un if else)
+                pers.seFaitAttaquer(atk);
+                System.out.println("Atk : " + atk);
+            }
         }
         else
         {
             System.out.println("Cible trop loin");
         }
         // besoin des classes armement pour faire le reste
+    }
+
+    public int getArmorClass() {
+        return this._stats[5];
+    }
+
+    public void seFaitAttaquer(int degats) {
+        this._stats[0] -= degats;
     }
 
     public String getStat() {

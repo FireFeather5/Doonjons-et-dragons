@@ -49,6 +49,12 @@ public class Main {
 
         Personnage p1 = new Personnage("moi", new Elfes(), new Guerrier());
 
+        pjpegfs.action(tesssst);
+        fesmfjeio.action(tesssst);
+
+        tesssst.afficherDJ();
+
+
 
         CotteMaille cotteMaille = new CotteMaille();
         DemiPlate demiPlate = new DemiPlate();

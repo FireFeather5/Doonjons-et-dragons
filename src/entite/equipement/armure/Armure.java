@@ -6,8 +6,13 @@ public abstract class Armure extends Equipement {
     private final int armorClass;
 
     public Armure(String name, int armorClass) {
+        super(name);
         this.armorClass = armorClass;
-        this._name = name;
+    }
+
+    public Armure(String name, int armorClass, int speedMalus) {
+        super(name, speedMalus);
+        this.armorClass = armorClass;
     }
 
     public int getArmorClass() {
@@ -16,6 +21,6 @@ public abstract class Armure extends Equipement {
 
     @Override
     public String toString() {
-        return this._name + " [classe d'armure : " + this.armorClass + "]";
+        return this.getName() + " [classe d'armure : " + this.armorClass + "]";
     }
 }

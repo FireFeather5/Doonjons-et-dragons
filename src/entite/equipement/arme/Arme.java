@@ -1,21 +1,26 @@
-package entite.equipement.arme;
+package equipement.arme;
 
-import de.De;
-import entite.equipement.Equipement;
+import equipement.Equipement;
 
 public abstract class Arme extends Equipement {
 
-    private final De _degats;
+    private final int _nbDe;
+    private final int _nbFacesDe;
     private final int _range;
 
-    public Arme(String name, De degats, int range) {
-        _name = name;
-        _degats = degats;
-        _range = range;
+    public Arme(String name, int nbDe, int nbFacesDe, int range) {
+        this(name, nbDe, nbFacesDe, range, 0, 0);
     }
 
-    public De getDegats() {
-        return _degats;
+    public Arme(String name, int nbDe, int nbFacesDe, int range, int speedMalus, int forceBonus) {
+        super(name, speedMalus, forceBonus);
+        this._nbDe = nbDe;
+        this._nbFacesDe = nbFacesDe;
+        this._range = range;
+    }
+
+    public int[] getDegats() {
+        return new int[]{_nbDe, _nbFacesDe};
     }
 
     public int getRange() {
@@ -24,6 +29,6 @@ public abstract class Arme extends Equipement {
 
     @Override
     public String toString() {
-        return this._name + " [dégats : " + this._degats + ", portée : " + this._range + "] ";
+        return this.getName() + " [dégats : " + this._nbDe + "d" + this._nbFacesDe + ", portée : " + this._range + "] ";
     }
 }

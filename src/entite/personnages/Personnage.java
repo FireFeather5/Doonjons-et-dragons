@@ -1,4 +1,4 @@
-package entite.personnages;
+package personnages;
 
 import donjon.Donjon;
 import entite.Entite;
@@ -23,11 +23,13 @@ public class Personnage implements Entite {
     private final String _nom;
     private final Races _race;
     private final Classe _classe;
+    private final De _deChar = new De(4, 4);
     private final Stats _stats;
-                        //pv, for, dex, vit, ini
+    //pv, for, dex, vit, ini
     private Position _pos;
+
     private final ArrayList<Equipement> _stock;
-    private final ArrayList<Equipement> _porte;
+    private final ArrayList<Equipement> _equipee;
 
     Scanner sc = new Scanner(System.in);
 
@@ -38,19 +40,18 @@ public class Personnage implements Entite {
         _race = race;
         _classe = classe;
         _stock = new ArrayList<>();
-        _porte = new ArrayList<>();
+        _equipee = new ArrayList<>();
         _stats = new Stats();
         _pos = new Position();
 
         _stats.pv(_classe.pv());
         _stats.add(_race.stat());
 
-        De deChar = new De(4, 4);
 
-        _stats.forc(deChar.roll() + 3);
-        _stats.dex(deChar.roll() + 3);
-        _stats.vit(deChar.roll() + 3);
-        _stats.ini(deChar.roll() + 3);
+        _stats.forc(_deChar.roll() + 3);
+        _stats.dex(_deChar.roll() + 3);
+        _stats.vit(_deChar.roll() + 3);
+        _stats.ini(_deChar.roll() + 3);
 
     }
 
@@ -97,13 +98,14 @@ public class Personnage implements Entite {
         return false;           //si faux, redemander une position
     }
 
+
     public void recuperer(Equipement equipement) {
         this._stock.add(equipement);
     }
 
-    /*public void seDesequiper(Equipement equipement) {
-        if (this._porte.contains(equipement)) {
-            this._porte.remove(equipement);
+    public void seDesequiper(Equipement equipement) {
+        if (this._equipee.contains(equipement)) {
+            this._equipee.remove(equipement);
             if (equipement instanceof ArmeGuerre) {
                 this._stats[3] += ((ArmeGuerre) equipement).getSpeedMalus();
                 this._stats[1] -= ((ArmeGuerre) equipement).getForceBonus();
@@ -127,7 +129,7 @@ public class Personnage implements Entite {
             else if (equipement instanceof ArmureLourde) {
                 this._stats[3] -= ((ArmureLourde) equipement).getSpeedMalus();
             }
-            for (Equipement equip : this._porte) {
+            for (Equipement equip : this._equipee) {
                 if (equip instanceof Arme && equipement instanceof Arme) {
                     this.seDesequiper((Arme) equip);
                     break;
@@ -137,17 +139,70 @@ public class Personnage implements Entite {
                     break;
                 }
             }
-            this._porte.add(equipement);
+            this._equipee.add(equipement);
             this._stock.remove(equipement);
         }
         else {
             System.out.println("ERREUR : l'equipement n'est pas dans l'inventaire");
         }
-    }*/
+    }
 
-    public void attaquer(Monstre mons, Integer dist)
-    {
+    private Arme getArmeEquipe() {
+        for (Equipement equip : this._equipee) {
+            if (equip instanceof Arme) {
+                return (Arme) equip;
+            }
+        }
+        return null;
+    }
+    private Armure getArmureEquipe() {
+        for (Equipement equip : this._equipee) {
+            if (equip instanceof Armure) {
+                return (Armure) equip;
+            }
+        }
+        return null;
+    }
 
+    public void attaquer(Monstre mons, Integer dist) {
+        Arme arme = getArmeEquipe();
+        if (arme != null) {
+            this._deChar.changeDe(1, 20);
+            int touche = this._deChar.roll();
+            if (arme instanceof ArmeDistance) {
+                touche += this._stats[2];
+            }
+            else {
+                touche += this._stats[1];
+            }
+            if (arme.getRange() >= dist) {
+                if (touche > mons.getArmorClass()) {
+                    this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
+                    int atk = this._deChar.roll();
+                    System.out.println(this._nom + " touche le monstre (jet de touche : " + touche + ")");
+                    System.out.println(this._nom + " attaque a hauteur de " + atk + " dégats !");
+                    mons.seFaitAttaquer(atk);
+                } else
+                    System.out.println(this._nom + " ne touche pas le monstre (jet de touche : " + touche + ")");
+            }
+            else {
+                System.out.println(this._nom + " n'a pas la portee");
+            }
+        }
+        else {
+            System.out.println("Vous n'avez pas d'arme équipée");
+        }
+    }
+
+    public int getArmorClass() {
+        if (getArmureEquipe() != null) {
+            return getArmureEquipe().getArmorClass();
+        }
+        return 0;
+    }
+
+    public void seFaitAttaquer(int degats) {
+        this._stats[0] -= degats;
     }
 
     public void ramasser()
@@ -159,9 +214,9 @@ public class Personnage implements Entite {
         return "pv : " + _stats.retPv() + ", force : " + _stats.retFor() + ", dexterite : " + _stats.retDex() + ", vitesse : " + _stats.retVit() + ", initiative : " + _stats.retIni()  + ", classe d'armure : " + _stats.retArm();
     }
 
-    public String getPorte() {
+    public String getEquipee() {
         String porte = "";
-        for (Equipement equip : this._porte) {
+        for (Equipement equip : this._equipee) {
             porte += equip.toString() + " ";
         }
         return porte;

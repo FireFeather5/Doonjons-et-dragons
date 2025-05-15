@@ -1,10 +1,9 @@
-package entite.equipement.arme.courante;
+package equipement.arme.courante;
 
-import de.De;
-import entite.equipement.arme.Arme;
+import equipement.arme.Arme;
 
 public abstract class ArmeCourante extends Arme {
-    public ArmeCourante(String name, De degats) {
-        super(name, degats, 1);
+    public ArmeCourante(String name, int nbDe, int nbFacesDe) {
+        super(name, nbDe, nbFacesDe, 1);
     }
 }

@@ -1,10 +1,9 @@
-package entite.equipement.arme.distance;
+package equipement.arme.distance;
 
-import de.De;
-import entite.equipement.arme.Arme;
+import equipement.arme.Arme;
 
 public abstract class ArmeDistance extends Arme {
-    public ArmeDistance(String nom, De degats, int portee) {
-        super(nom, degats, portee);
+    public ArmeDistance(String nom, int nbDe, int nbFacesDe, int portee) {
+        super(nom, nbDe, nbFacesDe, portee);
     }
 }
