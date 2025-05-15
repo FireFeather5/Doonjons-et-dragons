@@ -4,6 +4,7 @@ import de.De;
 import entite.personnages.Personnage;
 import donjon.Donjon;
 import statistiques.Position;
+import statistiques.Stats;
 
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ public class Monstre implements Entite{
     private int _numero;    //a voir plus tard
     private int _portAtt;
     private De _degAtt;
-    private int[] _stats = {0, 0, 0, 0, 0, 0};
+    private Stats _stats;
     //                  pv, for, dex, vit, ini, arm
     private Position _pos;
 
@@ -21,6 +22,7 @@ public class Monstre implements Entite{
     public Monstre()
     {
         _pos = new Position();
+        _stats = new Stats();
     }
 
     public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
@@ -29,23 +31,22 @@ public class Monstre implements Entite{
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        for (int i = 0; i < 6; i++)
-        {
-            _stats[i] += charac.roll() + 3;
-        }
+
+        _stats.pv(charac.roll());
+        _stats.vit(charac.roll());
+        _stats.ini(charac.roll());
+        _stats.arm(charac.roll());
+
         if (_portAtt == 1)
         {
-            _stats[2] = 0;
+            _stats.dex(0);
+            _stats.forc(charac.roll());
         }
         else
         {
-            _stats[1] = 0;
+            _stats.forc(0);
+            _stats.dex(charac.roll());
         }
-
-        /*for (int i = 0; i < 6; i++)
-        {
-            System.out.println("Mo " + _stats[i]);
-        }*/
     }
 
     public void position(int pos1, int pos2)
@@ -71,7 +72,7 @@ public class Monstre implements Entite{
 
     public boolean seDeplacer(String dep, Donjon DJ)
     {
-        int distDep = _stats[4]/3;
+        int distDep = _stats.retVit()/3;
 
         int[] pos = DJ.posInt(dep);
 
@@ -96,7 +97,7 @@ public class Monstre implements Entite{
         De deAtt = new De(1, 20);
         if (_portAtt >= dist)
         {
-            int atk = deAtt.roll() + _stats[1] + _stats[2];
+            int atk = deAtt.roll() + _stats.retFor() + _stats.retDex();
             // un des deux est forcément à 0 donc on peut directement ajouter les deux
             // (évite un if else)
             System.out.println("atk : " + atk);
@@ -106,6 +107,10 @@ public class Monstre implements Entite{
             System.out.println("Cible trop loin");
         }
         // besoin des classes armement pour faire le reste
+    }
+
+    public String getStat() {
+        return "pv : " + _stats.retPv() + ", force : " + _stats.retFor() + ", dexterite : " + _stats.retDex() + ", vitesse : " + _stats.retVit() + ", initiative : " + _stats.retIni()  + ", classe d'armure : " + _stats.retArm();
     }
 
     public String aff()

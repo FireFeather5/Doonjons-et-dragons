@@ -25,9 +25,11 @@ public class Main {
         tesssst.afficherDJ();
 
         pjpegfs.action(tesssst);
+        System.out.println(pjpegfs.getStat());
+
         fesmfjeio.action(tesssst);
-        String tr = fesmfjeio.getStat();
-        System.out.println(tr);
+        System.out.println(fesmfjeio.getStat());
+
         tesssst.afficherDJ();
 
 
