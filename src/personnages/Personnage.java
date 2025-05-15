@@ -21,9 +21,10 @@ public class Personnage {
     private final String _nom;
     private final Races _race;
     private final Classe _classe;
+    private final De _deChar = new De(4, 4);
     private final int[] _stats = {0, 0, 0, 0, 0};
                              //pv, for, dex, vit, ini
-    private int[] _pos = {0, 0};
+    private final int[] _pos = {0, 0};
 
     Scanner sc = new Scanner(System.in);
 
@@ -39,10 +40,10 @@ public class Personnage {
         _stock = new ArrayList<>();
         _equipee = new ArrayList<>();
 
-        De deChar = new De(4, 4);
+
         for (int j = 1; j < 5; j++)
         {
-            _stats[j] += deChar.roll() + 3;
+            _stats[j] += _deChar.roll() + 3;
         }
 
         for (int i = 0; i < 5; i++)
@@ -160,11 +161,20 @@ public class Personnage {
         }
         return null;
     }
+    private Armure getArmureEquipe() {
+        for (Equipement equip : this._equipee) {
+            if (equip instanceof Armure) {
+                return (Armure) equip;
+            }
+        }
+        return null;
+    }
 
     public void attaquer(Monstre mons, Integer dist) {
         Arme arme = getArmeEquipe();
         if (arme != null) {
-            int touche = new De(20).roll();
+            this._deChar.changeDe(1, 20);
+            int touche = this._deChar.roll();
             if (arme instanceof ArmeDistance) {
                 touche += this._stats[2];
             }
@@ -173,7 +183,8 @@ public class Personnage {
             }
             if (arme.getRange() >= dist) {
                 if (touche > mons.getArmorClass()) {
-                    int atk = arme.getDegats().roll();
+                    this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
+                    int atk = this._deChar.roll();
                     System.out.println(this._nom + " touche le monstre (jet de touche : " + touche + ")");
                     System.out.println(this._nom + " attaque a hauteur de " + atk + " dégats !");
                     mons.seFaitAttaquer(atk);
@@ -187,6 +198,13 @@ public class Personnage {
         else {
             System.out.println("Vous n'avez pas d'arme équipée");
         }
+    }
+
+    public int getArmorClass() {
+        if (getArmureEquipe() != null) {
+            return getArmureEquipe().getArmorClass();
+        }
+        return 0;
     }
 
     public void seFaitAttaquer(int degats) {

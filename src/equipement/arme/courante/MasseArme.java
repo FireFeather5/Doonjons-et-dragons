@@ -1,9 +1,7 @@
 package equipement.arme.courante;
 
-import de.De;
-
 public class MasseArme extends ArmeCourante {
     public MasseArme() {
-        super("Masse d'arme", new De(1, 6));
+        super("Masse d'arme", 1, 6);
     }
 }
