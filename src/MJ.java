@@ -1,7 +1,9 @@
 import de.De;
 import donjon.Donjon;
-import monstres.Monstre;
-import personnages.Personnage;
+import entite.Obstacle;
+import entite.equipement.Equipement;
+import entite.Monstre;
+import entite.personnages.Personnage;
 
 import java.util.Scanner;
 
@@ -46,13 +48,8 @@ public class MJ {
     {
         String pos = choixPos(" de l'obstacle");
 
-        boolean test = DJ.addObst(pos);
-
-        if (!test)
-        {
-            System.out.println("Erreur dans la selection de la position");
-            this.addObst(DJ);
-        }
+        Obstacle obs = new Obstacle();
+        obs.addPos(pos, DJ);
     }
 
     public void createM(Monstre mons)
@@ -76,7 +73,7 @@ public class MJ {
 
     public void posJ(Donjon DJ, Personnage perso)
     {
-        String pos = choixPos(" de " + perso.getN());
+        String pos = choixPos(" de " + perso.aff());
 
         boolean test = DJ.posJ(pos, perso);
 
@@ -98,6 +95,12 @@ public class MJ {
             System.out.println("Erreur dans la selection de la position");
             this.posM(DJ, mons);
         }
+    }
+
+    public void posEquip(Donjon DJ, Equipement equip)
+    {
+        String pos = choixPos(" de " + equip.toString());
+
     }
 
     public void presContext()
