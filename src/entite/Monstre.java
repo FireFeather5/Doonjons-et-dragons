@@ -1,14 +1,14 @@
-package monstres;
+package entite;
 
 import de.De;
-import personnages.*;
+import entite.personnages.*;
 import donjon.Donjon;
 import statistiques.Position;
 import statistiques.Stats;
 
 import java.util.Scanner;
 
-public class Monstre {
+public class Monstre implements Entite{
     private String _espece;
     private int _numero;    //a voir plus tard
     private int _portAtt;
@@ -29,7 +29,7 @@ public class Monstre {
 
     public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
     {
-        this._deChar = charac;
+        _deChar = charac;
         _espece = espece;
         _portAtt = portAtt;
         _degAtt = degAtt;
@@ -118,11 +118,12 @@ public class Monstre {
     }
 
     public int getArmorClass() {
-        return this._stats[5];
+        return this._stats.retArm();
     }
 
     public void seFaitAttaquer(int degats) {
-        this._stats[0] -= degats;
+        int pv = _stats.retPv() - degats;
+        _stats.pv(pv);
     }
 
     public String getStat() {

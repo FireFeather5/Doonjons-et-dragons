@@ -1,6 +1,6 @@
-package equipement.arme.guerre;
+package entite.equipement.arme.guerre;
 
-import equipement.arme.Arme;
+import entite.equipement.arme.Arme;
 
 public abstract class ArmeGuerre extends Arme {
     public ArmeGuerre(String name, int nbDe, int nbFacesDe) {

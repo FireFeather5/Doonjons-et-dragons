@@ -1,8 +1,9 @@
-package personnages;
+package entite.personnages;
 
 import donjon.Donjon;
 import entite.Entite;
 import entite.Monstre;
+import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.Classe;
 import entite.personnages.races.Races;
 import entite.equipement.Equipement;
@@ -107,11 +108,11 @@ public class Personnage implements Entite {
         if (this._equipee.contains(equipement)) {
             this._equipee.remove(equipement);
             if (equipement instanceof ArmeGuerre) {
-                this._stats[3] += ((ArmeGuerre) equipement).getSpeedMalus();
-                this._stats[1] -= ((ArmeGuerre) equipement).getForceBonus();
+                this._stats.vit(_stats.retVit() + ((ArmeGuerre) equipement).getSpeedMalus());
+                this._stats.forc(_stats.retFor() - ((ArmeGuerre) equipement).getForceBonus());
             }
             else if (equipement instanceof ArmureLourde) {
-                this._stats[3] += ((ArmureLourde) equipement).getSpeedMalus();
+                this._stats.vit(_stats.retVit() + ((ArmureLourde) equipement).getSpeedMalus());
             }
             this._stock.add(equipement);
         }
@@ -123,11 +124,11 @@ public class Personnage implements Entite {
     public void sEquiper(Equipement equipement) {
         if (this._stock.contains(equipement)) {
             if (equipement instanceof ArmeGuerre) {
-                this._stats[3] -= ((ArmeGuerre) equipement).getSpeedMalus();
-                this._stats[1] += ((ArmeGuerre) equipement).getForceBonus();
+                this._stats.vit(_stats.retVit() - ((ArmeGuerre) equipement).getSpeedMalus());
+                this._stats.forc(_stats.retFor() + ((ArmeGuerre) equipement).getForceBonus());
             }
             else if (equipement instanceof ArmureLourde) {
-                this._stats[3] -= ((ArmureLourde) equipement).getSpeedMalus();
+                this._stats.vit(_stats.retVit() - ((ArmureLourde) equipement).getSpeedMalus());
             }
             for (Equipement equip : this._equipee) {
                 if (equip instanceof Arme && equipement instanceof Arme) {
@@ -170,10 +171,10 @@ public class Personnage implements Entite {
             this._deChar.changeDe(1, 20);
             int touche = this._deChar.roll();
             if (arme instanceof ArmeDistance) {
-                touche += this._stats[2];
+                touche += this._stats.retDex();
             }
             else {
-                touche += this._stats[1];
+                touche += this._stats.retFor();
             }
             if (arme.getRange() >= dist) {
                 if (touche > mons.getArmorClass()) {
@@ -202,7 +203,8 @@ public class Personnage implements Entite {
     }
 
     public void seFaitAttaquer(int degats) {
-        this._stats[0] -= degats;
+        int pv = _stats.retPv() - degats;
+        _stats.pv(pv);
     }
 
     public void ramasser()
