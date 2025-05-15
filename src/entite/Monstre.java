@@ -135,6 +135,11 @@ public class Monstre implements Entite{
         return " Xv";
     }
 
+    public int code()
+    {
+        return 1;
+    }
+
     @Override
     public String toString() {
         return _espece + _numero;

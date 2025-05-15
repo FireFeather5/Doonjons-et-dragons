@@ -1,5 +1,7 @@
 import donjon.Donjon;
 import entite.Monstre;
+import entite.equipement.Equipement;
+import entite.equipement.arme.guerre.EpeeLongue;
 import entite.personnages.Personnage;
 import entite.personnages.classes.Roublard;
 import entite.personnages.races.Humain;
@@ -12,20 +14,22 @@ public class Main {
         Donjon tesssst = new Donjon();
         Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
         Monstre pjpegfs = new Monstre();
+        Equipement arme = new EpeeLongue();
 
         test.createDJ(tesssst);
 
         tesssst.afficherDJ();
 
         test.addObst(tesssst);
-        test.createM(pjpegfs);
+        //test.createM(pjpegfs);
         test.posJ(tesssst, fesmfjeio);
-        test.posM(tesssst, pjpegfs);
+        //test.posM(tesssst, pjpegfs);
+        test.posEquip(tesssst, arme);
 
         tesssst.afficherDJ();
 
-        pjpegfs.action(tesssst);
-        System.out.println(pjpegfs.getStat());
+        //pjpegfs.action(tesssst);
+        //System.out.println(pjpegfs.getStat());
 
         fesmfjeio.action(tesssst);
         System.out.println(fesmfjeio.getStat());

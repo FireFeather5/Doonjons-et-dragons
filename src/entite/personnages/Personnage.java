@@ -100,10 +100,6 @@ public class Personnage implements Entite {
     }
 
 
-    public void recuperer(Equipement equipement) {
-        this._stock.add(equipement);
-    }
-
     public void seDesequiper(Equipement equipement) {
         if (this._equipee.contains(equipement)) {
             this._equipee.remove(equipement);
@@ -207,9 +203,9 @@ public class Personnage implements Entite {
         _stats.pv(pv);
     }
 
-    public void ramasser()
+    public void ramasser(Equipement equip)
     {
-        // besoin de la classe qui gère le donjon et des classes armements
+        _stock.add(equip);
     }
 
     public String getStat() {
@@ -235,6 +231,11 @@ public class Personnage implements Entite {
     public String aff()
     {
         return _nom.substring(0, 3);
+    }
+
+    public int code()
+    {
+        return 0;
     }
 
     @Override

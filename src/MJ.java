@@ -99,8 +99,15 @@ public class MJ {
 
     public void posEquip(Donjon DJ, Equipement equip)
     {
-        String pos = choixPos(" de " + equip.toString());
+        String pos = choixPos(" de " + equip.getName());
 
+        boolean test = DJ.posE(pos, equip);
+
+        if (!test)
+        {
+            System.out.println("Erreur dans la selection de la position");
+            this.posEquip(DJ, equip);
+        }
     }
 
     public void presContext()

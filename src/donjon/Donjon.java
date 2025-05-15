@@ -3,7 +3,10 @@ package donjon;
 import entite.Entite;
 import entite.Obstacle;
 import entite.Monstre;
+import entite.equipement.Equipement;
 import entite.personnages.Personnage;
+
+import java.util.ArrayList;
 
 public class Donjon {
     private int _tc1;
@@ -11,9 +14,11 @@ public class Donjon {
     private static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private Entite[][] _donjon;
     private AffichDJ _affDJ;
+    private ArrayList<Equipement> _equip;
 
     public Donjon()
     {
+        _equip = new ArrayList<>();
     }
 
     public void creaDonjon(int tc1, int tc2)
@@ -75,11 +80,21 @@ public class Donjon {
 
         if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null)
             {
-                perso.position(pc[0], pc[1]);            //donne sa position au monstre
+                perso.position(pc[0], pc[1]);            //donne sa position au joueur
                 _donjon[pc[0] - 1][pc[1] - 1] = perso;
                 return true;
+            }
+            for(Equipement var : _equip)
+            {
+                if (_donjon[pc[0] - 1][pc[1] - 1].equals(var))
+                {
+                    perso.ramasser(var);
+                    perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                    _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                    return true;
+                }
             }
         }
         return false;
@@ -95,6 +110,23 @@ public class Donjon {
             {
                 mons.position(pc[0], pc[1]);            //donne sa position au monstre
                 _donjon[pc[0] - 1][pc[1] - 1] = mons;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean posE(String pos, Equipement equip)
+    {
+        int[] pc = posInt(pos);
+
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
+        {
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
+            {
+                _equip.add(equip);
+                equip.position(pc[0], pc[1]);            //donne sa position au monstre
+                _donjon[pc[0] - 1][pc[1] - 1] = equip;
                 return true;
             }
         }

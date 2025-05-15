@@ -23,110 +23,253 @@ package de
     }
 }
 
-package monstres
+package entite
 {
     class Monstre
     {
         - _espece : String
         - _numero : Integer
         - _portAtt : Integer
-        - _stats : Integer[6]
         + <<create>> Monstre()
         + creaMonstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
-        + seDeplacer()
+        + position(pos1 : Integer, pos2 : Integer)
+        + action(DJ : Donjon)
+        + seDeplacer(dep : String, DJ Donjon) : Boolean
         + attaquer(pers : Personnage, dist : Integer)
+        + getArmorClass() : Integer
+        + seFaitAttaquer(degats : Integer)
+        + getStat() : String
+        + aff() : String
+        + code() : Integer
         + toString() : String
     }
+
+    package personnages
+    {
+        package classes
+        {
+            interface Classe <<interface>>
+            {
+                + {abstract} pv() : Integer
+                + {abstract} toString() : String
+            }
+            class Clerc implements Classe
+            {
+            //doit etre amélioré
+                - {static} _pv : Integer
+                + pv
+                + toString() : String
+            }
+            class Guerrier implements Classe
+            {
+            //doit etre amélioré
+                - {static} _pv : Integer
+                + pv
+                + toString() : String
+            }
+            class Magicien implements Classe
+            {
+            //doit etre amélioré
+                - {static} _pv : Integer
+                + pv
+                + toString() : String
+            }
+            class Roublard implements Classe
+            {
+            //doit etre amélioré
+                - {static} _pv : Integer
+                + pv
+                + toString() : String
+            }
+        }
+
+        package races
+        {
+            interface Races <<interface>>
+            {
+                + {abstract} augment() : Integer[5]
+                + {abstract} toString() : String
+            }
+            class Elfes implements Races
+            {
+            //doit etre amélioré
+                - {static} _stats : Integer[5]
+                + augment() : Integer[5]
+                + toString() : String
+            }
+            class Halfelins implements Races
+            {
+            //doit etre amélioré
+                - {static} _stats : Integer[5]
+                + augment() : Integer[5]
+                + toString() : String
+            }
+            class Humain implements Races
+            {
+            //doit etre amélioré
+                - {static} _stats : Integer[5]
+                + augment() : Integer[5]
+                + toString() : String
+            }
+            class Nain implements Races
+            {
+            //doit etre amélioré
+                - {static} _stats : Integer[5]
+                + augment() : Integer[5]
+                + toString() : String
+            }
+        }
+
+        class Personnage
+        {
+            - _nom : String
+            + <<create>> Personnage(nom : String, race : Races, classe : Classe)
+            + position(pos1 : Integer, pos2 : Integer)
+            + action(DJ : Donjon)
+            + seDplacer(dep : String, DJ : Donjon) : Boolean
+            + seDesequiper(equipement : Equipement)
+            + sEquiper(equipement : Equipement)
+            - getArmeEquipe() : Arme
+            - getArmureEquipe() : Armure
+            + attaquer(mons : Monstre, dist : Integer)
+            + getArmorClass() : Integer
+            + seFaitAttaquer(degats : Integer)
+            + ramasser(equip : Equipement)
+            + toString() : String
+        }
+    }
+
+    package equipement
+    {
+        abstract class Equipement <<abstract>>
+        {
+            # _name : String
+            + getName() : String
+        }
+
+        package arme
+        {
+            abstract class Arme <<abstract>>
+            {
+                - _range : Integer
+                + <<create>> Arme(name : String, degats : De, range : Integer)
+                + getRange() : Integer
+                + toString() : String
+            }
+
+            package courante
+            {
+                abstract class ArmeCourante <<abstract>>
+                {
+                    + <<create>> ArmeCourante(name : String, degats : De)
+                }
+
+                class Baton extends ArmeCourante
+                {
+                    + <<create>> Baton()
+                }
+
+                class MasseArme extends ArmeCourante
+                {
+                    + <<create>> MasseArme()
+                }
+            }
+
+            package distance
+            {
+                abstract class ArmeDistance <<abstract>>
+                {
+                    + <<create>> ArmeDistance(nom : String, degats : De, portee : Integer)
+                }
+
+                class ArbaleteLegere extends ArmeDistance
+                {
+                    + <<create>> ArbaleteLegere()
+                }
+
+                class ArcCourt extends ArmeDistance
+                {
+                    + <<create>> ArcCourt()
+                }
+
+                class Fronde extends ArmeDistance
+                {
+                    + <<create>> Fronde()
+                }
+            }
+
+            package guerre
+            {
+                abstract class ArmeGuerre <<abstract>>
+                {
+                    + <<create>> ArmeGuerre(name : String, degats : De)
+                    + getSpeedMalus() : Integer
+                    + getForceBonus() : Integer
+                }
+
+                class EpeeLongue extends ArmeGuerre
+                {
+                    + <<create>> EpeeLongue()
+                }
+
+                class Rapiere extends ArmeGuerre
+                {
+                    + <<create>> Rapiere()
+                }
+            }
+        }
+
+        package armure
+        {
+            abstract class Armure <<abstract>>
+            {
+                - _armorClass : Integer
+                + <<create>> Armure(name : String, armorClass : Integer)
+                + getArmorClass() : Integer
+                + toString() : String
+            }
+
+            package legere
+            {
+                abstract class ArmureLegere <<abstract>>
+                {
+                    + <<create>> ArmureLegere(name : String, armorClass : Integer)
+                }
+
+                class ArmureEcaille extends ArmureLegere
+                {
+                    + <<create>> ArmureEcaille()
+                }
+
+                class DemiPlate extends ArmureLegere
+                {
+                    + <<create>> DemiPlate()
+                }
+            }
+
+            package lourde
+            {
+                abstract class ArmureLourde
+                {
+                    + <<create>> ArmureLourde(name : String, armorClass : Integer)
+                    + getSpeedMalus() : Integer
+                }
+
+                class CotteMaille extends ArmureLourde
+                {
+                    + <<create>> CotteMaille()
+                }
+
+                class Harnois extends ArmureLourde
+                {
+                    + <<create>> Harnois()
+                }
+            }
+        }
+    }
+
 }
 
-package personnages
-{
-    package classes
-    {
-        interface Classe <<interface>>
-        {
-            + {abstract} pv() : Integer
-            + {abstract} toString() : String
-        }
-        class Clerc implements Classe
-        {
-        //doit etre amélioré
-            - {static} _pv : Integer
-            + pv
-            + toString() : String
-        }
-        class Guerrier implements Classe
-        {
-        //doit etre amélioré
-            - {static} _pv : Integer
-            + pv
-            + toString() : String
-        }
-        class Magicien implements Classe
-        {
-        //doit etre amélioré
-            - {static} _pv : Integer
-            + pv
-            + toString() : String
-        }
-        class Roublard implements Classe
-        {
-        //doit etre amélioré
-            - {static} _pv : Integer
-            + pv
-            + toString() : String
-        }
-    }
-
-    package races
-    {
-        interface Races <<interface>>
-        {
-            + {abstract} augment() : Integer[5]
-            + {abstract} toString() : String
-        }
-        class Elfes implements Races
-        {
-        //doit etre amélioré
-            - {static} _stats : Integer[5]
-            + augment() : Integer[5]
-            + toString() : String
-        }
-        class Halfelins implements Races
-        {
-        //doit etre amélioré
-            - {static} _stats : Integer[5]
-            + augment() : Integer[5]
-            + toString() : String
-        }
-        class Humain implements Races
-        {
-        //doit etre amélioré
-            - {static} _stats : Integer[5]
-            + augment() : Integer[5]
-            + toString() : String
-        }
-        class Nain implements Races
-        {
-        //doit etre amélioré
-            - {static} _stats : Integer[5]
-            + augment() : Integer[5]
-            + toString() : String
-        }
-    }
-
-    class Personnage
-    {
-        - _nom : String
-        - _stats : Integer[5]
-        + <<create>> Personnage(nom : String, race : Races, classe : Classe)
-        + sEquiper(equipement : Equipement // nom non final)
-        + seDplacer(cases : Integer)
-        + attaquer(mons : Monstre, dist : Integer)
-        + ramasser()
-        + toString() : String
-    }
-}
 
 class MJ
 {
@@ -161,135 +304,6 @@ package donjon
     }
 }
 
-
-package equipement
-{
-    abstract class Equipement <<abstract>>
-    {
-        # _name : String
-        + getName() : String
-    }
-
-    package arme
-    {
-        abstract class Arme <<abstract>>
-        {
-            - _range : Integer
-            + <<create>> Arme(name : String, degats : De, range : Integer)
-            + getRange() : Integer
-            + toString() : String
-        }
-
-        package courante
-        {
-            abstract class ArmeCourante <<abstract>>
-            {
-                + <<create>> ArmeCourante(name : String, degats : De)
-            }
-
-            class Baton extends ArmeCourante
-            {
-                + <<create>> Baton()
-            }
-
-            class MasseArme extends ArmeCourante
-            {
-                + <<create>> MasseArme()
-            }
-        }
-
-        package distance
-        {
-            abstract class ArmeDistance <<abstract>>
-            {
-                + <<create>> ArmeDistance(nom : String, degats : De, portee : Integer)
-            }
-
-            class ArbaleteLegere extends ArmeDistance
-            {
-                + <<create>> ArbaleteLegere()
-            }
-
-            class ArcCourt extends ArmeDistance
-            {
-                + <<create>> ArcCourt()
-            }
-
-            class Fronde extends ArmeDistance
-            {
-                + <<create>> Fronde()
-            }
-        }
-
-        package guerre
-        {
-            abstract class ArmeGuerre <<abstract>>
-            {
-                + <<create>> ArmeGuerre(name : String, degats : De)
-                + getSpeedMalus() : Integer
-                + getForceBonus() : Integer
-            }
-
-            class EpeeLongue extends ArmeGuerre
-            {
-                + <<create>> EpeeLongue()
-            }
-
-            class Rapiere extends ArmeGuerre
-            {
-                + <<create>> Rapiere()
-            }
-        }
-    }
-
-    package armure
-    {
-        abstract class Armure <<abstract>>
-        {
-            - _armorClass : Integer
-            + <<create>> Armure(name : String, armorClass : Integer)
-            + getArmorClass() : Integer
-            + toString() : String
-        }
-
-        package legere
-        {
-            abstract class ArmureLegere <<abstract>>
-            {
-                + <<create>> ArmureLegere(name : String, armorClass : Integer)
-            }
-
-            class ArmureEcaille extends ArmureLegere
-            {
-                + <<create>> ArmureEcaille()
-            }
-
-            class DemiPlate extends ArmureLegere
-            {
-                + <<create>> DemiPlate()
-            }
-        }
-
-        package lourde
-        {
-            abstract class ArmureLourde
-            {
-                + <<create>> ArmureLourde(name : String, armorClass : Integer)
-                + getSpeedMalus() : Integer
-            }
-
-            class CotteMaille extends ArmureLourde
-            {
-                + <<create>> CotteMaille()
-            }
-
-            class Harnois extends ArmureLourde
-            {
-                + <<create>> Harnois()
-            }
-        }
-    }
-}
 
 
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
