@@ -44,6 +44,15 @@ package entite
         + toString() : String
     }
 
+    class Obstacle
+    {
+        + <<create>> Obstacle
+        + position(pos1 : Integer, pos2 : Integer)
+        + addPos(pos : String, DJ : Donjon)
+        + aff() : String
+        + code() : Integer
+    }
+
     package personnages
     {
         package classes
@@ -51,35 +60,30 @@ package entite
             interface Classe <<interface>>
             {
                 + {abstract} pv() : Integer
-                + {abstract} toString() : String
             }
+
             class Clerc implements Classe
             {
-            //doit etre amélioré
                 - {static} _pv : Integer
-                + pv
-                + toString() : String
+                + pv() : Integer
             }
+
             class Guerrier implements Classe
             {
-            //doit etre amélioré
                 - {static} _pv : Integer
-                + pv
-                + toString() : String
+                + pv() : Integer
             }
+
             class Magicien implements Classe
             {
-            //doit etre amélioré
                 - {static} _pv : Integer
-                + pv
-                + toString() : String
+                + pv() : Integer
             }
+
             class Roublard implements Classe
             {
-            //doit etre amélioré
                 - {static} _pv : Integer
-                + pv
-                + toString() : String
+                + pv() : Integer
             }
         }
 
@@ -87,36 +91,31 @@ package entite
         {
             interface Races <<interface>>
             {
-                + {abstract} augment() : Integer[5]
-                + {abstract} toString() : String
+                + {abstract} stat() : Stats
             }
+
             class Elfes implements Races
             {
-            //doit etre amélioré
-                - {static} _stats : Integer[5]
-                + augment() : Integer[5]
-                + toString() : String
+                + <<create>> Elfes()
+                + stat() : Stats
             }
+
             class Halfelins implements Races
             {
-            //doit etre amélioré
-                - {static} _stats : Integer[5]
-                + augment() : Integer[5]
-                + toString() : String
+                + <<create>> Halfelins()
+                + stat() : Stats
             }
+
             class Humain implements Races
             {
-            //doit etre amélioré
-                - {static} _stats : Integer[5]
-                + augment() : Integer[5]
-                + toString() : String
+                + <<create>> Humain()
+                + stat() : Stats
             }
+
             class Nain implements Races
             {
-            //doit etre amélioré
-                - {static} _stats : Integer[5]
-                + augment() : Integer[5]
-                + toString() : String
+                + <<create>> Nain()
+                + stat() : Stats
             }
         }
 
@@ -135,6 +134,11 @@ package entite
             + getArmorClass() : Integer
             + seFaitAttaquer(degats : Integer)
             + ramasser(equip : Equipement)
+            + getStat() : String
+            + getEquipee() : String
+            + getStock() : String
+            + aff() : String
+            + code() : Integer
             + toString() : String
         }
     }
@@ -275,7 +279,7 @@ class MJ
 {
     + <<create>> MJ()
     + createDJ(DJ : Donjon)
-    + choisPos(txt : String) : String
+    + choixPos(txt : String) : String
     + addObst(DJ : Donjon)
     + createM(mons : Monstre)
     + posJ(DJ : Donjon, perso : Personnage)
@@ -290,28 +294,103 @@ package donjon
     {
         - _tc1 : Integer
         - _tc2 : Integer
-        - _ord : String[26]
-        - _donjon : String[*]
+        - {static} _ord : String[26]
         + <<create>> Donjon()
         + creaDonjon(tc1 : Integer, tc2 : Integer)
         + posInt(pos : String) : Integer[]
-        + addObst(pos : String) : Boolean
+        + addObst(pos : String, obst Obstacle) : Boolean
         + posJ(pos : String, perso : Personnage) : Boolean
         + posM(pos : String, mons : Monstre) : Boolean
-        + posEquip(pos : String, equip : Equipement) : Boolean
+        + posE(pos : String, equip : Equipement) : Boolean
         + emptyCase(pc : Integer[])
         + afficherDJ()
+    }
+
+    class AffichDJ
+    {
+        - _tc1 : Integer
+        - _tc2 : Integer
+        - _donjon : String[*]
+        - {static} _ord : String[26]
+        + <<create>> AffichDJ(tc1 : Integer, tc2 : Integer)
+        + rempDJ(dj : Entite[][])
+        + afficherDJ(dj : Entite[][])
+    }
+}
+
+package statistiques
+{
+    class Position
+    {
+        - _ordonnee : Integer
+        - _absisse : Integer
+        + <<create>> Position()
+        + changPos(pos1 : Integer, pos2 : Integer)
+        + getAbscisse() : Integer
+        + getOrdonnee() : Integer
+    }
+
+    class Stats
+    {
+        - _pointDeVie : Integer
+        - _force : Integer
+        - _dexterite : Integer
+        - _vitesse : Integer
+        - _initiative : Integer
+        - _armure : Integer
+        + <<create>> Stats()
+        + pv(st : Integer)
+        + forc(st : Integer)
+        + dex(st : Integer)
+        + vit(st : Integer)
+        + ini(st : Integer)
+        + arm(st : Integer)
+        + add(other : Stats)
+        + retpv() : Integer
+        + retforc() : Integer
+        + retdex() : Integer
+        + retvit() : Integer
+        + retini() : Integer
+        + retarm() : Integer
+
     }
 }
 
 
-
 Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
-Personnage "*" *--> "1\nn_race" Races : fait parti de >
-Personnage "*" *--> "1\nn_classe" Classe : fait parti de >
-Personnage .> De : <<instantiate/call>>
+Monstre "*" *--> "1\n_deChar" De : a des caractéristiques >
+Monstre "*" *--> "1\n_stats" Stats : a des statistiques >
+Monstre "*" *--> "1\n_pos" Position : a une position >
+
 Monstre .> Personnage : <<use>>
+
+
+Personnage "*" *--> "1\n_race" Races : fait parti de >
+Personnage "*" *--> "1\n_classe" Classe : fait parti de >
+Personnage "*" *--> "1\n_deChar" De : a des caractéristiques >
+Personnage "*" *--> "1\n_stats" Stats : a des statistiques >
+Personnage "*" *--> "1\n_pos" Position : a une position >
+Personnage "*" *--> "1\n_stock" Equipement : a dans son inventaire >
+Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
+
+Personnage .> De : <<instantiate/call>>
 Personnage .> Monstre : <<use>>
+
+'potentiellement modifiable
+Personnage .> Donjon : <<call>>
+Personnage .> Equipement : <<call/use>>
+
+
+Obstacle "*" *--> "1\n_pos" Position : a une position >
+
+
+Equipement "*" *--> "1\n_pos" Position : a une position >
+
+
+Donjon "*" *--> "1\n_donjon" Entite : contient un donjon >
+Donjon "*" *--> "1\n_affDJ" AffichDJ : affiche le donjon >
+Donjon "*" *--> "1\n_equip" Equipement : liste des équipements >
+
 
 Arme -up-|> Equipement
 Arme .-left-> De : <<uses>>

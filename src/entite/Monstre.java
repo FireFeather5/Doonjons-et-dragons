@@ -14,9 +14,7 @@ public class Monstre implements Entite{
     private int _portAtt;
     private De _degAtt;
     private Stats _stats;
-    //                  pv, for, dex, vit, ini, arm
     private Position _pos;
-
     private De _deChar;
 
     Scanner sc = new Scanner(System.in);
