@@ -1,7 +1,9 @@
 import donjon.Donjon;
 import entite.Monstre;
 import entite.equipement.Equipement;
+import entite.equipement.arme.distance.ArcCourt;
 import entite.equipement.arme.guerre.EpeeLongue;
+import entite.equipement.armure.legere.ArmureEcaille;
 import entite.personnages.Personnage;
 import entite.personnages.classes.Roublard;
 import entite.personnages.races.Humain;
@@ -15,27 +17,69 @@ public class Main {
         Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
         Monstre pjpegfs = new Monstre();
         Equipement arme = new EpeeLongue();
+        Equipement armee = new ArcCourt();
+        Equipement armure = new ArmureEcaille();
 
         test.createDJ(tesssst);
 
         tesssst.afficherDJ();
 
-        test.addObst(tesssst);
-        //test.createM(pjpegfs);
-        test.posJ(tesssst, fesmfjeio);
-        //test.posM(tesssst, pjpegfs);
-        test.posEquip(tesssst, arme);
+        test.createM(pjpegfs);
 
         tesssst.afficherDJ();
+        test.addObst(tesssst);
+        tesssst.afficherDJ();
+        test.posJ(tesssst, fesmfjeio);
+        tesssst.afficherDJ();
+        test.posM(tesssst, pjpegfs);
+        tesssst.afficherDJ();
+        test.posEquip(tesssst, arme);
+        tesssst.afficherDJ();
+        test.posEquip(tesssst, armee);
+        tesssst.afficherDJ();
+        test.posEquip(tesssst, armure);
+        tesssst.afficherDJ();
+
+        System.out.println(pjpegfs.getStat());
+        System.out.println(fesmfjeio.getStat());
 
         //pjpegfs.action(tesssst);
         //System.out.println(pjpegfs.getStat());
 
-        fesmfjeio.action(tesssst);
-        fesmfjeio.action(tesssst);
-        fesmfjeio.action(tesssst);
-
         tesssst.afficherDJ();
+
+        int val = 0;
+
+        while (val == 0) {
+            for (int i = 0; i < 3; i++)
+            {
+                if (val == 0)
+                {
+                    tesssst.afficherDJ();
+                    System.out.println(fesmfjeio.getInfos());
+                    System.out.println(pjpegfs.getStat());
+                    val = fesmfjeio.action(tesssst);
+                }
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                if (val == 0)
+                {
+                    tesssst.afficherDJ();
+                    System.out.println(pjpegfs.getStat());
+                    System.out.println(fesmfjeio.getInfos());
+                    val = pjpegfs.action(tesssst);
+                }
+            }
+        }
+        if (val == 1)
+        {
+            System.out.println("\nLes joueurs ont perdu");
+        }
+        else
+        {
+            System.out.println("\nLes joueurs ont fini le donjon");
+        }
 
 
 

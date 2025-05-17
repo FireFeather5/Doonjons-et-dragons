@@ -38,7 +38,7 @@ public class MJ {
 
     public String choixPos(String txt)
     {
-        System.out.println("position " + txt);
+        System.out.println("\n\nposition " + txt);
         String pc = sc.nextLine();
 
         return pc;
@@ -54,7 +54,7 @@ public class MJ {
 
     public void createM(Monstre mons)
     {
-        System.out.println("===== Nouveau Monstre =====");
+        System.out.println("\n\n===== Nouveau Monstre =====");
         System.out.println("espèce ?");
         String espece = sc.nextLine();
         System.out.println("portée de l'attaque ?");

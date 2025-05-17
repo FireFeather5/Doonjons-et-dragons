@@ -1,6 +1,7 @@
 package entite;
 
 import de.De;
+import entite.equipement.Equipement;
 import entite.personnages.*;
 import donjon.Donjon;
 import statistiques.Position;
@@ -33,7 +34,7 @@ public class Monstre implements Entite{
         _degAtt = degAtt;
 
 
-        _stats.pv(_deChar.roll());
+        _stats.pvt(_deChar.roll());
         _stats.vit(_deChar.roll());
         _stats.ini(_deChar.roll());
         _stats.arm(_deChar.roll());
@@ -55,77 +56,125 @@ public class Monstre implements Entite{
         _pos.changPos(pos1, pos2);
     }
 
-    public void action(Donjon DJ)
+    public int action(Donjon DJ)
     {
-        System.out.println("choisir une case où se déplacer");
-        String pc = sc.nextLine();
+        int val = 0;
+        System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
+        int choix = Integer.parseInt(sc.nextLine());
 
-        boolean val = seDeplacer(pc, DJ);
-
-        if (val)
-        {
-            System.out.println("Déplacement effectué");
+        switch (choix) {
+            case 0:
+                seDeplacer(DJ);
+                break;
+            case 1:
+                System.out.println("Choisir la case à attaquer");
+                String cas = sc.nextLine();
+                val = attaquer(cas, DJ);
+                break;
+            default:
+                System.out.println("Mauvais choix d'action");
+                action(DJ);
         }
-        else {
-            action(DJ);     //a modifier (ne fonctionnera pas quand les autre fonctions seront implémentées
-        }
+        return val;
     }
 
-    public boolean seDeplacer(String dep, Donjon DJ)
+    public void seDeplacer(Donjon DJ)
     {
+        System.out.println("Choisir une case où se déplacer");
+        String dep = sc.nextLine();
+
         int distDep = _stats.retVit()/3;
 
         int[] pos = DJ.posInt(dep);
 
-        int[] posOld = new int[2];
-        posOld[0] = _pos.getAbscisse();
-        posOld[1] = _pos.getOrdonnee();
+        int[] posOld = getPos();
 
-        if (((pos[0] > _pos.getAbscisse() - distDep) && (pos[0] < _pos.getAbscisse() + distDep)) && ((pos[1] > _pos.getOrdonnee() - distDep) && (pos[1] < _pos.getOrdonnee() + distDep)))
+        if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep)))
         {
             boolean val = DJ.posM(dep, this);
             if (val)
             {
                 DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
-                return true;
+                System.out.println("Déplacement effectué");
             }
-        }
-        return false;           //si faux, redemander une position
-    }
-
-    public void attaquer(Personnage pers, int dist)
-    {
-        this._deChar.changeDe(1, 20);
-        if (_portAtt >= dist)
-        {
-            int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
-            System.out.println("Touche : " + touche);
-            if (touche > pers.getArmorClass()) {
-                int atk = this._degAtt.roll();
-                // un des deux est forcément à 0 donc on peut directement ajouter les deux
-                // (évite un if else)
-                pers.seFaitAttaquer(atk);
-                System.out.println("Atk : " + atk);
+            else
+            {
+                System.out.println("Problème dans le choix de la case");
+                seDeplacer(DJ);
             }
         }
         else
         {
-            System.out.println("Cible trop loin");
+            System.out.println("Problème dans le choix de la case");
+            seDeplacer(DJ);
         }
-        // besoin des classes armement pour faire le reste
+    }
+
+    public int attaquer(String cas, Donjon DJ)
+    {
+        int val = 0;
+        System.out.print("\n");
+        this._deChar.changeDe(1, 20);
+
+        int[] posAtt = DJ.posInt(cas);
+        Personnage pers = DJ.getPers(posAtt);
+        if (pers != null)
+        {
+            if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt)))
+            {
+                // un des deux est forcément à 0 donc on peut directement ajouter les deux
+                // (évite un if else)
+                int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
+                System.out.println(toString() + " perce l'armure de " + pers.toString() + " (jet de touche : " + touche + ").");
+                if (touche > pers.getArmorClass())
+                {
+                    int atk = this._degAtt.roll();
+                    val = pers.seFaitAttaquer(atk, DJ);
+                    System.out.println("Atk : " + atk);
+                }
+                else
+                {
+                    System.out.println(toString() + " ne perce pas l'armure de " + pers.toString() + " (jet de touche : " + touche + ")");
+                }
+            }
+            else
+            {
+                System.out.println(toString() + " n'a pas une portée suffisante");
+            }
+        }
+        else
+        {
+            System.out.println("Il n'y a pas de personnage à attaquer sur cette case.");
+        }
+        return val;
     }
 
     public int getArmorClass() {
         return this._stats.retArm();
     }
 
-    public void seFaitAttaquer(int degats) {
+    public int seFaitAttaquer(int degats, Donjon DJ) {
+        int val = 0;
         int pv = _stats.retPv() - degats;
         _stats.pv(pv);
+        if (pv <= 0)
+        {
+            System.out.println("\n" + toString() + " à été achevé.");
+            val = DJ.tuerMonstre(this);
+        }
+        return val;
     }
 
     public String getStat() {
-        return "pv : " + _stats.retPv() + ", force : " + _stats.retFor() + ", dexterite : " + _stats.retDex() + ", vitesse : " + _stats.retVit() + ", initiative : " + _stats.retIni()  + ", classe d'armure : " + _stats.retArm();
+        return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+    }
+
+    public int[] getPos()
+    {
+        int[] pos = new int[2];
+        pos[0] = _pos.getAbscisse();
+        pos[1] = _pos.getOrdonnee();
+        return pos;
     }
 
     public String aff()
