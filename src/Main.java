@@ -43,8 +43,6 @@ public class Main {
         System.out.println(pjpegfs.getStat());
         System.out.println(fesmfjeio.getStat());
 
-        //pjpegfs.action(tesssst);
-        //System.out.println(pjpegfs.getStat());
 
         tesssst.afficherDJ();
 
@@ -79,61 +77,21 @@ public class Main {
         else
         {
             System.out.println("\nLes joueurs ont fini le donjon");
+            //les persos regagnent leur vie
         }
 
+        //          A FAIRE
+        // améliorer l'affichage
+        //      - au niveau des dés (voir enoncé)
+        //      - à qui est le tour
+        //      - légende donjon
+        //      - pv restants apres attaque ?
+        // trucs à ajouter
+        //      - créer persos, monstre et autre en mode console (sans le main)
+        //      - choix ordre
+        //      - différent symboles pour monstres
+        //      - commentaires des actions
+        //
 
-
-        /*ArrayList<Equipement> inventaire = new ArrayList<>();
-
-        ArmureLourde harnois = new Harnois();
-
-        harnois.getSpeedMalus();
-        ArmeDistance arbalete = new ArbaleteLegere();
-
-        inventaire.add(harnois);
-        inventaire.add(arbalete);
-
-        System.out.println(inventaire);
-
-
-        Personnage p1 = new Personnage("moi", new Elfes(), new Guerrier());
-
-        pjpegfs.action(tesssst);
-        fesmfjeio.action(tesssst);
-
-        tesssst.afficherDJ();
-
-
-
-        CotteMaille cotteMaille = new CotteMaille();
-        DemiPlate demiPlate = new DemiPlate();
-        Rapiere rap = new Rapiere();
-        Baton bat = new Baton();
-
-        System.out.println(p1.getStat());
-
-        p1.recuperer(cotteMaille);
-        p1.recuperer(demiPlate);
-        p1.recuperer(rap);
-        p1.recuperer(bat);
-
-        System.out.println(p1.getStat());
-
-        System.out.println("Inventaire : " + p1.getStock());
-        System.out.println("Equipee : " + p1.getPorte());
-
-        p1.sEquiper(cotteMaille);
-        p1.sEquiper(rap);
-
-        System.out.println(p1.getStat());
-        System.out.println("Inventaire : " + p1.getStock());
-        System.out.println("Equipee : " + p1.getPorte());
-
-        p1.sEquiper(demiPlate);
-        p1.sEquiper(bat);
-
-        System.out.println(p1.getStat());
-        System.out.println("Inventaire : " + p1.getStock());
-        System.out.println("Equipee : " + p1.getPorte());*/
     }
 }
