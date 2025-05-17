@@ -29,6 +29,9 @@ public class Personnage implements Entite {
     //pv, for, dex, vit, ini
     private Position _pos;
 
+    private Equipement _peutRamEqu = null;
+    private boolean _peutRamasser = false;
+
     private final ArrayList<Equipement> _stock;
     private final ArrayList<Equipement> _equipee;
 
@@ -48,12 +51,10 @@ public class Personnage implements Entite {
         _stats.pv(_classe.pv());
         _stats.add(_race.stat());
 
-
         _stats.forc(_deChar.roll() + 3);
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
         _stats.ini(_deChar.roll() + 3);
-
     }
 
     public void position(int pos1, int pos2)
@@ -63,22 +64,73 @@ public class Personnage implements Entite {
 
     public void action(Donjon DJ)
     {
-        System.out.println("choisir une case où se déplacer");
-        String pc = sc.nextLine();
-
-        boolean val = seDeplacer(pc, DJ);
-
-        if (val)
+        if (_peutRamasser)
         {
-            System.out.println("Déplacement effectué");
+            System.out.println("Choisir une action (dep=0, att=1, equ=2, ram=3)");
+            int choix = Integer.parseInt(sc.nextLine());
+
+            switch (choix) {
+                case 0:
+                    seDeplacer(DJ);
+                    break;
+                case 1:
+                    System.out.println("quel monstre attaquer ? fonctionne pas encore");
+                    //attaquer();
+                    break;
+                case 2:
+                    System.out.println("quel équipement équiper ?");
+                    int i = 0;
+                    for(Equipement eqi : _stock)
+                    {
+                        System.out.println(i + " : " + eqi.getName());
+                    }
+                    int equ = Integer.parseInt(sc.nextLine());
+                    sEquiper(_stock.get(equ));
+                    break;
+                case 3:
+                    ramasser(DJ);
+                    break;
+                default:
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+            }
         }
-        else {
-            action(DJ);     //a modifier (ne fonctionnera pas quand les autre fonctions seront implémentées
+        else
+        {
+            System.out.println("Choisir une action (dep=0, att=1, equ=2)");
+            int choix = Integer.parseInt(sc.nextLine());
+
+            switch (choix) {
+                case 0:
+                    seDeplacer(DJ);
+                    break;
+                case 1:
+                    System.out.println("quel monstre attaquer ? fonctionne pas encore");
+                    //attaquer();
+                    break;
+                case 2:
+                    System.out.println("quel équipement équiper ?");
+                    int i = 0;
+                    for(Equipement eqi : _stock)
+                    {
+                        System.out.println(i + " : " + eqi.getName());
+                    }
+                    int equ = Integer.parseInt(sc.nextLine());
+                    sEquiper(_stock.get(equ));
+                    break;
+                default:
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+            }
         }
+
     }
 
-    public boolean seDeplacer(String dep, Donjon DJ)
+    public void seDeplacer(Donjon DJ)
     {
+        System.out.println("choisir une case où se déplacer");
+        String dep = sc.nextLine();
+
         int distDep = _stats.retVit()/3;
 
         int[] pos = DJ.posInt(dep);
@@ -89,14 +141,38 @@ public class Personnage implements Entite {
 
         if (((pos[0] > _pos.getAbscisse() - distDep) && (pos[0] < _pos.getAbscisse() + distDep)) && ((pos[1] > _pos.getOrdonnee() - distDep) && (pos[1] < _pos.getOrdonnee() + distDep)))
         {
-            boolean val = DJ.posJ(dep, this);
-            if (val)
+            if (!_peutRamasser)
             {
-                DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
-                return true;
+                boolean val = DJ.posJ(dep, this);
+                if (val)
+                {
+                    DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
+                    System.out.println("Déplacement effectué");
+                }
+                else
+                {
+                    System.out.println("Problème dans le choix de la case");
+                    seDeplacer(DJ);
+                }
+            }
+            else
+            {
+                boolean val = DJ.posJ(dep, this);
+                if (val)
+                {
+                    DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
+                    DJ.posE(posOld, _peutRamEqu);       //remet l'objet dans la case
+                    System.out.println("Déplacement effectué");
+                    _peutRamasser = false;
+                    _peutRamEqu = null;
+                }
+                else
+                {
+                    System.out.println("Problème dans le choix de la case");
+                    seDeplacer(DJ);
+                }
             }
         }
-        return false;           //si faux, redemander une position
     }
 
 
@@ -138,6 +214,7 @@ public class Personnage implements Entite {
             }
             this._equipee.add(equipement);
             this._stock.remove(equipement);
+            System.out.println(equipement.getName() + " à bien été équipé");
         }
         else {
             System.out.println("ERREUR : l'equipement n'est pas dans l'inventaire");
@@ -152,6 +229,7 @@ public class Personnage implements Entite {
         }
         return null;
     }
+
     private Armure getArmureEquipe() {
         for (Equipement equip : this._equipee) {
             if (equip instanceof Armure) {
@@ -203,9 +281,19 @@ public class Personnage implements Entite {
         _stats.pv(pv);
     }
 
-    public void ramasser(Equipement equip)
+    public void peutRamasser(Equipement equip)
     {
-        _stock.add(equip);
+        _peutRamEqu = equip;
+        _peutRamasser = true;
+    }
+
+    public void ramasser(Donjon DJ)
+    {
+        _stock.add(_peutRamEqu);
+        DJ.ramasser(_peutRamEqu);
+        System.out.println(_peutRamEqu.getName() + " à été ramassé");
+        _peutRamasser = false;
+        _peutRamEqu = null;
     }
 
     public String getStat() {

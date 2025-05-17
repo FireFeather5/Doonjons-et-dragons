@@ -90,7 +90,7 @@ public class Donjon {
             {
                 if (_donjon[pc[0] - 1][pc[1] - 1].equals(var))
                 {
-                    perso.ramasser(var);
+                    perso.peutRamasser(var);
                     perso.position(pc[0], pc[1]);            //donne sa position au joueur
                     _donjon[pc[0] - 1][pc[1] - 1] = perso;
                     return true;
@@ -125,12 +125,33 @@ public class Donjon {
             if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
             {
                 _equip.add(equip);
-                equip.position(pc[0], pc[1]);            //donne sa position au monstre
+                equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
                 _donjon[pc[0] - 1][pc[1] - 1] = equip;
                 return true;
             }
         }
         return false;
+    }
+
+
+    public boolean posE(int[] pc, Equipement equip)
+    {
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
+        {
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
+            {
+                equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
+                _donjon[pc[0] - 1][pc[1] - 1] = equip;
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void ramasser(Equipement equip)
+    {
+        _equip.remove(equip);
     }
 
     public void emptyCase(int[] pc)
