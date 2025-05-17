@@ -25,6 +25,13 @@ package de
 
 package entite
 {
+
+    interface Entite <<interface>>
+                {
+                    + {abstract} aff() : String
+                    + {abstract} code() : Integer
+                }
+
     class Monstre
     {
         - _espece : String
@@ -363,6 +370,7 @@ Monstre "*" *--> "1\n_stats" Stats : a des statistiques >
 Monstre "*" *--> "1\n_pos" Position : a une position >
 
 Monstre .> Personnage : <<use>>
+Monstre .> Donjon : <<call/use>>
 
 
 Personnage "*" *--> "1\n_race" Races : fait parti de >
@@ -373,23 +381,33 @@ Personnage "*" *--> "1\n_pos" Position : a une position >
 Personnage "*" *--> "1\n_stock" Equipement : a dans son inventaire >
 Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
 
-Personnage .> De : <<instantiate/call>>
 Personnage .> Monstre : <<use>>
-
-'potentiellement modifiable
-Personnage .> Donjon : <<call>>
+Personnage .> Donjon : <<call/use>>
 Personnage .> Equipement : <<call/use>>
 
 
 Obstacle "*" *--> "1\n_pos" Position : a une position >
 
+Obstacle .> Donjon : <<call/use>>
+
 
 Equipement "*" *--> "1\n_pos" Position : a une position >
 
 
-Donjon "*" *--> "1\n_donjon" Entite : contient un donjon >
+Donjon "*" o--> "1\n_donjon" Entite : le donjon est composé de >
 Donjon "*" *--> "1\n_affDJ" AffichDJ : affiche le donjon >
 Donjon "*" *--> "1\n_equip" Equipement : liste des équipements >
+
+Donjon .> Personnage : <<call/use>>
+Donjon .> Monstre : <<call/use>>
+Donjon .> Obstacle : <<call/use>>
+Donjon .> Equipement : <<call/use>>
+
+
+MJ .> Donjon : <<use/call>>
+MJ .> Personnage : <<use/call>>
+MJ .> Monstre : <<instantiate/use/call>>
+
 
 
 Arme -up-|> Equipement
@@ -401,8 +419,5 @@ Armure -up-|> Equipement
 ArmureLegere -up-|> Armure
 ArmureLourde -up-|> Armure
 
-MJ .> Donjon : <<use/call>>
-MJ .> Personnage : <<use/call>>
-MJ .> Monstre : <<instantiate/use/call>>
 
 @enduml
