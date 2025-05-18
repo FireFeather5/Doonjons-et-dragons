@@ -1,9 +1,13 @@
 package entite.equipement;
 
-public abstract class Equipement {
+import entite.Entite;
+import statistiques.Position;
+
+public abstract class Equipement implements Entite {
     private final String _name;
     private final int _speedMalus;
     private final int _forceBonus;
+    private Position _pos;
 
     public Equipement(String name) {
         this(name, 0, 0);
@@ -17,6 +21,7 @@ public abstract class Equipement {
         this._name = name;
         this._speedMalus = speedMalus;
         this._forceBonus = forceBonus;
+        _pos = new Position();
     }
 
     public String getName() {
@@ -29,5 +34,20 @@ public abstract class Equipement {
 
     public int getForceBonus() {
         return this._forceBonus;
+    }
+
+    public void position(int pos1, int pos2)
+    {
+        _pos.changPos(pos1, pos2);
+    }
+
+    public String aff()
+    {
+        return " * ";
+    }
+
+    public int code()
+    {
+        return 3;
     }
 }

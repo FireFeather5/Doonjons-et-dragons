@@ -1,6 +1,7 @@
 package statistiques;
 
 public class Stats {
+    private int _pointDeVieTot;
     private int _pointDeVie;
     private int _force;
     private int _dexterite;
@@ -12,7 +13,11 @@ public class Stats {
     {
         _armure = 0;
     }
-
+    public void pvt(int st)
+    {
+        _pointDeVieTot = st;
+        pv(st);
+    }
     public void pv(int st)
     {
         _pointDeVie = st;
@@ -40,6 +45,7 @@ public class Stats {
 
     public void add(Stats other)
     {
+        this._pointDeVieTot += other._pointDeVieTot;
         this._pointDeVie += other._pointDeVie;
         this._force += other._force;
         this._dexterite += other._dexterite;
@@ -48,6 +54,10 @@ public class Stats {
         this._armure += other._armure;
     }
 
+    public int retPvT()
+    {
+        return _pointDeVieTot;
+    }
     public int retPv()
     {
         return _pointDeVie;
@@ -72,7 +82,4 @@ public class Stats {
     {
         return _armure;
     }
-
-
-
 }

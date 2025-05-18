@@ -3,7 +3,10 @@ package donjon;
 import entite.Entite;
 import entite.Obstacle;
 import entite.Monstre;
+import entite.equipement.Equipement;
 import entite.personnages.Personnage;
+
+import java.util.ArrayList;
 
 public class Donjon {
     private int _tc1;
@@ -11,9 +14,15 @@ public class Donjon {
     private static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private Entite[][] _donjon;
     private AffichDJ _affDJ;
+    private ArrayList<Equipement> _equip;
+    private ArrayList<Personnage> _pers;
+    private ArrayList<Monstre> _mons;
 
     public Donjon()
     {
+        _equip = new ArrayList<>();
+        _pers = new ArrayList<>();
+        _mons = new ArrayList<>();
     }
 
     public void creaDonjon(int tc1, int tc2)
@@ -34,78 +43,218 @@ public class Donjon {
 
     public int[] posInt(String pos)
     {
-        String pos1 = pos.substring(0, 1);
-        String pos2 = pos.substring(1);
+        try {
+            String pos1 = pos.substring(0, 1);
+            String pos2 = pos.substring(1);
 
-        int[] posi = new int[2];
+            int[] posi = new int[2];
 
-        for (int i = 0; i < 26; i++)
-        {
-            if (pos1.equals(_ord[i]))
-            {
-                posi[1] = i+1;
+            for (int i = 0; i < 26; i++) {
+                if (pos1.equals(_ord[i])) {
+                    posi[1] = i + 1;
+                }
             }
+            posi[0] = Integer.parseInt(pos2);
+
+            //System.out.println(posi[1] + "    " + posi[0]);
+
+            return posi;
         }
-        posi[0] = Integer.parseInt(pos2);
-
-        //System.out.println(posi[1] + "    " + posi[0]);
-
-        return posi;
+        catch (NullPointerException erreur)
+        {
+            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            return null;
+        }
+        catch (StringIndexOutOfBoundsException erreur)
+        {
+            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            return null;
+        }
+        catch (NumberFormatException erreur)
+        {
+            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            return null;
+        }
     }
 
     public boolean addObst(String pos, Obstacle obst)
     {
         int[] pc = posInt(pos);
 
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
-        {
-            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
-            {
-                obst.position(pc[0], pc[1]);            //donne sa position au monstre
-                _donjon[pc[0]-1][pc[1]-1] = obst;
-                return true;
+        try {
+            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                    obst.position(pc[0], pc[1]);            //donne sa position a l'obstacle
+                    _donjon[pc[0] - 1][pc[1] - 1] = obst;
+                    return true;
+                }
             }
+            return false;
         }
-        return false;
+        catch (NullPointerException erreur)
+        {
+            return false;
+        }
     }
 
     public boolean posJ(String pos, Personnage perso)
     {
         int[] pc = posInt(pos);
 
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
-        {
-            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
-            {
-                perso.position(pc[0], pc[1]);            //donne sa position au monstre
-                _donjon[pc[0] - 1][pc[1] - 1] = perso;
-                return true;
+        try {
+            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                    if (!_pers.contains(perso)) {
+                        _pers.add(perso);
+                    }
+                    perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                    _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                    return true;
+                }
+                for (Equipement var : _equip) {
+                    if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
+                        if (!_pers.contains(perso)) {
+                            _pers.add(perso);
+                        }
+                        perso.peutRamasser(var);
+                        perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                        _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                        return true;
+                    }
+                }
             }
+            return false;
         }
-        return false;
+        catch (NullPointerException erreur)
+        {
+            return false;
+        }
+
     }
 
     public boolean posM(String pos, Monstre mons)
     {
         int[] pc = posInt(pos);
 
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
+        try {
+            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                    if (!_mons.contains(mons)) {
+                        _mons.add(mons);
+                    }
+                    mons.position(pc[0], pc[1]);            //donne sa position au monstre
+                    _donjon[pc[0] - 1][pc[1] - 1] = mons;
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (NullPointerException erreur)
         {
-            if (_donjon[pc[0] - 1][pc[1] - 1] == null)          //peut ne pas fonctionner
+            return false;
+        }
+    }
+
+    public boolean posE(String pos, Equipement equip)
+    {
+        int[] pc = posInt(pos);
+
+        try {
+            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
             {
-                mons.position(pc[0], pc[1]);            //donne sa position au monstre
-                _donjon[pc[0] - 1][pc[1] - 1] = mons;
-                return true;
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null)
+                {
+                    _equip.add(equip);
+                    equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
+                    _donjon[pc[0] - 1][pc[1] - 1] = equip;
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (NullPointerException erreur)
+        {
+            return false;
+        }
+    }
+
+    public boolean posE(int[] pc, Equipement equip)
+    {
+        try {
+            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                    equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
+                    _donjon[pc[0] - 1][pc[1] - 1] = equip;
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (NullPointerException erreur)
+        {
+            return false;
+        }
+    }
+
+    public Monstre getMons(int[] pc)
+    {
+        if (_donjon[pc[0]-1][pc[1]-1] != null)
+        {
+            for(Monstre mons : _mons)
+            {
+                if (_donjon[pc[0]-1][pc[1]-1].equals(mons))
+                {
+                    return mons;
+                }
             }
         }
-        return false;
+        return null;
+    }
+
+    public Personnage getPers(int[] pc)
+    {
+        if (_donjon[pc[0]-1][pc[1]-1] != null)
+        {
+            for(Personnage pers : _pers)
+            {
+                if (_donjon[pc[0]-1][pc[1]-1].equals(pers))
+                {
+                    return pers;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void ramasser(Equipement equip)
+    {
+        _equip.remove(equip);
+    }
+
+    public int tuerMonstre(Monstre mons)
+    {
+        _mons.remove(mons);
+        int[] pc = mons.getPos();
+        emptyCase(pc);
+        if (_mons.isEmpty())
+        {
+            return 2;
+        }
+        return 0;
+    }
+
+    public int tuerPerso(Personnage pers)
+    {
+        _pers.remove(pers);
+        int[] pc = pers.getPos();
+        emptyCase(pc);
+        return 1;
     }
 
     public void emptyCase(int[] pc)
     {
         _donjon[pc[0]-1][pc[1]-1] = null;
     }
-
 
     public void afficherDJ()
     {

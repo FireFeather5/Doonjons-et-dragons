@@ -16,19 +16,20 @@ public class Obstacle implements Entite {
         _pos.changPos(pos1, pos2);
     }
 
-    public void addPos(String pos, Donjon DJ)
+    public boolean addPos(String pos, Donjon DJ)
     {
         boolean test = DJ.addObst(pos, this);
 
-        if (!test)
-        {
-            System.out.println("Erreur dans la selection de la position");
-            this.addPos(pos, DJ);
-        }
+        return test;
     }
 
     public String aff()
     {
         return "[ ]";
+    }
+
+    public int code()
+    {
+        return 2;
     }
 }

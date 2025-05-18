@@ -37,7 +37,7 @@ public class AffichDJ {
     {
         rempDJ(dj);
 
-        System.out.print("    ");
+        System.out.print("\n    ");
         for (int k = 1; k <= _tc2; k++)
         {
             System.out.print(" " + _ord[k-1] + " ");

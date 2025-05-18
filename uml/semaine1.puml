@@ -31,8 +31,7 @@ package monstres
         - _numero : Integer
         - _portAtt : Integer
         - _stats : Integer[6]
-        + <<create>> Monstre()
-        + creaMonstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
+        + <<create>> Monstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
         + seDeplacer()
         + attaquer(pers : Personnage, dist : Integer)
         + toString() : String
@@ -125,39 +124,6 @@ package personnages
         + attaquer(mons : Monstre, dist : Integer)
         + ramasser()
         + toString() : String
-    }
-}
-
-class MJ
-{
-    + <<create>> MJ()
-    + createDJ(DJ : Donjon)
-    + choisPos(txt : String) : String
-    + addObst(DJ : Donjon)
-    + createM(mons : Monstre)
-    + posJ(DJ : Donjon, perso : Personnage)
-    + posM(DJ : Donjon, mons : Monstre)
-    + posEquip(DJ : Donjon, equip : Equipement)
-    + presContext()
-}
-
-package donjon
-{
-    class Donjon
-    {
-        - _tc1 : Integer
-        - _tc2 : Integer
-        - _ord : String[26]
-        - _donjon : String[*]
-        + <<create>> Donjon()
-        + creaDonjon(tc1 : Integer, tc2 : Integer)
-        + posInt(pos : String) : Integer[]
-        + addObst(pos : String) : Boolean
-        + posJ(pos : String, perso : Personnage) : Boolean
-        + posM(pos : String, mons : Monstre) : Boolean
-        + posEquip(pos : String, equip : Equipement) : Boolean
-        + emptyCase(pc : Integer[])
-        + afficherDJ()
     }
 }
 
@@ -307,9 +273,5 @@ ArmeGuerre -up-|> Arme
 Armure -up-|> Equipement
 ArmureLegere -up-|> Armure
 ArmureLourde -up-|> Armure
-
-MJ .> Donjon : <<use/call>>
-MJ .> Personnage : <<use/call>>
-MJ .> Monstre : <<instantiate/use/call>>
 
 @enduml
