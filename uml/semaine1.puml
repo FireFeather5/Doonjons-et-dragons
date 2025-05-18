@@ -32,7 +32,7 @@ package entite
                     + {abstract} code() : Integer
                 }
 
-    class Monstre
+    class Monstre implements Entite
     {
         - _espece : String
         - _numero : Integer
@@ -40,18 +40,19 @@ package entite
         + <<create>> Monstre()
         + creaMonstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
         + position(pos1 : Integer, pos2 : Integer)
-        + action(DJ : Donjon)
-        + seDeplacer(dep : String, DJ Donjon) : Boolean
-        + attaquer(pers : Personnage, dist : Integer)
+        + action(DJ : Donjon) : Integer
+        + seDeplacer(DJ Donjon)
+        + attaquer(cas String, DJ Donjon) : Integer
         + getArmorClass() : Integer
-        + seFaitAttaquer(degats : Integer)
+        + seFaitAttaquer(degats : Integer, DJ Donjon) : Integer
         + getStat() : String
+        + getPos() : Integer[2]
         + aff() : String
         + code() : Integer
         + toString() : String
     }
 
-    class Obstacle
+    class Obstacle implements Entite
     {
         + <<create>> Obstacle
         + position(pos1 : Integer, pos2 : Integer)
@@ -129,21 +130,24 @@ package entite
         class Personnage
         {
             - _nom : String
+            - _peutRamasser : Boolean
             + <<create>> Personnage(nom : String, race : Races, classe : Classe)
             + position(pos1 : Integer, pos2 : Integer)
-            + action(DJ : Donjon)
-            + seDplacer(dep : String, DJ : Donjon) : Boolean
+            + action(DJ : Donjon) : Integer
+            + seDplacer(DJ : Donjon)
             + seDesequiper(equipement : Equipement)
             + sEquiper(equipement : Equipement)
             - getArmeEquipe() : Arme
             - getArmureEquipe() : Armure
-            + attaquer(mons : Monstre, dist : Integer)
+            + attaquer(cas : String, DJ Donjon) : Integer
             + getArmorClass() : Integer
-            + seFaitAttaquer(degats : Integer)
-            + ramasser(equip : Equipement)
+            + seFaitAttaquer(degats : Integer, DJ Donjon) : Integer
+            + ramasser(DJ : Donjon)
             + getStat() : String
             + getEquipee() : String
             + getStock() : String
+            + getInfos() : String
+            + getPos() : Integer[2]
             + aff() : String
             + code() : Integer
             + toString() : String
@@ -155,6 +159,7 @@ package entite
         abstract class Equipement <<abstract>>
         {
             # _name : String
+            + Equipement(name : String, speedMalus : Integer, forceBonus : Integer)
             + getName() : String
         }
 
@@ -304,12 +309,18 @@ package donjon
         - {static} _ord : String[26]
         + <<create>> Donjon()
         + creaDonjon(tc1 : Integer, tc2 : Integer)
-        + posInt(pos : String) : Integer[]
+        + posInt(pos : String) : Integer[2]
         + addObst(pos : String, obst Obstacle) : Boolean
         + posJ(pos : String, perso : Personnage) : Boolean
         + posM(pos : String, mons : Monstre) : Boolean
         + posE(pos : String, equip : Equipement) : Boolean
-        + emptyCase(pc : Integer[])
+        + posE(pc : Integer[2], equip : Equipement) : Boolean
+        + getMons(pc : Integer[2]) : Monstre
+        + getPers(pc : Integer[2]) : Personnage
+        + ramasser(equip : Equipement)
+        + tuerMonstre(mons : Monstre) : Integer
+        + tuerPerso(pers : Personnage) : Integer
+        + emptyCase(pc : Integer[2])
         + afficherDJ()
     }
 
@@ -329,8 +340,8 @@ package statistiques
 {
     class Position
     {
+        - _abscisse : Integer
         - _ordonnee : Integer
-        - _absisse : Integer
         + <<create>> Position()
         + changPos(pos1 : Integer, pos2 : Integer)
         + getAbscisse() : Integer
@@ -339,6 +350,7 @@ package statistiques
 
     class Stats
     {
+        - _pointDeVieTot : Integer
         - _pointDeVie : Integer
         - _force : Integer
         - _dexterite : Integer
@@ -346,6 +358,7 @@ package statistiques
         - _initiative : Integer
         - _armure : Integer
         + <<create>> Stats()
+        + pvt(st : Integer)
         + pv(st : Integer)
         + forc(st : Integer)
         + dex(st : Integer)
@@ -353,12 +366,13 @@ package statistiques
         + ini(st : Integer)
         + arm(st : Integer)
         + add(other : Stats)
-        + retpv() : Integer
-        + retforc() : Integer
-        + retdex() : Integer
-        + retvit() : Integer
-        + retini() : Integer
-        + retarm() : Integer
+        + retPvT() : Integer
+        + retPv() : Integer
+        + retFor() : Integer
+        + retDex() : Integer
+        + retVit() : Integer
+        + retIni() : Integer
+        + retArm() : Integer
 
     }
 }
@@ -378,6 +392,7 @@ Personnage "*" *--> "1\n_classe" Classe : fait parti de >
 Personnage "*" *--> "1\n_deChar" De : a des caractéristiques >
 Personnage "*" *--> "1\n_stats" Stats : a des statistiques >
 Personnage "*" *--> "1\n_pos" Position : a une position >
+Personnage "*" o--> "1\n_peutRamEqu" Equipement : peut ramasser >
 Personnage "*" *--> "1\n_stock" Equipement : a dans son inventaire >
 Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
 
@@ -394,9 +409,11 @@ Obstacle .> Donjon : <<call/use>>
 Equipement "*" *--> "1\n_pos" Position : a une position >
 
 
-Donjon "*" o--> "1\n_donjon" Entite : le donjon est composé de >
+Donjon "*" *--> "1\n_donjon" Entite : le donjon est composé de >
 Donjon "*" *--> "1\n_affDJ" AffichDJ : affiche le donjon >
 Donjon "*" *--> "1\n_equip" Equipement : liste des équipements >
+Donjon "*" *--> "1\n_pers" Personnage : liste des personnages >
+Donjon "*" *--> "1\n_mons" Monstre : liste des monstres >
 
 Donjon .> Personnage : <<call/use>>
 Donjon .> Monstre : <<call/use>>
@@ -409,9 +426,12 @@ MJ .> Personnage : <<use/call>>
 MJ .> Monstre : <<instantiate/use/call>>
 
 
+Personnage .|> Entite
+Equipement .|> Entite
+
 
 Arme -up-|> Equipement
-Arme .-left-> De : <<uses>>
+Arme .> De : <<uses>>
 ArmeCourante -up-|> Arme
 ArmeDistance -up-|> Arme
 ArmeGuerre -up-|> Arme

@@ -87,6 +87,7 @@ public class Main {
         //      - légende donjon
         //      - pv restants apres attaque ?
         // trucs à ajouter
+        //      - créa donjon automatique
         //      - créer persos, monstre et autre en mode console (sans le main)
         //      - choix ordre
         //      - différent symboles pour monstres
