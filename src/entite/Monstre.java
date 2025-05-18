@@ -70,20 +70,30 @@ public class Monstre implements Entite{
     {
         int val = 0;
         System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
-        int choix = Integer.parseInt(sc.nextLine());
+        try {
+            int choix = Integer.parseInt(sc.nextLine());
 
-        switch (choix) {
-            case 0:
-                seDeplacer(DJ);
-                break;
-            case 1:
-                System.out.println("Choisir la case à attaquer");
-                String cas = sc.nextLine();
-                val = attaquer(cas, DJ);
-                break;
-            default:
-                System.out.println("Mauvais choix d'action");
-                action(DJ);
+            switch (choix) {
+                case 0:
+                    seDeplacer(DJ);
+                    break;
+                case 1:
+                    val = attaquer(DJ);
+                    break;
+                default:
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+            }
+        }
+        catch (NumberFormatException erreur)
+        {
+            System.out.println("Mauvais choix d'action");
+            action(DJ);
+        }
+        catch (NullPointerException erreur)
+        {
+            System.out.println("Mauvais choix d'action");
+            action(DJ);
         }
         return val;
     }
@@ -93,68 +103,75 @@ public class Monstre implements Entite{
         System.out.println("Choisir une case où se déplacer");
         String dep = sc.nextLine();
 
-        int distDep = _stats.retVit()/3;
+        try {
+            int distDep = _stats.retVit() / 3;
 
-        int[] pos = DJ.posInt(dep);
+            int[] pos = DJ.posInt(dep);
 
-        int[] posOld = getPos();
+            int[] posOld = getPos();
 
-        if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep)))
-        {
-            boolean val = DJ.posM(dep, this);
-            if (val)
-            {
-                DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
-                System.out.println("Déplacement effectué");
-            }
-            else
-            {
+            if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
+                boolean val = DJ.posM(dep, this);
+                if (val) {
+                    DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
+                    System.out.println("Déplacement effectué");
+                } else {
+                    System.out.println("Problème dans le choix de la case");
+                    seDeplacer(DJ);
+                }
+            } else {
                 System.out.println("Problème dans le choix de la case");
                 seDeplacer(DJ);
             }
         }
-        else
-        {
-            System.out.println("Problème dans le choix de la case");
+        catch (NullPointerException erreur) {
             seDeplacer(DJ);
         }
     }
 
-    public int attaquer(String cas, Donjon DJ)
+    public int attaquer(Donjon DJ)
     {
         int val = 0;
-        System.out.print("\n");
-        this._deChar.changeDe(1, 20);
+        System.out.println("Choisir la case à attaquer");
 
-        int[] posAtt = DJ.posInt(cas);
-        Personnage pers = DJ.getPers(posAtt);
-        if (pers != null)
-        {
-            if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt)))
-            {
-                // un des deux est forcément à 0 donc on peut directement ajouter les deux
-                // (évite un if else)
-                int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
-                System.out.println(toString() + " perce l'armure de " + pers.toString() + " (jet de touche : " + touche + ").");
-                if (touche > pers.getArmorClass())
-                {
-                    int atk = this._degAtt.roll();
-                    val = pers.seFaitAttaquer(atk, DJ);
-                    System.out.println("Atk : " + atk);
-                }
-                else
-                {
-                    System.out.println(toString() + " ne perce pas l'armure de " + pers.toString() + " (jet de touche : " + touche + ")");
+        try {
+            String cas = sc.nextLine();
+            System.out.print("\n");
+            this._deChar.changeDe(1, 20);
+
+            try {
+                int[] posAtt = DJ.posInt(cas);
+                Personnage pers = DJ.getPers(posAtt);
+                if (pers != null) {
+                    if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt))) {
+                        // un des deux est forcément à 0 donc on peut directement ajouter les deux
+                        // (évite un if else)
+                        int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
+                        System.out.println(toString() + " perce l'armure de " + pers.toString() + " (jet de touche : " + touche + ").");
+                        if (touche > pers.getArmorClass()) {
+                            int atk = this._degAtt.roll();
+                            System.out.println(toString() + " fait " + atk + " dégats à " + pers.toString() + " !");
+                            val = pers.seFaitAttaquer(atk, DJ);
+                        } else {
+                            System.out.println(toString() + " ne perce pas l'armure de " + pers.toString() + " (jet de touche : " + touche + ")");
+                        }
+                    } else {
+                        System.out.println(toString() + " n'a pas une portée suffisante");
+                    }
+                } else {
+                    System.out.println("Il n'y a pas de personnage à attaquer sur cette case.");
                 }
             }
-            else
+            catch (ArrayIndexOutOfBoundsException erreur)
             {
-                System.out.println(toString() + " n'a pas une portée suffisante");
+                System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+                attaquer(DJ);
             }
         }
-        else
+        catch (NullPointerException erreur)
         {
-            System.out.println("Il n'y a pas de personnage à attaquer sur cette case.");
+            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            attaquer(DJ);
         }
         return val;
     }
@@ -171,6 +188,10 @@ public class Monstre implements Entite{
         {
             System.out.println("\n" + toString() + " à été achevé.");
             val = DJ.tuerMonstre(this);
+        }
+        else
+        {
+            System.out.println("\n" + toString() + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
         return val;
     }

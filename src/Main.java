@@ -55,7 +55,7 @@ public class Main {
                 {
                     tesssst.afficherDJ();
                     System.out.println(fesmfjeio.getInfos());
-                    System.out.println(pjpegfs.getStat());
+                    //System.out.println(pjpegfs.getStat());
                     val = fesmfjeio.action(tesssst);
                 }
             }
@@ -65,7 +65,7 @@ public class Main {
                 {
                     tesssst.afficherDJ();
                     System.out.println(pjpegfs.getStat());
-                    System.out.println(fesmfjeio.getInfos());
+                    //System.out.println(fesmfjeio.getInfos());
                     val = pjpegfs.action(tesssst);
                 }
             }
@@ -87,12 +87,11 @@ public class Main {
         //      - légende donjon
         //      - pv restants apres attaque ?
         // trucs à ajouter
+        //      - empecher que le programme s'arrête si mauvaise entrée (en cours)
         //      - créa donjon automatique
         //      - créer persos, monstre et autre en mode console (sans le main)
-        //      - choix ordre
+        //      - choix ordre (initiative)
         //      - différent symboles pour monstres
-        //      - commentaires des actions
-        //
 
     }
 }

@@ -1,12 +1,15 @@
 package de;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class De {
 
     private String _name;
     private int _number;
     private int _faces;
+
+    Scanner sc = new Scanner(System.in);
 
     public De() {
         _name = "1d6";
@@ -32,6 +35,10 @@ public class De {
         for (int i = 0; i < this._number; i++) {
             total += rand.nextInt(1, this._faces + 1);
         }
+        System.out.println("\n\nappuyez sur entrée pour lancer " + _name);
+        String sertaR = sc.nextLine();
+        System.out.println("Vous avez fait " + total);
+
         return total;
     }
 

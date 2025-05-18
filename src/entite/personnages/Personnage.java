@@ -51,6 +51,7 @@ public class Personnage implements Entite {
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
 
+        System.out.println("===== initialisation perso =====");
         _stats.forc(_deChar.roll() + 3);
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
@@ -69,63 +70,68 @@ public class Personnage implements Entite {
         if (_peutRamasser)
         {
             System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3");
-            int choix = Integer.parseInt(sc.nextLine());
+            try {
+                int choix = Integer.parseInt(sc.nextLine());
 
-            switch (choix) {
-                case 0:
-                    seDeplacer(DJ);
-                    break;
-                case 1:
-                    System.out.println("Choisir la case à attaquer");
-                    String cas = sc.nextLine();
-                    val = attaquer(cas, DJ);
-                    break;
-                case 2:
-                    System.out.println("quel équipement équiper ?");
-                    int i = 0;
-                    for(Equipement eqi : _stock)
-                    {
-                        System.out.println(i + " : " + eqi.getName());
-                    }
-                    int equ = Integer.parseInt(sc.nextLine());
-                    sEquiper(_stock.get(equ));
-                    break;
-                case 3:
-                    ramasser(DJ);
-                    break;
-                default:
-                    System.out.println("Mauvais choix d'action");
-                    action(DJ);
+                switch (choix) {
+                    case 0:
+                        seDeplacer(DJ);
+                        break;
+                    case 1:
+                        val = attaquer(DJ);
+                        break;
+                    case 2:
+                        sEquiper();
+                        break;
+                    case 3:
+                        ramasser(DJ);
+                        break;
+                    default:
+                        System.out.println("Mauvais choix d'action");
+                        action(DJ);
+                }
+            }
+            catch (NumberFormatException erreur)
+            {
+                System.out.println("Mauvais choix d'action");
+                action(DJ);
+            }
+            catch (NullPointerException erreur)
+            {
+                System.out.println("Mauvais choix d'action");
+                action(DJ);
             }
         }
         else
         {
             System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2");
-            int choix = Integer.parseInt(sc.nextLine());
 
-            switch (choix) {
-                case 0:
-                    seDeplacer(DJ);
-                    break;
-                case 1:
-                    System.out.println("Choisir la case à attaquer");
-                    String cas = sc.nextLine();
-                    val = attaquer(cas, DJ);
-                    break;
-                case 2:
-                    System.out.println("Quel équipement équiper ?");
-                    int i = 0;
-                    for(Equipement eqi : _stock)
-                    {
-                        System.out.println(i + " : " + eqi.getName());
-                        i++;
-                    }
-                    int equ = Integer.parseInt(sc.nextLine());
-                    sEquiper(_stock.get(equ));
-                    break;
-                default:
-                    System.out.println("Mauvais choix d'action");
-                    action(DJ);
+            try {
+                int choix = Integer.parseInt(sc.nextLine());
+                switch (choix) {
+                    case 0:
+                        seDeplacer(DJ);
+                        break;
+                    case 1:
+                        val = attaquer(DJ);
+                        break;
+                    case 2:
+                        sEquiper();
+                        break;
+                    default:
+                        System.out.println("Mauvais choix d'action");
+                        action(DJ);
+                }
+            }
+            catch (NumberFormatException erreur)
+            {
+                System.out.println("Mauvais choix d'action");
+                action(DJ);
+            }
+            catch (NullPointerException erreur)
+            {
+                System.out.println("Mauvais choix d'action");
+                action(DJ);
             }
         }
         return val;
@@ -136,49 +142,42 @@ public class Personnage implements Entite {
         System.out.println("Choisir une case où se déplacer");
         String dep = sc.nextLine();
 
-        int distDep = _stats.retVit()/3;
+        try {
+            int distDep = _stats.retVit() / 3;
 
-        int[] pos = DJ.posInt(dep);
+            int[] pos = DJ.posInt(dep);
 
-        int[] posOld = getPos();
+            int[] posOld = getPos();
 
-        if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep)))
-        {
-            if (!_peutRamasser)
-            {
-                boolean val = DJ.posJ(dep, this);
-                if (val)
-                {
-                    DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                    System.out.println("Déplacement effectué");
+            if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
+                if (!_peutRamasser) {
+                    boolean val = DJ.posJ(dep, this);
+                    if (val) {
+                        DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
+                        System.out.println("Déplacement effectué");
+                    } else {
+                        System.out.println("Problème dans le choix de la case");
+                        seDeplacer(DJ);
+                    }
+                } else {
+                    boolean val = DJ.posJ(dep, this);
+                    if (val) {
+                        DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
+                        DJ.posE(posOld, _peutRamEqu);       //remet l'objet dans la case
+                        System.out.println("Déplacement effectué");
+                        _peutRamasser = false;
+                        _peutRamEqu = null;
+                    } else {
+                        System.out.println("Problème dans le choix de la case");
+                        seDeplacer(DJ);
+                    }
                 }
-                else
-                {
-                    System.out.println("Problème dans le choix de la case");
-                    seDeplacer(DJ);
-                }
-            }
-            else
-            {
-                boolean val = DJ.posJ(dep, this);
-                if (val)
-                {
-                    DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                    DJ.posE(posOld, _peutRamEqu);       //remet l'objet dans la case
-                    System.out.println("Déplacement effectué");
-                    _peutRamasser = false;
-                    _peutRamEqu = null;
-                }
-                else
-                {
-                    System.out.println("Problème dans le choix de la case");
-                    seDeplacer(DJ);
-                }
+            } else {
+                System.out.println("Problème dans le choix de la case");
+                seDeplacer(DJ);
             }
         }
-        else
-        {
-            System.out.println("Problème dans le choix de la case");
+        catch (NullPointerException erreur) {
             seDeplacer(DJ);
         }
     }
@@ -200,34 +199,63 @@ public class Personnage implements Entite {
         }
     }
 
-    public void sEquiper(Equipement equipement) {
-        if (this._stock.contains(equipement)) {
-            if (equipement instanceof ArmeGuerre) {
-                this._stats.vit(_stats.retVit() - ((ArmeGuerre) equipement).getSpeedMalus());
-                this._stats.forc(_stats.retFor() + ((ArmeGuerre) equipement).getForceBonus());
+    public void sEquiper() {
+        if (!_stock.isEmpty()) {
+            System.out.println("Quel équipement équiper ?");
+
+            int i = 0;
+            for (Equipement eqi : _stock) {
+                System.out.println(i + " : " + eqi.getName());
+                i++;
             }
-            else if (equipement instanceof Armure) {
-                _stats.arm(((Armure) equipement).getArmorClass());
-                if (equipement instanceof ArmureLourde) {
-                    this._stats.vit(_stats.retVit() - ((ArmureLourde) equipement).getSpeedMalus());
+
+            try {
+                int equ = Integer.parseInt(sc.nextLine());
+
+                Equipement equipement = _stock.get(equ);
+
+                if (this._stock.contains(equipement)) {
+                    if (equipement instanceof ArmeGuerre) {
+                        this._stats.vit(_stats.retVit() - ((ArmeGuerre) equipement).getSpeedMalus());
+                        this._stats.forc(_stats.retFor() + ((ArmeGuerre) equipement).getForceBonus());
+                    } else if (equipement instanceof Armure) {
+                        _stats.arm(((Armure) equipement).getArmorClass());
+                        if (equipement instanceof ArmureLourde) {
+                            this._stats.vit(_stats.retVit() - ((ArmureLourde) equipement).getSpeedMalus());
+                        }
+                    }
+                    for (Equipement equip : this._equipee) {
+                        if (equip instanceof Arme && equipement instanceof Arme) {
+                            this.seDesequiper((Arme) equip);
+                            break;
+                        } else if (equip instanceof Armure && equipement instanceof Armure) {
+                            this.seDesequiper((Armure) equip);
+                            break;
+                        }
+                    }
+                    this._equipee.add(equipement);
+                    this._stock.remove(equipement);
+                    System.out.println(equipement.getName() + " à bien été équipé");
+                } else {
+                    System.out.println("ERREUR : l'equipement n'est pas dans l'inventaire");
                 }
             }
-            for (Equipement equip : this._equipee) {
-                if (equip instanceof Arme && equipement instanceof Arme) {
-                    this.seDesequiper((Arme) equip);
-                    break;
-                }
-                else if (equip instanceof Armure && equipement instanceof Armure) {
-                    this.seDesequiper((Armure) equip);
-                    break;
-                }
+            catch (NullPointerException erreur)
+            {
+                System.out.println("Mauvaise valeur rentrée.");
+                sEquiper();
             }
-            this._equipee.add(equipement);
-            this._stock.remove(equipement);
-            System.out.println(equipement.getName() + " à bien été équipé");
+            catch (NumberFormatException erreur) {
+                System.out.println("Mauvaise valeur rentrée.");
+                sEquiper();
+            }
+            catch (IndexOutOfBoundsException erreur) {
+                System.out.println("Mauvaise valeur rentrée.");
+                sEquiper();
+            }
         }
         else {
-            System.out.println("ERREUR : l'equipement n'est pas dans l'inventaire");
+            System.out.println("\nIl n'y a pas d'équipement à equiper.");
         }
     }
 
@@ -249,59 +277,63 @@ public class Personnage implements Entite {
         return null;
     }
 
-    public int attaquer(String cas, Donjon DJ)
+    public int attaquer(Donjon DJ)
     {
-        Arme arme = getArmeEquipe();
         int val = 0;
+        System.out.println("Choisir la case à attaquer");
 
-        if (arme != null)
-        {
-            System.out.print("\n");
-            this._deChar.changeDe(1, 20);
-            int touche = this._deChar.roll();
+        try {
+            String cas = sc.nextLine();
 
-            if (arme instanceof ArmeDistance)
-            {
-                touche += this._stats.retDex();
-            }
-            else
-            {
-                touche += this._stats.retFor();
-            }
+            Arme arme = getArmeEquipe();
 
-            int[] posAtt = DJ.posInt(cas);
-            Monstre mons = DJ.getMons(posAtt);
-            if (mons != null)
-            {
-                if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange()))))
-                {
-                    if (touche > mons.getArmorClass())
-                    {
-                        this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
-                        int atk = this._deChar.roll();
-                        System.out.println(this._nom + " perce l'armure de " + mons.toString() + " (jet de touche : " + touche + ").");
-                        System.out.println(this._nom + " fait " + atk + " dégats à " + mons.toString() + " !");
-                        val = mons.seFaitAttaquer(atk, DJ);
-                    }
-                    else
-                    {
-                        System.out.println(this._nom + " ne perce pas l'armure de " + mons.toString() + " (jet de touche : " + touche + ").");
+            if (arme != null) {
+                System.out.print("\n");
+                this._deChar.changeDe(1, 20);
+                int touche = this._deChar.roll();
+
+                if (arme instanceof ArmeDistance) {
+                    touche += this._stats.retDex();
+                } else {
+                    touche += this._stats.retFor();
+                }
+
+                try {
+                    int[] posAtt = DJ.posInt(cas);
+                    Monstre mons = DJ.getMons(posAtt);
+                    if (mons != null) {
+                        if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange())))) {
+                            if (touche > mons.getArmorClass()) {
+                                System.out.println(this._nom + " perce l'armure de " + mons.toString() + " (jet de touche : " + touche + ").");
+                                this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
+                                int atk = this._deChar.roll();
+                                System.out.println(this._nom + " fait " + atk + " dégats à " + mons.toString() + " !");
+                                val = mons.seFaitAttaquer(atk, DJ);
+                            } else {
+                                System.out.println(this._nom + " ne perce pas l'armure de " + mons.toString() + " (jet de touche : " + touche + ").");
+                            }
+                        } else {
+                            System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
+                        }
+                    } else {
+                        System.out.println("Il n'y a pas de monstre à attaquer sur cette case.");
+                        //est ce qu'on rapelle la fonction ?
                     }
                 }
-                else
+                catch (ArrayIndexOutOfBoundsException erreur)
                 {
-                    System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
+                    System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+                    attaquer(DJ);
                 }
+            } else {
+                System.out.println(this._nom + " n'a pas d'arme équipée.");
             }
-            else
-            {
-                System.out.println("Il n'y a pas de monstre à attaquer sur cette case.");
-                //est ce qu'on rapelle la fonction ?
-            }
+            return val;
         }
-        else
+        catch (NullPointerException erreur)
         {
-            System.out.println(this._nom + " n'a pas d'arme équipée.");
+            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            attaquer(DJ);
         }
         return val;
     }
@@ -322,6 +354,10 @@ public class Personnage implements Entite {
             System.out.println("\n" + toString() + " à été achevé.");
             val = DJ.tuerPerso(this);
         }
+        else
+        {
+            System.out.println("\n" + toString() + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
+        }
         return val;
     }
 
@@ -338,6 +374,12 @@ public class Personnage implements Entite {
         System.out.println(_peutRamEqu.getName() + " à été ramassé");
         _peutRamasser = false;
         _peutRamEqu = null;
+    }
+
+    public String comAction()
+    {
+        System.out.println("Commentez l'action effectuée");
+        return sc.nextLine();
     }
 
     public String getStat() {
