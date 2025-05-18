@@ -5,11 +5,13 @@ import entite.equipement.Equipement;
 import entite.Monstre;
 import entite.personnages.Personnage;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MJ {
 
     Scanner sc = new Scanner(System.in);
+    ArrayList<String> _monstresCrees = new ArrayList<>();
 
     public MJ()
     {
@@ -69,6 +71,13 @@ public class MJ {
         int nbrFaceDeCha = Integer.parseInt(sc.nextLine());
 
         mons.creaMonstre(espece, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
+
+        for (String monstre : this._monstresCrees) {
+            if (monstre.equals(espece)) {
+                mons.multiMonstre();
+            }
+        }
+        this._monstresCrees.add(espece);
     }
 
     public void posJ(Donjon DJ, Personnage perso)

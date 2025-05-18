@@ -227,5 +227,4 @@ public class Donjon {
     {
         _affDJ.afficherDJ(_donjon);
     }
-
 }
