@@ -56,6 +56,12 @@ public class Personnage implements Entite {
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
         _stats.ini(_deChar.roll() + 3);
+
+        for(Equipement equi : _classe.getEquiBase())
+        {
+            _stock.add(equi);
+        }
+
     }
 
     public void position(int pos1, int pos2)
