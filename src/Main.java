@@ -5,18 +5,80 @@ import entite.equipement.arme.distance.ArcCourt;
 import entite.equipement.arme.guerre.EpeeLongue;
 import entite.equipement.armure.legere.ArmureEcaille;
 import entite.personnages.Personnage;
+import entite.personnages.classes.Classe;
 import entite.personnages.classes.Roublard;
 import entite.personnages.genre.Feminin;
-import entite.personnages.races.Humain;
+import entite.personnages.races.*;
 import entite.personnages.genre.*;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
         System.out.println("Bienvenue dans DOOnjon et Dragons");
 
         MJ test = new MJ();
         Donjon tesssst = new Donjon();
-        Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard(), new Feminin());
+
+        System.out.println("Voulez-vous créer un personnage ? (o/n)");
+        String te = sc.nextLine();
+        if (te.equals("o"))
+        {
+            Races ra;
+            Classe cla;
+
+            System.out.println("nom ?");
+            String nom = sc.nextLine();
+            boolean te = false;
+            while (te)
+            {
+                System.out.println("Race ?" + "\n1- Elfe" + "\n1- Halfelin" + "\n1- Humain" + "\n1- Nain");
+                String race = sc.nextLine();
+                switch (Integer.parseInt(race)) {
+                    case 1:
+                    {
+                        ra = new Elfes();
+                    }
+                    case 2:
+                    {
+                        ra = new Halfelins();
+                    }
+                    case 3:
+                    {
+                        ra = new Humain();
+                    }
+                    case 4:
+                    {
+                        ra = new Nain();
+                    }
+                }
+            }
+
+            System.out.println("Classe ?" + "\n1- Clerc" + "\n1- Guerrier" + "\n1- Magicien" + "\n1- Roublard");
+            String classe = sc.nextLine();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard(), new Feminin());
         Monstre pjpegfs = new Monstre();
         Equipement arme = new EpeeLongue();
         Equipement armee = new ArcCourt();
@@ -28,19 +90,19 @@ public class Main {
 
         test.createM(pjpegfs);
 
-        /*tesssst.afficherDJ();
+        tesssst.afficherDJ();
         test.addObst(tesssst);
-        tesssst.afficherDJ();*/
+        tesssst.afficherDJ();
         test.posJ(tesssst, fesmfjeio);
         tesssst.afficherDJ();
         test.posM(tesssst, pjpegfs);
         tesssst.afficherDJ();
-        /*test.posEquip(tesssst, arme);
+        test.posEquip(tesssst, arme);
         tesssst.afficherDJ();
         test.posEquip(tesssst, armee);
         tesssst.afficherDJ();
         test.posEquip(tesssst, armure);
-        tesssst.afficherDJ();*/
+        tesssst.afficherDJ();
 
         System.out.println(pjpegfs.getStat());
         System.out.println(fesmfjeio.getStat());
@@ -87,7 +149,7 @@ public class Main {
         {
             System.out.println("\nLes joueurs ont fini le donjon");
             //les persos regagnent leur vie
-        }
+        }*/
 
         //          A FAIRE
         // améliorer l'affichage
