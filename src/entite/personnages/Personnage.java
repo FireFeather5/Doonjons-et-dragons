@@ -5,6 +5,7 @@ import entite.Entite;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.Classe;
+import entite.personnages.genre.Genre;
 import entite.personnages.races.Races;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
@@ -24,6 +25,7 @@ public class Personnage implements Entite {
     private final String _nom;
     private final Races _race;
     private final Classe _classe;
+    private final Genre _gre;
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
     //pv, for, dex, vit, ini
@@ -38,11 +40,12 @@ public class Personnage implements Entite {
     Scanner sc = new Scanner(System.in);
 
 
-    public Personnage(String nom, Races race, Classe classe)
+    public Personnage(String nom, Races race, Classe classe, Genre gre)
     {
         _nom = nom;
         _race = race;
         _classe = classe;
+        _gre = gre;
         _stock = new ArrayList<>();
         _equipee = new ArrayList<>();
         _stats = new Stats();
@@ -410,7 +413,12 @@ public class Personnage implements Entite {
 
     public String getInfos()
     {
-        return getStat() + "\n\nEquipement :\n" + getEquipee() + "\nStock :\n" + getStock();
+        return getStat() + "\n\nEquipement :\n" + getEquipee() + "\nInventaire :\n" + getStock();
+    }
+
+    public String getLilInfos()
+    {
+        return (aff() + "    " + _nom + " (" + _gre.genrer(_classe.getCla()) + " " + _gre.genrer(_race.getRa()) + " " + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
     }
 
     public int[] getPos()

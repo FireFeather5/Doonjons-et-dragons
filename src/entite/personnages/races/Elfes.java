@@ -16,4 +16,10 @@ public class Elfes implements Races {
     {
         return _stat;
     }
+
+    public String getRa()
+    {
+        return "Elfe";
+    }
+
 }

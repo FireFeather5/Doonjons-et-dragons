@@ -6,7 +6,9 @@ import entite.equipement.arme.guerre.EpeeLongue;
 import entite.equipement.armure.legere.ArmureEcaille;
 import entite.personnages.Personnage;
 import entite.personnages.classes.Roublard;
+import entite.personnages.genre.Feminin;
 import entite.personnages.races.Humain;
+import entite.personnages.genre.*;
 
 public class Main {
     public static void main(String[] args){
@@ -14,7 +16,7 @@ public class Main {
 
         MJ test = new MJ();
         Donjon tesssst = new Donjon();
-        Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
+        Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard(), new Feminin());
         Monstre pjpegfs = new Monstre();
         Equipement arme = new EpeeLongue();
         Equipement armee = new ArcCourt();
@@ -26,19 +28,19 @@ public class Main {
 
         test.createM(pjpegfs);
 
-        tesssst.afficherDJ();
+        /*tesssst.afficherDJ();
         test.addObst(tesssst);
-        tesssst.afficherDJ();
+        tesssst.afficherDJ();*/
         test.posJ(tesssst, fesmfjeio);
         tesssst.afficherDJ();
         test.posM(tesssst, pjpegfs);
         tesssst.afficherDJ();
-        test.posEquip(tesssst, arme);
+        /*test.posEquip(tesssst, arme);
         tesssst.afficherDJ();
         test.posEquip(tesssst, armee);
         tesssst.afficherDJ();
         test.posEquip(tesssst, armure);
-        tesssst.afficherDJ();
+        tesssst.afficherDJ();*/
 
         System.out.println(pjpegfs.getStat());
         System.out.println(fesmfjeio.getStat());
@@ -53,6 +55,13 @@ public class Main {
             {
                 if (val == 0)
                 {
+                    //faire une fonction (dans donjon ? )
+                    System.out.print("\n\n\n");
+                    System.out.print("    --> ");
+                    System.out.print(fesmfjeio.getLilInfos());
+                    System.out.print("        ");
+                    System.out.print(pjpegfs.getLilInfos());
+                    //_______________________________
                     tesssst.afficherDJ();
                     System.out.println(fesmfjeio.getInfos());
                     //System.out.println(pjpegfs.getStat());
@@ -82,9 +91,7 @@ public class Main {
 
         //          A FAIRE
         // améliorer l'affichage
-        //      - à qui est le tour
         // trucs à ajouter
-        //      - créa donjon automatique
         //      - créer persos, monstre et autre en mode console (sans le main)
         //      - choix ordre (initiative)
 

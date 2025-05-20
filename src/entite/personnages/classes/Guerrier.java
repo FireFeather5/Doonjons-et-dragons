@@ -32,4 +32,9 @@ public class Guerrier implements Classe {
         return _equiBase;
     }
 
+    public String getCla()
+    {
+        return "Guerrier";
+    }
+
 }

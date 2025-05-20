@@ -31,4 +31,9 @@ public class Roublard implements Classe {
         return _equiBase;
     }
 
+    public String getCla()
+    {
+        return "Roublard";
+    }
+
 }

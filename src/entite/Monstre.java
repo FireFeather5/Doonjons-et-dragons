@@ -202,6 +202,11 @@ public class Monstre implements Entite{
         return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
+    public String getLilInfos()
+    {
+        return (aff() + "    " + toString() + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
+    }
+
     public int[] getPos()
     {
         int[] pos = new int[2];

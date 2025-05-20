@@ -31,4 +31,9 @@ public class Magicien implements Classe {
         return _equiBase;
     }
 
+    public String getCla()
+    {
+        return "Magicien";
+    }
+
 }

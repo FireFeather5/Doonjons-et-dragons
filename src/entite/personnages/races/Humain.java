@@ -20,4 +20,9 @@ public class Humain implements Races {
         return _stat;
     }
 
+    public String getRa()
+    {
+        return "Humain";
+    }
+
 }

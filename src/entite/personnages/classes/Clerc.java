@@ -30,4 +30,9 @@ public class Clerc implements Classe {
         return _equiBase;
     }
 
+    public String getCla()
+    {
+        return "Clerc";
+    }
+
 }

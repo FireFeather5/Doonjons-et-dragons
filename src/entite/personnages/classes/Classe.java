@@ -10,4 +10,6 @@ public interface Classe {
 
     public ArrayList<Equipement> getEquiBase();
 
+    public String getCla();
+
 }
