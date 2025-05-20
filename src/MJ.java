@@ -67,21 +67,23 @@ public class MJ {
     public void createM(Monstre mons)
     {
         System.out.println("\n\n===== Nouveau Monstre =====");
-        System.out.println("espèce ?");
+        System.out.println("Espèce ?");
         String espece = sc.nextLine();
+        System.out.println("Symbole d'affichage ?   (3 charactères max)");
+        String symb = sc.nextLine();
         try {
-            System.out.println("portée de l'attaque ?");
+            System.out.println("Portée de l'attaque ?");
             int portee = Integer.parseInt(sc.nextLine());
-            System.out.println("nombre de dés pour le calcul de l'attaque ?");
+            System.out.println("Nombre de dés pour le calcul de l'attaque ?");
             int nbrDeDeg = Integer.parseInt(sc.nextLine());
-            System.out.println("nombre de face pour les dés pour le calcul de l'attaque ?");
+            System.out.println("Nombre de face pour les dés pour le calcul de l'attaque ?");
             int nbrFaceDeDeg = Integer.parseInt(sc.nextLine());
-            System.out.println("nombre de dés pour le calcul des charactéristiques ?");
+            System.out.println("Nombre de dés pour le calcul des charactéristiques ?");
             int nbrDeCha = Integer.parseInt(sc.nextLine());
-            System.out.println("nombre de face pour les dés pour le calcul des charactéristiques ?");
+            System.out.println("Nombre de face pour les dés pour le calcul des charactéristiques ?");
             int nbrFaceDeCha = Integer.parseInt(sc.nextLine());
 
-            mons.creaMonstre(espece, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
+            mons.creaMonstre(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
 
             for (String monstre : this._monstresCrees) {
                 if (monstre.equals(espece)) {
@@ -92,7 +94,7 @@ public class MJ {
         }
         catch (NumberFormatException erreur)
         {
-            System.out.println("\nSeul l'espèce du monstre peut contenir autre chose que des entier.");
+            System.out.println("\nSeul l'espèce du monstre peut contenir autre chose que des entier.\nRecomencez");
             createM(mons);
         }
     }

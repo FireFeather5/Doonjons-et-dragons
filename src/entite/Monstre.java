@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 public class Monstre implements Entite{
     private String _espece;
+    private String _symb;
     private int _numero = 1;    //a voir plus tard
     private int _portAtt;
     private De _degAtt;
@@ -26,10 +27,11 @@ public class Monstre implements Entite{
         _stats = new Stats();
     }
 
-    public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
+    public void creaMonstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
         _deChar = charac;
         _espece = espece + " " + this._numero;
+        _symb = symb;
         _portAtt = portAtt;
         _degAtt = degAtt;
 
@@ -210,7 +212,16 @@ public class Monstre implements Entite{
 
     public String aff()
     {
-        return " Xv";
+        if (_symb.length() == 3) {
+            return _symb;
+        }
+        else if (_symb.length() == 2) {
+            return " " + _symb;
+        }
+        else if (_symb.length() == 1) {
+            return " " + _symb + " ";
+        }
+        return " X)";
     }
 
     public int code()
