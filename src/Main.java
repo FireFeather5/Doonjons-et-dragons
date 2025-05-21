@@ -23,62 +23,62 @@ public class Main {
         test.createDJ(tesssst);
 
         tesssst.afficherDJ();
-
-        test.createM(pjpegfs);
-
-        tesssst.afficherDJ();
-        test.addObst(tesssst);
-        tesssst.afficherDJ();
-        test.posJ(tesssst, fesmfjeio);
-        tesssst.afficherDJ();
-        test.posM(tesssst, pjpegfs);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, arme);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, armee);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, armure);
-        tesssst.afficherDJ();
-
-        System.out.println(pjpegfs.getStat());
-        System.out.println(fesmfjeio.getStat());
-
-
-        tesssst.afficherDJ();
-
-        int val = 0;
-
-        while (val == 0) {
-            for (int i = 0; i < 3; i++)
-            {
-                if (val == 0)
-                {
-                    tesssst.afficherDJ();
-                    System.out.println(fesmfjeio.getInfos());
-                    //System.out.println(pjpegfs.getStat());
-                    val = fesmfjeio.action(tesssst);
-                }
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                if (val == 0)
-                {
-                    tesssst.afficherDJ();
-                    System.out.println(pjpegfs.getStat());
-                    //System.out.println(fesmfjeio.getInfos());
-                    val = pjpegfs.action(tesssst);
-                }
-            }
-        }
-        if (val == 1)
-        {
-            System.out.println("\nLes joueurs ont perdu");
-        }
-        else
-        {
-            System.out.println("\nLes joueurs ont fini le donjon");
-            //les persos regagnent leur vie
-        }
+//
+//        test.createM(pjpegfs);
+//
+//        tesssst.afficherDJ();
+//        test.addObst(tesssst);
+//        tesssst.afficherDJ();
+//        test.posJ(tesssst, fesmfjeio);
+//        tesssst.afficherDJ();
+//        test.posM(tesssst, pjpegfs);
+//        tesssst.afficherDJ();
+//        test.posEquip(tesssst, arme);
+//        tesssst.afficherDJ();
+//        test.posEquip(tesssst, armee);
+//        tesssst.afficherDJ();
+//        test.posEquip(tesssst, armure);
+//        tesssst.afficherDJ();
+//
+//        System.out.println(pjpegfs.getStat());
+//        System.out.println(fesmfjeio.getStat());
+//
+//
+//        tesssst.afficherDJ();
+//
+//        int val = 0;
+//
+//        while (val == 0) {
+//            for (int i = 0; i < 3; i++)
+//            {
+//                if (val == 0)
+//                {
+//                    tesssst.afficherDJ();
+//                    System.out.println(fesmfjeio.getInfos());
+//                    //System.out.println(pjpegfs.getStat());
+//                    val = fesmfjeio.action(tesssst);
+//                }
+//            }
+//            for (int i = 0; i < 3; i++)
+//            {
+//                if (val == 0)
+//                {
+//                    tesssst.afficherDJ();
+//                    System.out.println(pjpegfs.getStat());
+//                    //System.out.println(fesmfjeio.getInfos());
+//                    val = pjpegfs.action(tesssst);
+//                }
+//            }
+//        }
+//        if (val == 1)
+//        {
+//            System.out.println("\nLes joueurs ont perdu");
+//        }
+//        else
+//        {
+//            System.out.println("\nLes joueurs ont fini le donjon");
+//            //les persos regagnent leur vie
+//        }
 
         //          A FAIRE
         // améliorer l'affichage
@@ -88,7 +88,6 @@ public class Main {
         //      - pv restants apres attaque ?
         // trucs à ajouter
         //      - empecher que le programme s'arrête si mauvaise entrée (en cours)
-        //      - créa donjon automatique
         //      - créer persos, monstre et autre en mode console (sans le main)
         //      - choix ordre (initiative)
         //      - différent symboles pour monstres
