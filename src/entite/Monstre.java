@@ -208,6 +208,10 @@ public class Monstre implements Entite{
         return pos;
     }
 
+    public String getNom() {
+        return this._espece;
+    }
+
     public String aff()
     {
         return " Xv";

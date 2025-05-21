@@ -8,6 +8,8 @@ public abstract class Arme extends Equipement {
     private final int _nbFacesDe;
     private final int _range;
 
+    private int _bonusMagique = 0;
+
     public Arme(String name, int nbDe, int nbFacesDe, int range) {
         this(name, nbDe, nbFacesDe, range, 0, 0);
     }
@@ -21,6 +23,14 @@ public abstract class Arme extends Equipement {
 
     public int[] getDegats() {
         return new int[]{_nbDe, _nbFacesDe};
+    }
+
+    public void bonusMagique() {
+        _bonusMagique++;
+    }
+
+    public int getBonusMagique() {
+        return this._bonusMagique;
     }
 
     public int getRange() {

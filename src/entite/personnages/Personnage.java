@@ -5,6 +5,8 @@ import entite.Entite;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.Classe;
+import entite.personnages.classes.Clerc;
+import entite.personnages.classes.Magicien;
 import entite.personnages.races.Races;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
@@ -12,6 +14,10 @@ import entite.equipement.arme.guerre.ArmeGuerre;
 import entite.equipement.armure.Armure;
 import entite.equipement.armure.lourde.ArmureLourde;
 import de.*;
+import sort.ArmeMagique;
+import sort.BoogieWoogie;
+import sort.Guerison;
+import sort.Sort;
 import statistiques.Position;
 import statistiques.Stats;
 
@@ -34,6 +40,7 @@ public class Personnage implements Entite {
 
     private final ArrayList<Equipement> _stock;
     private final ArrayList<Equipement> _equipee;
+    private final ArrayList<Sort> _sorts;
 
     Scanner sc = new Scanner(System.in);
 
@@ -47,6 +54,7 @@ public class Personnage implements Entite {
         _equipee = new ArrayList<>();
         _stats = new Stats();
         _pos = new Position();
+        _sorts = new ArrayList<>();
 
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
@@ -56,6 +64,15 @@ public class Personnage implements Entite {
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
         _stats.ini(_deChar.roll() + 3);
+
+        if (classe instanceof Clerc) {
+            this._sorts.add(new Guerison());
+        }
+        else if (classe instanceof Magicien) {
+            this._sorts.add(new Guerison());
+            this._sorts.add(new BoogieWoogie());
+            this._sorts.add(new ArmeMagique());
+        }
     }
 
     public void position(int pos1, int pos2)
@@ -69,7 +86,7 @@ public class Personnage implements Entite {
         //doit pouvoir etre amélioré mais fonctionne pour le moment
         if (_peutRamasser)
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3");
+            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3\nSorts : 4");
             try {
                 int choix = Integer.parseInt(sc.nextLine());
 
@@ -85,6 +102,9 @@ public class Personnage implements Entite {
                         break;
                     case 3:
                         ramasser(DJ);
+                        break;
+                    case 4:
+                        lancerSort(DJ);
                         break;
                     default:
                         System.out.println("Mauvais choix d'action");
@@ -104,7 +124,7 @@ public class Personnage implements Entite {
         }
         else
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2");
+            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3");
 
             try {
                 int choix = Integer.parseInt(sc.nextLine());
@@ -117,6 +137,9 @@ public class Personnage implements Entite {
                         break;
                     case 2:
                         sEquiper();
+                        break;
+                    case 3:
+                        lancerSort(DJ);
                         break;
                     default:
                         System.out.println("Mauvais choix d'action");
@@ -259,6 +282,65 @@ public class Personnage implements Entite {
         }
     }
 
+    public void lancerSort(Donjon DJ) {
+        if (!this._sorts.isEmpty()) {
+            int choix = 1;
+            System.out.println("Liste des sorts :");
+            for (Sort sort : this._sorts) {
+                System.out.println(choix + ". " + sort.getNom() + " : " + sort.getDescription());
+            }
+            System.out.println("Lequel voulez-vous lancer ?");
+            try {
+                choix = sc.nextInt();
+                if (this._classe instanceof Clerc) {
+                    if (choix == 1) {
+                        int choixPerso = 1;
+                        for (Personnage perso : DJ.getListePerso()) {
+                            System.out.println(choixPerso + ". " + perso._nom);
+                        }
+                        choixPerso = sc.nextInt();
+                        ((Guerison) this._sorts.getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
+                    }
+                }
+                else if (this._classe instanceof Magicien) {
+                    switch (choix) {
+                        case 1:
+                            int choixPerso = 1;
+                            System.out.println("Choisissez un allie a soigner :");
+                            for (Personnage perso : DJ.getListePerso()) {
+                                System.out.println("\t" + choixPerso + ". " + perso._nom);
+                                choixPerso++;
+                            }
+                            choixPerso = sc.nextInt();
+                            ((Guerison) this._sorts.getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
+                            break;
+                        case 2:
+                            int choixEntite1 = 1;
+
+                            for (Personnage perso : DJ.getListePerso()) {
+                                System.out.println("\t" + choixEntite1 + ". " + perso._nom);
+                                choixEntite1++;
+                            }
+                            int choixEntite2 = choixEntite1 + 1;
+                            for (Monstre mons : DJ.getListeMonstre()) {
+                                System.out.println("\t" + choixEntite2 + ". " + mons.getNom());
+                                choixEntite2++;
+                            }
+
+                    }
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Choix invalide");
+                lancerSort(DJ);
+            }
+
+        }
+        else {
+            System.out.println("Vous n'avez pas de sort...");
+        }
+    }
+
     private Arme getArmeEquipe() {
         for (Equipement equip : this._equipee) {
             if (equip instanceof Arme) {
@@ -290,7 +372,7 @@ public class Personnage implements Entite {
             if (arme != null) {
                 System.out.print("\n");
                 this._deChar.changeDe(1, 20);
-                int touche = this._deChar.roll();
+                int touche = this._deChar.roll() + arme.getBonusMagique();
 
                 if (arme instanceof ArmeDistance) {
                     touche += this._stats.retDex();
@@ -306,7 +388,7 @@ public class Personnage implements Entite {
                             if (touche > mons.getArmorClass()) {
                                 System.out.println(this._nom + " perce l'armure de " + mons.toString() + " (jet de touche : " + touche + ").");
                                 this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
-                                int atk = this._deChar.roll();
+                                int atk = this._deChar.roll() + arme.getBonusMagique();
                                 System.out.println(this._nom + " fait " + atk + " dégats à " + mons.toString() + " !");
                                 val = mons.seFaitAttaquer(atk, DJ);
                             } else {
@@ -359,6 +441,15 @@ public class Personnage implements Entite {
             System.out.println("\n" + toString() + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
         return val;
+    }
+
+    public void seSoigner(int soin) {
+        if (this._stats.retPv() + soin > this._stats.retPvT()) {
+            this._stats.pv(this._stats.retPvT());
+        }
+        else {
+            this._stats.pv(this._stats.retPv() + soin);
+        }
     }
 
     public void peutRamasser(Equipement equip)

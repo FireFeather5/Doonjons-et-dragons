@@ -260,4 +260,11 @@ public class Donjon {
     {
         _affDJ.afficherDJ(_donjon);
     }
+
+    public ArrayList<Personnage> getListePerso() {
+        return new ArrayList<>(_pers);
+    }
+    public ArrayList<Monstre> getListeMonstre() {
+        return new ArrayList<>(_mons);
+    }
 }
