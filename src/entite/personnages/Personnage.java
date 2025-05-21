@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class Personnage implements Entite {
 
-    private final String _nom;
-    private final Races _race;
-    private final Classe _classe;
-    private final Genre _gre;
+    private String _nom;
+    private Races _race;
+    private Classe _classe;
+    private Genre _gre;
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
     //pv, for, dex, vit, ini
@@ -39,22 +39,29 @@ public class Personnage implements Entite {
 
     Scanner sc = new Scanner(System.in);
 
+    public Personnage()
+    {
+        _nom = null;
+        _race = null;
+        _classe = null;
+        _gre = null;
+        _stock = new ArrayList<>();
+        _equipee = new ArrayList<>();
+        _stats = new Stats();
+        _pos = new Position();
+    }
 
-    public Personnage(String nom, Races race, Classe classe, Genre gre)
+    public void CreaPers(String nom, Races race, Classe classe, Genre gre)
     {
         _nom = nom;
         _race = race;
         _classe = classe;
         _gre = gre;
-        _stock = new ArrayList<>();
-        _equipee = new ArrayList<>();
-        _stats = new Stats();
-        _pos = new Position();
 
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
 
-        System.out.println("===== initialisation perso =====");
+        System.out.println("===== caractéristiques perso =====");
         _stats.forc(_deChar.roll() + 3);
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
