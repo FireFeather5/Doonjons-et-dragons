@@ -26,7 +26,7 @@ public class MJ {
     public void createDJ(Donjon DJ)
     {
         System.out.println("Voulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjons par défaut sera utilisé)");
-        if (sc.nextLine().equals("0")) {
+        if (sc.nextLine().equals("o")) {
             System.out.println("\n\ntaille cote 1");
             String tc1s = sc.nextLine();
             System.out.println("taille cote 2");
@@ -48,129 +48,89 @@ public class MJ {
                 this.createDJ(DJ);
             }
 
-            boolean fini = false;
+            boolean fini;
 
-            System.out.println("Voulez-vous mettre des obstacles (o/n) ?");
-            fini = !sc.nextLine().equals("o");
-
-            while (!fini){
-                this.addObst(DJ);
-                System.out.println("Créer un auter obstacle (o/n) ?");
-                if (!sc.nextLine().equals("o")) fini = true;
+            System.out.println("Aperçu du donjon :");
+            DJ.afficherDJ();
+            System.out.println("\nCela vous convient-il (o/n) ?");
+            if (sc.nextLine().equals("n")) {
+                this.createDJ(DJ);
             }
+            else {
 
-            System.out.println("Voulez-vous créer des monstres (o/n) ?");
-            fini = !sc.nextLine().equals("o");
+                System.out.println("Voulez-vous mettre des obstacles (o/n) ?");
+                fini = !sc.nextLine().equals("o");
 
-            while (!fini) {
-                Monstre mons = new Monstre();
-                this.createM(mons);
-                this.posM(DJ, mons);
-                System.out.println("Créer un auter monstre (o/n) ?");
-                if (!sc.nextLine().equals("o")) fini = true;
-            }
-            System.out.println("Voulez-vous créer des Equipements (o/n) ?");
-            fini = !sc.nextLine().equals("o");
-            while (!fini) {
-                Equipement equip = null;
-                boolean ok = false;
-                System.out.println("Selectionnez l'equipement voulu :\n\n1. Arme\n2. Armure");
-                switch(sc.nextLine()) {
-                    case "1":
-                        System.out.println("Quel type d'arme ?\n\n1. Arme courante\n2. Arme de guerre\n3. Arme a distance");
-                        switch (sc.nextLine()) {
-                            case "1":
-                                System.out.println("Quel arme a courante ?\n\n1. Baton\n2. Masse d'arme");
-                                switch (sc.nextLine()) {
-                                    case "1":
-                                        equip = new Baton();
-                                        ok = true;
-                                        break;
-                                    case "2":
-                                        equip = new MasseArme();
-                                        ok = true;
-                                        break;
-                                }
-                                break;
-                            case "2":
-                                System.out.println("Quel arme de guerre ?\n\n1. Epee longue\n2. Rapière");
-                                switch (sc.nextLine()) {
-                                    case "1":
-                                        equip = new EpeeLongue();
-                                        ok = true;
-                                        break;
-                                    case "2":
-                                        equip = new Rapiere();
-                                        ok = true;
-                                        break;
-                                }
-                                break;
-                            case "3":
-                                System.out.println("Quel arme a distance ?\n\n1. Arbalète légère\n2. Arc court\n3. Fronde");
-                                switch (sc.nextLine()) {
-                                    case "1":
-                                        equip = new ArbaleteLegere();
-                                        ok = true;
-                                        break;
-                                    case "2":
-                                        equip = new ArcCourt();
-                                        ok = true;
-                                        break;
-                                    case "3":
-                                        equip = new Fronde();
-                                        ok = true;
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
-                    case "2":
-                        System.out.println("Quel type d'armure ?\n\n1. Armure légère\n2. Armure lourde");
-                        switch (sc.nextLine()) {
-                            case "1":
-                                System.out.println("Quelle armure légère ?\n\n1. Armure d'écaille\n2. Demi plate");
-                                switch (sc.nextLine()) {
-                                    case "1":
-                                        equip = new ArmureEcaille();
-                                        ok = true;
-                                        break;
-                                    case "2":
-                                        equip = new DemiPlate();
-                                        ok = true;
-                                        break;
-                                }
-                                break;
-                            case "2":
-                                System.out.println("Quelle armure lourde ?\n\n1. Cote de maille\n2. Harnois");
-                                switch (sc.nextLine()) {
-                                    case "1":
-                                        equip = new CotteMaille();
-                                        ok = true;
-                                        break;
-                                    case "2":
-                                        equip = new Harnois();
-                                        ok = true;
-                                        break;
-                                }
-                                break;
-                        }
-                        break;
+                while (!fini) {
+                    this.addObst(DJ);
+                    System.out.println("Créer un auter obstacle (o/n) ?");
+                    if (!sc.nextLine().equals("o")) fini = true;
                 }
-                if (!ok) {
-                    System.out.println("/!\\ ATTENTION : Equipement non crée");
+
+                System.out.println("Voulez-vous créer des monstres (o/n) ?");
+                fini = !sc.nextLine().equals("o");
+
+                while (!fini) {
+                    Monstre mons = new Monstre();
+                    this.createM(mons);
+                    this.posM(DJ, mons);
+                    System.out.println("Créer un auter monstre (o/n) ?");
+                    if (!sc.nextLine().equals("o")) fini = true;
                 }
-                else {
-                    this.posEquip(DJ, equip);
+                System.out.println("Voulez-vous créer des Equipements (o/n) ?");
+                fini = !sc.nextLine().equals("o");
+                while (!fini) {
+                    Equipement equip = null;
+                    boolean ok = true;
+                    String texte = """
+                            Sélectionnez l'équipement voulu :
+                            Arme courante :
+                            \t1.  Baton
+                            \t2.  Masse d'arme
+                            Arme de guerre (-2 vit / +4 for) :
+                            \t3.  Epée longue
+                            \t4.  Rapière
+                            \t5.  Epée à 2 mains
+                            Arme à distance :
+                            \t6.  Fronde
+                            \t7.  Arbelète légère
+                            \t8.  Arc court
+                            Armure légère :
+                            \t9.  Armure d'écailles
+                            \t10. Demi plate
+                            Armure lourde (-4 vit) :
+                            \t11. Cotte de maille
+                            \t12. Harnois
+                            """;
+                    System.out.println(texte);
+                    switch (sc.nextLine()) {
+                        case "1" -> equip = new Baton();
+                        case "2" -> equip = new MasseArme();
+                        case "3" -> equip = new EpeeLongue();
+                        case "4" -> equip = new Rapiere();
+                        case "5" -> equip = new EpeeDeuxMains();
+                        case "6" -> equip = new Fronde();
+                        case "7" -> equip = new ArbaleteLegere();
+                        case "8" -> equip = new ArcCourt();
+                        case "9" -> equip = new ArmureEcaille();
+                        case "10" -> equip = new DemiPlate();
+                        case "11" -> equip = new CotteMaille();
+                        case "12" -> equip = new Harnois();
+                        case null, default -> ok = false;
+                    }
+                    if (!ok) {
+                        System.out.println("/!\\ ATTENTION : Equipement non crée");
+                    } else {
+                        this.posEquip(DJ, equip);
+                    }
+                    System.out.println("Créer un autre equipement (o/n)?");
+                    if (!sc.nextLine().equals("o")) fini = true;
                 }
-                System.out.println("Créer un autre equipement (o/n)?");
-                if (!sc.nextLine().equals("o")) fini = true;
             }
         }
         else {
             this.createDefaultDJ(DJ);
         }
-
-
     }
 
     private void createDefaultDJ(Donjon DJ)
@@ -286,7 +246,7 @@ public class MJ {
 
     public void posEquip(Donjon DJ, Equipement equip)
     {
-        String pos = choixPos(" de " + equip.getName());
+        String pos = choixPos("de " + equip.getName());
 
         boolean test = DJ.posE(pos, equip);
 
