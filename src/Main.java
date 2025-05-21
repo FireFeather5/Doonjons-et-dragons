@@ -81,16 +81,8 @@ public class Main {
 //        }
 
         //          A FAIRE
-        // améliorer l'affichage
-        //      - au niveau des dés (voir enoncé)
-        //      - à qui est le tour
-        //      - légende donjon
-        //      - pv restants apres attaque ?
-        // trucs à ajouter
-        //      - empecher que le programme s'arrête si mauvaise entrée (en cours)
-        //      - créer persos, monstre et autre en mode console (sans le main)
-        //      - choix ordre (initiative)
-        //      - différent symboles pour monstres
+        // Intervention du MJ apres une action
+        // Sorts
 
     }
 }
