@@ -20,7 +20,7 @@ import java.util.Scanner;
 
 import java.util.ArrayList;
 
-public class Personnage implements Entite {
+public class Personnage implements Vivant {
 
     private String _nom;
     private Races _race;
@@ -430,6 +430,11 @@ public class Personnage implements Entite {
         pos[0] = _pos.getAbscisse();
         pos[1] = _pos.getOrdonnee();
         return pos;
+    }
+
+    public int getIni()
+    {
+        return _stats.retIni();
     }
 
     public String aff()

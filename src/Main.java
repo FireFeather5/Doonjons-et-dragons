@@ -2,55 +2,69 @@ import de.De;
 import donjon.Donjon;
 import entite.Entite;
 import entite.Monstre;
-import entite.equipement.Equipement;
-import entite.equipement.arme.distance.ArcCourt;
-import entite.equipement.arme.guerre.EpeeLongue;
-import entite.equipement.armure.legere.ArmureEcaille;
 import entite.personnages.CreaPerso;
 import entite.personnages.Personnage;
+import entite.personnages.Vivant;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
 
+        ArrayList<Vivant> Viv = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Bienvenue dans DOOnjon et Dragons");
 
         MJ test = new MJ();
         Donjon tesssst = new Donjon();
-        Monstre mos = new Monstre();
-        Equipement arme = new EpeeLongue();
-        Equipement armee = new ArcCourt();
-        Equipement armure = new ArmureEcaille();
 
-        test.createDJ(tesssst);
-        tesssst.afficherDJ();
+        int nbMons = test.createDJ(tesssst);
+        int nbrViv = nbMons;
+
+        if (nbMons == 0)
+        {
+            Monstre demogordgon = new Monstre();
+            demogordgon.creaMonstre("Demogorgon", "XP", 1, new De(2, 8), new De(3, 6));
+            tesssst.posM("P14", demogordgon);
+            Viv.add(demogordgon);
+            Monstre dragonBleu = new Monstre();
+            dragonBleu.creaMonstre("Dragon Bleu", "B)", 8, new De(2, 8), new De(3, 6));
+            tesssst.posM("E4", dragonBleu);
+            Viv.add(dragonBleu);
+            nbrViv += 2;
+            tesssst.afficherDJ();
+        }
+        else {
+            for (int i = 1; i <= nbMons; i++)
+            {
+                Monstre mons = new Monstre();
+                test.createM(mons);
+                test.posM(tesssst, mons);
+                Viv.add(mons);
+                tesssst.afficherDJ();
+            }
+        }
 
 
-        System.out.println("\n\nCombien de personnages voulez vous créer ?");
+
+        System.out.println("\n\nCombien de personnages voulez-vous créer ?");
         int nbrPers = Integer.parseInt(sc.nextLine());
+        CreaPerso CreaPer = new CreaPerso();
 
-        Personnage[] persos = new Personnage[nbrPers];
+        nbrViv += nbrPers;
 
         for (int i = 0; i < nbrPers; i++) {
             System.out.println("Création Personnage " + (i+1));
-            CreaPerso creaPer = new CreaPerso();
             Personnage pers = new Personnage();
-            persos[i] = creaPer.CreaPers(pers);
-        }
-
-        test.createM(mos);
-        int nbrEnti = nbrPers + 1;
-
-        for (int j = 0; j < nbrPers; j++)
-        {
-            test.posJ(tesssst, persos[j]);
+            CreaPer.CreaPers(pers);
+            test.posJ(tesssst, pers);
+            Viv.add(pers);
             tesssst.afficherDJ();
         }
 
-        tesssst.afficherDJ();
+        /*tesssst.afficherDJ();
         test.addObst(tesssst);
         tesssst.afficherDJ();
         test.posM(tesssst, mos);
@@ -60,68 +74,54 @@ public class Main {
         test.posEquip(tesssst, armee);
         tesssst.afficherDJ();
         test.posEquip(tesssst, armure);
-        tesssst.afficherDJ();
-
-
-
-        /*Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard(), new Feminin());
-        Monstre pjpegfs = new Monstre();
-        Equipement arme = new EpeeLongue();
-        Equipement armee = new ArcCourt();
-        Equipement armure = new ArmureEcaille();
-
-        test.createDJ(tesssst);
-
-        tesssst.afficherDJ();
-
-        test.createM(pjpegfs);
-
-        tesssst.afficherDJ();
-        test.addObst(tesssst);
-        tesssst.afficherDJ();
-        test.posJ(tesssst, fesmfjeio);
-        tesssst.afficherDJ();
-        test.posM(tesssst, pjpegfs);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, arme);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, armee);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, armure);
         tesssst.afficherDJ();*/
 
 
-        for (int j = 0; j < nbrPers; j++)
-        {
-            System.out.println(persos[j].getStat());
+
+        for (int j = 0; j < nbrViv; j++) {
+            System.out.println(Viv.get(j).getStat());
         }
-        System.out.println(mos.getStat());
 
-        tesssst.afficherDJ();
+        De deIni = new De(1, 20);
 
+        ArrayList<Integer> ArrIni = new ArrayList<Integer>();
+        ArrayList<Vivant> VivTri = new ArrayList<Vivant>();
 
-        Entite[] Enti = new Entite[nbrEnti];
-
-        for (int j = 0; j < nbrPers; j++)
+        for (int j = 0; j < nbrViv; j++)
         {
-            Enti[j] = persos[j];
-        }
-        Enti[nbrEnti-1] = mos;
+            int init = Viv.get(j).getIni();
+            init += deIni.roll();
+            System.out.println(init);
 
-        De de = new De(1, 20);
-
-        for (int j = 0; j < nbrEnti; j++)
-        {
-            if (Enti[j].code() == 0)
-            {
-                //faire une deuxième interface (vivant) ?
-                //qui contient personnage et monstre
-                //et toutes les méthodes définies dedans
-                //pour ne pas à avoir à savoir forcément si personnage ou monstre
-                //on fait l'ordre de jeu, on balance tt dans un tableau
-                //et apres juste une boucle pour les tours
-                //ca devrait fonctionner
+            if (ArrIni.isEmpty()) {
+                ArrIni.add(init);
+                VivTri.add(Viv.get(j));
             }
+            else
+            {
+                boolean inVivTri = false;
+                for (int i = 0; i < ArrIni.size(); i++)
+                {
+                    if (!inVivTri) {
+                        if (init < ArrIni.get(i)) {
+                            ArrIni.add(i, init);
+                            VivTri.add(i, Viv.get(j));
+                            inVivTri = true;
+                        }
+                    }
+                }
+                if (!inVivTri)
+                {
+                    ArrIni.add(init);
+                    VivTri.add(Viv.get(j));
+                }
+            }
+        }
+
+        System.out.print("\n\n");
+        for (Vivant vi : VivTri)
+        {
+            System.out.println(vi.toString());
         }
 
 
@@ -129,7 +129,7 @@ public class Main {
         int val = 0;
 
         while (val == 0) {
-            for (int j = 0; j < nbrPers; j++)
+            for (int j = 0; j < nbrViv; j++)
             {
                 if (val == 0)
                 {
@@ -137,25 +137,12 @@ public class Main {
                         //faire une fonction (dans donjon ? )   A MODIFIER
                         System.out.print("\n\n\n");
                         System.out.print("    --> ");
-                        System.out.print(persos[j].getLilInfos());
-                        System.out.print("        ");
-                        System.out.print(mos.getLilInfos());
+                        System.out.print(VivTri.get(j).getLilInfos());
                         //_______________________________
                         tesssst.afficherDJ();
-                        System.out.println(persos[j].getInfos());
-                        //System.out.println(pjpegfs.getStat());
-                        val = persos[j].action(tesssst);
+                        System.out.println(VivTri.get(j).getInfos());
+                        val = VivTri.get(j).action(tesssst);
                     }
-                }
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                if (val == 0)
-                {
-                    tesssst.afficherDJ();
-                    System.out.println(mos.getStat());
-                    //System.out.println(fesmfjeio.getInfos());
-                    val = mos.action(tesssst);
                 }
             }
         }

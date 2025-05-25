@@ -9,7 +9,7 @@ import statistiques.Stats;
 
 import java.util.Scanner;
 
-public class Monstre implements Entite{
+public class Monstre implements Vivant {
     private String _espece;
     private String _symb;
     private int _numero = 1;    //a voir plus tard
@@ -35,7 +35,7 @@ public class Monstre implements Entite{
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        System.out.println("===== initialisation monstre =====");
+        System.out.println("\n\n===== initialisation monstre =====");
         _stats.pvt(_deChar.roll());
         _stats.vit(_deChar.roll());
         _stats.ini(_deChar.roll());
@@ -202,6 +202,10 @@ public class Monstre implements Entite{
         return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
+    public String getInfos() {
+        return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+    }
+
     public String getLilInfos()
     {
         return (aff() + "    " + toString() + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
@@ -213,6 +217,11 @@ public class Monstre implements Entite{
         pos[0] = _pos.getAbscisse();
         pos[1] = _pos.getOrdonnee();
         return pos;
+    }
+
+    public int getIni()
+    {
+        return _stats.retIni();
     }
 
     public String aff()
