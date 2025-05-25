@@ -118,6 +118,9 @@ public class Main {
                 //qui contient personnage et monstre
                 //et toutes les méthodes définies dedans
                 //pour ne pas à avoir à savoir forcément si personnage ou monstre
+                //on fait l'ordre de jeu, on balance tt dans un tableau
+                //et apres juste une boucle pour les tours
+                //ca devrait fonctionner
             }
         }
 
