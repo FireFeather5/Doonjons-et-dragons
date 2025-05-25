@@ -41,10 +41,6 @@ public class Personnage implements Entite {
 
     public Personnage()
     {
-        _nom = null;
-        _race = null;
-        _classe = null;
-        _gre = null;
         _stock = new ArrayList<>();
         _equipee = new ArrayList<>();
         _stats = new Stats();

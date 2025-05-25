@@ -35,7 +35,7 @@ public class Monstre implements Entite{
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-
+        System.out.println("===== initialisation monstre =====");
         _stats.pvt(_deChar.roll());
         _stats.vit(_deChar.roll());
         _stats.ini(_deChar.roll());
