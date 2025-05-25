@@ -138,12 +138,12 @@ package entite
                 + {abstract} genrer(mot String) : String
             }
 
-            class Feminin
+            class Feminin implements Genre
             {
                 + genrer(mot String) : String
             }
 
-            class Masculin
+            class Masculin implements Genre
             {
                 + genrer(mot String) : String
             }
@@ -339,6 +339,7 @@ package entite
 
 class MJ
 {
+    - _monstreCrees : String[*]
     + <<create>> MJ()
     + createDJ(DJ : Donjon)
     + createDefaultDJ(DJ : Donjon)
@@ -473,17 +474,25 @@ Monstre .> Donjon : <<call/use>>
 
 Personnage "*" *--> "1\n_race" Races : fait parti de >
 Personnage "*" *--> "1\n_classe" Classe : fait parti de >
+Personnage "*" *--> "1\n_gre" Genre : a un >
 Personnage "*" *--> "1\n_deChar" De : a des caractéristiques >
 Personnage "*" *--> "1\n_stats" Stats : a des statistiques >
 Personnage "*" *--> "1\n_pos" Position : a une position >
 Personnage "*" o--> "1\n_peutRamEqu" Equipement : peut ramasser >
-Personnage "*" *--> "1\n_stock" Equipement : a dans son inventaire >
+Personnage "*" *--> "*\n_stock" Equipement : a dans son inventaire >
 Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
 Personnage "*" *--> "*\n-_sorts" Sort : possède >
 
 Personnage .> Monstre : <<use>>
 Personnage .> Donjon : <<call/use>>
 Personnage .> Equipement : <<call/use>>
+
+
+CreaPerso "*" *--> "1\n_pers" Personnage : crée un >
+CreaPerso "*" *--> "1\n_race" Races : pers fait parti de >
+CreaPerso "*" *--> "1\n_classe" Classe : pers fait parti de >
+CreaPerso "*" *--> "1\n_gre" Genre : pers a un >
+
 
 
 Obstacle "*" *--> "1\n_pos" Position : a une position >

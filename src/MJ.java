@@ -25,8 +25,8 @@ public class MJ {
 
     public void createDJ(Donjon DJ)
     {
-        System.out.println("Voulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjons par défaut sera utilisé)");
-        if (sc.nextLine().equals("o")) {
+        //System.out.println("Voulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjons par défaut sera utilisé)");
+        //if (sc.nextLine().equals("o")) {
             System.out.println("\n\ntaille cote 1");
             String tc1s = sc.nextLine();
             System.out.println("taille cote 2");
@@ -56,7 +56,7 @@ public class MJ {
             if (sc.nextLine().equals("n")) {
                 this.createDJ(DJ);
             }
-            else {
+            /*else {                    A MODIFIER -> LES MONSTRES DOIVENT ETRE INSTANCIES DANS LE MAIN (SINON PAS ACCES POUR LE RESTE)
 
                 System.out.println("Voulez-vous mettre des obstacles (o/n) ?");
                 fini = !sc.nextLine().equals("o");
@@ -130,7 +130,7 @@ public class MJ {
         }
         else {
             this.createDefaultDJ(DJ);
-        }
+        }*/
     }
 
     private void createDefaultDJ(Donjon DJ)
