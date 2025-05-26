@@ -390,8 +390,8 @@ public class Personnage implements Vivant {
 
     public String comAction()
     {
-        System.out.println("Commentez l'action effectuée");
-        return sc.nextLine();
+        System.out.println(toString() + " commente l'action effectuée");
+        return toString() + " - " + sc.nextLine();
     }
 
     public String getStat() {
@@ -435,6 +435,11 @@ public class Personnage implements Vivant {
     public int getIni()
     {
         return _stats.retIni();
+    }
+
+    public int getPV()
+    {
+        return _stats.retPv();
     }
 
     public String aff()

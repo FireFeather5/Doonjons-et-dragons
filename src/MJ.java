@@ -254,7 +254,7 @@ public class MJ {
 
     public String comAction()
     {
-        System.out.println("Commentez l'action effectuée");
-        return sc.nextLine();
+        System.out.println("Le MJ commente l'action effectuée");
+        return "MJ - " + sc.nextLine();
     }
 }

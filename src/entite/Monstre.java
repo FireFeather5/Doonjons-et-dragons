@@ -198,6 +198,12 @@ public class Monstre implements Vivant {
         return val;
     }
 
+    public String comAction()
+    {
+        System.out.println(toString() + " commente l'action effectuée");
+        return toString() + " - " + sc.nextLine();
+    }
+
     public String getStat() {
         return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
@@ -222,6 +228,11 @@ public class Monstre implements Vivant {
     public int getIni()
     {
         return _stats.retIni();
+    }
+
+    public int getPV()
+    {
+        return _stats.retPv();
     }
 
     public String aff()
