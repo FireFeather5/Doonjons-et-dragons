@@ -4,7 +4,7 @@ import donjon.Donjon;
 import entite.Entite;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
-import entite.personnages.classes.Classe;
+import entite.personnages.classes.*;
 import entite.personnages.genre.Genre;
 import entite.personnages.races.Races;
 import entite.equipement.Equipement;
@@ -13,12 +13,14 @@ import entite.equipement.arme.guerre.ArmeGuerre;
 import entite.equipement.armure.Armure;
 import entite.equipement.armure.lourde.ArmureLourde;
 import de.*;
+import sort.*;
 import statistiques.Position;
 import statistiques.Stats;
 
 import java.util.Scanner;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class Personnage implements Vivant {
 
@@ -36,6 +38,7 @@ public class Personnage implements Vivant {
 
     private final ArrayList<Equipement> _stock;
     private final ArrayList<Equipement> _equipee;
+    private final ArrayList<Sort> _sorts;
 
     Scanner sc = new Scanner(System.in);
 
@@ -45,6 +48,7 @@ public class Personnage implements Vivant {
         _equipee = new ArrayList<>();
         _stats = new Stats();
         _pos = new Position();
+        _sorts = new ArrayList<>();
     }
 
     public void CreaPers(String nom, Races race, Classe classe, Genre gre)
@@ -53,6 +57,7 @@ public class Personnage implements Vivant {
         _race = race;
         _classe = classe;
         _gre = gre;
+
 
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
@@ -68,6 +73,15 @@ public class Personnage implements Vivant {
             _stock.add(equi);
         }
 
+
+        if (classe instanceof Clerc) {
+            this._sorts.add(new Guerison());
+        }
+        else if (classe instanceof Magicien) {
+            this._sorts.add(new Guerison());
+            this._sorts.add(new BoogieWoogie());
+            this._sorts.add(new ArmeMagique());
+        }
     }
 
     public void position(int pos1, int pos2)
@@ -81,7 +95,7 @@ public class Personnage implements Vivant {
         //doit pouvoir etre amélioré mais fonctionne pour le moment
         if (_peutRamasser)
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3");
+            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3\nSorts : 4");
             try {
                 int choix = Integer.parseInt(sc.nextLine());
 
@@ -97,6 +111,9 @@ public class Personnage implements Vivant {
                         break;
                     case 3:
                         ramasser(DJ);
+                        break;
+                    case 4:
+                        lancerSort(DJ);
                         break;
                     default:
                         System.out.println("Mauvais choix d'action");
@@ -116,7 +133,7 @@ public class Personnage implements Vivant {
         }
         else
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2");
+            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3");
 
             try {
                 int choix = Integer.parseInt(sc.nextLine());
@@ -129,6 +146,9 @@ public class Personnage implements Vivant {
                         break;
                     case 2:
                         sEquiper();
+                        break;
+                    case 3:
+                        lancerSort(DJ);
                         break;
                     default:
                         System.out.println("Mauvais choix d'action");
@@ -271,6 +291,137 @@ public class Personnage implements Vivant {
         }
     }
 
+    public void lancerSort(Donjon DJ) {
+        if (!this._sorts.isEmpty()) {
+            int choix = 1;
+            System.out.println("Liste des sorts :");
+            for (Sort sort : this._sorts) {
+                System.out.println(choix++ + ". " + sort.getNom() + " : " + sort.getDescription());
+            }
+            System.out.println("Lequel voulez-vous lancer ?");
+            try {
+                choix = sc.nextInt();
+                if (this._classe instanceof Clerc) {
+                    if (choix == 1) {
+                        int choixPerso = 1;
+                        for (Personnage perso : DJ.getListePerso()) {
+                            System.out.println(choixPerso + ". " + perso._nom);
+                        }
+                        choixPerso = sc.nextInt();
+                        ((Guerison) this._sorts.getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
+                    }
+                    else {
+                        throw new Exception();
+                    }
+                }
+                else if (this._classe instanceof Magicien) {
+                    switch (choix) {
+                        case 1:
+                            int choixPerso = 1;
+                            for (Personnage perso : DJ.getListePerso()) {
+                                System.out.println("\t" + choixPerso + ". " + perso._nom);
+                                choixPerso++;
+                            }
+                            System.out.println("Choisissez un allie a soigner :");
+                            choixPerso = sc.nextInt();
+                            ((Guerison) this._sorts.getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
+                            break;
+                        case 2:
+                            int choixEntite1 = 1;
+
+                            for (Personnage perso : DJ.getListePerso()) {
+                                System.out.println("\t" + choixEntite1 + ". " + perso._nom);
+                                choixEntite1++;
+                            }
+                            int choixEntite2 = choixEntite1;
+                            for (Monstre mons : DJ.getListeMonstre()) {
+                                System.out.println("\t" + choixEntite2 + ". " + mons.getNom());
+                                choixEntite2++;
+                            }
+
+                            System.out.println("Choisissez la première entité à téléporter :");
+                            choixEntite1 = sc.nextInt();
+                            System.out.println("Choisissez la deuxième entité à téléporter :");
+                            choixEntite2 = sc.nextInt();
+
+                            if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 <= DJ.getListePerso().size()) {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListePerso().get(choixEntite2-1), DJ);
+                            }
+                            else if (choixEntite1 > DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1-DJ.getListePerso().size()), DJ.getListeMonstre().get(choixEntite2-1-DJ.getListePerso().size()), DJ);
+                            }
+                            else if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1-DJ.getListePerso().size()), DJ);
+                            }
+                            else {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1-DJ.getListePerso().size()), DJ.getListePerso().get(choixEntite2-1), DJ);
+                            }
+                            break;
+                        case 3:
+                            int choixArme = 1;
+                            for (Personnage perso : DJ.getListePerso()) {
+                                System.out.println("Personnage : " + perso._nom);
+                                for (Equipement equipement : perso._stock) {
+                                    if (equipement instanceof Arme) {
+                                        System.out.println("\t" + choixArme++ + ". " + equipement.getName());
+                                    }
+                                }
+                                for (Equipement equipement : perso._equipee) {
+                                    if (equipement instanceof Arme) {
+                                        System.out.println("\t" + "(Equipée) " + choixArme++ + equipement.getName());
+                                    }
+                                }
+                            }
+                            System.out.println("Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
+                            choixArme = sc.nextInt();
+                            boolean ok = false;
+                            int idArme = 1;
+                            for (Personnage perso : DJ.getListePerso()) {
+                                for (Equipement equipement : perso._stock) {
+                                    if (equipement instanceof Arme) {
+                                        if (choixArme == idArme) {
+                                            ((Arme) equipement).bonusMagique();
+                                            ok = true;
+                                            break;
+                                        }
+                                        else {
+                                            idArme++;
+                                        }
+                                    }
+                                }
+                                for (Equipement equipement : perso._equipee) {
+                                    if (equipement instanceof Arme) {
+                                        if (choixArme == idArme) {
+                                            ((Arme) equipement).bonusMagique();
+                                            ok = true;
+                                            break;
+                                        }
+                                        else {
+                                            idArme++;
+                                        }
+                                    }
+                                }
+                                if (!ok) {
+                                    throw new Exception();
+                                }
+                            }
+                            break;
+                        default:
+                            throw new Exception();
+                    }
+                }
+            }
+            catch (Exception e) {
+                System.out.println("Choix invalide : " + e);
+                lancerSort(DJ);
+            }
+
+        }
+        else {
+            System.out.println("Vous n'avez pas de sort...");
+        }
+    }
+
     private Arme getArmeEquipe() {
         for (Equipement equip : this._equipee) {
             if (equip instanceof Arme) {
@@ -302,7 +453,7 @@ public class Personnage implements Vivant {
             if (arme != null) {
                 System.out.print("\n");
                 this._deChar.changeDe(1, 20);
-                int touche = this._deChar.roll();
+                int touche = this._deChar.roll() + arme.getBonusMagique();
 
                 if (arme instanceof ArmeDistance) {
                     touche += this._stats.retDex();
@@ -318,7 +469,7 @@ public class Personnage implements Vivant {
                             if (touche > mons.getArmorClass()) {
                                 System.out.println(this._nom + " perce l'armure de " + mons.toString() + " (jet de touche : " + touche + ").");
                                 this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
-                                int atk = this._deChar.roll();
+                                int atk = this._deChar.roll() + arme.getBonusMagique();
                                 System.out.println(this._nom + " fait " + atk + " dégats à " + mons.toString() + " !");
                                 val = mons.seFaitAttaquer(atk, DJ);
                             } else {
@@ -371,6 +522,15 @@ public class Personnage implements Vivant {
             System.out.println("\n" + toString() + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
         return val;
+    }
+
+    public void seSoigner(int soin) {
+        if (this._stats.retPv() + soin > this._stats.retPvT()) {
+            this._stats.pv(this._stats.retPvT());
+        }
+        else {
+            this._stats.pv(this._stats.retPv() + soin);
+        }
     }
 
     public void peutRamasser(Equipement equip)

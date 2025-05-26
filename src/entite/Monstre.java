@@ -224,6 +224,10 @@ public class Monstre implements Vivant {
         return _stats.retIni();
     }
 
+    public String getNom() {
+        return this._espece;
+    }
+
     public String aff()
     {
         if (_symb.length() == 3) {
