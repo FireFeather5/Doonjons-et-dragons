@@ -35,8 +35,8 @@ public class De {
         for (int i = 0; i < this._number; i++) {
             total += rand.nextInt(1, this._faces + 1);
         }
-        System.out.println("\n\nappuyez sur entrée pour lancer " + _name);
-        String sertaR = sc.nextLine();
+        /*System.out.println("\n\nappuyez sur entrée pour lancer " + _name);
+        String sertaR = sc.nextLine();*/
         System.out.println("Vous avez fait " + total);
 
         return total;

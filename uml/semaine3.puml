@@ -36,10 +36,12 @@ package entite
     class Monstre implements Entite
     {
         - _espece : String
+        - _symb : String
         - _numero : Integer
         - _portAtt : Integer
         + <<create>> Monstre()
-        + creaMonstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
+        + creaMonstre(espece : String, symb : String, portAtt : Integer, degAtt : De, charac : De)
+        + multiMonstre()
         + position(pos1 : Integer, pos2 : Integer)
         + action(DJ : Donjon) : Integer
         + seDeplacer(DJ Donjon)
@@ -47,10 +49,10 @@ package entite
         + getArmorClass() : Integer
         + seFaitAttaquer(degats : Integer, DJ Donjon) : Integer
         + getStat() : String
+        + getLilInfos() : String
         + getPos() : Integer[2]
         + aff() : String
         + code() : Integer
-        + getNom() : String
         + toString() : String
     }
 
@@ -129,11 +131,40 @@ package entite
             }
         }
 
+        package genre
+        {
+            interface Genre <<interface>>
+            {
+                + {abstract} genrer(mot String) : String
+            }
+
+            class Feminin implements Genre
+            {
+                + genrer(mot String) : String
+            }
+
+            class Masculin implements Genre
+            {
+                + genrer(mot String) : String
+            }
+        }
+
+        class CreaPerso
+        {
+            - _nom : String
+            + <<create>> CreaPerso()
+            + CreaPers(pers : Personnage) : Personnage
+            + Race()
+            + Classe()
+            + Genre()
+        }
+
         class Personnage
         {
             - _nom : String
             - _peutRamasser : Boolean
-            + <<create>> Personnage(nom : String, race : Races, classe : Classe)
+            + <<create>> Personnage()
+            + creaPers(nom : String, race : Races, classe : Classe, gre : Genre)
             + position(pos1 : Integer, pos2 : Integer)
             + action(DJ : Donjon) : Integer
             + seDplacer(DJ : Donjon)
@@ -144,12 +175,14 @@ package entite
             + attaquer(cas : String, DJ Donjon) : Integer
             + getArmorClass() : Integer
             + seFaitAttaquer(degats : Integer, DJ Donjon) : Integer
+            + peutRamasser(equip : Equipement)
             + ramasser(DJ : Donjon)
             + comAction() : String
             + getStat() : String
             + getEquipee() : String
             + getStock() : String
             + getInfos() : String
+            + getLilInfos() : String
             + getPos() : Integer[2]
             + aff() : String
             + code() : Integer
@@ -306,8 +339,10 @@ package entite
 
 class MJ
 {
+    - _monstreCrees : String[*]
     + <<create>> MJ()
     + createDJ(DJ : Donjon)
+    + createDefaultDJ(DJ : Donjon)
     + choixPos(txt : String) : String
     + addObst(DJ : Donjon)
     + createM(mons : Monstre)
@@ -439,17 +474,25 @@ Monstre .> Donjon : <<call/use>>
 
 Personnage "*" *--> "1\n_race" Races : fait parti de >
 Personnage "*" *--> "1\n_classe" Classe : fait parti de >
+Personnage "*" *--> "1\n_gre" Genre : a un >
 Personnage "*" *--> "1\n_deChar" De : a des caractéristiques >
 Personnage "*" *--> "1\n_stats" Stats : a des statistiques >
 Personnage "*" *--> "1\n_pos" Position : a une position >
 Personnage "*" o--> "1\n_peutRamEqu" Equipement : peut ramasser >
-Personnage "*" *--> "1\n_stock" Equipement : a dans son inventaire >
+Personnage "*" *--> "*\n_stock" Equipement : a dans son inventaire >
 Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
 Personnage "*" *--> "*\n-_sorts" Sort : possède >
 
 Personnage .> Monstre : <<use>>
 Personnage .> Donjon : <<call/use>>
 Personnage .> Equipement : <<call/use>>
+
+
+CreaPerso "*" *--> "1\n_pers" Personnage : crée un >
+CreaPerso "*" *--> "1\n_race" Races : pers fait parti de >
+CreaPerso "*" *--> "1\n_classe" Classe : pers fait parti de >
+CreaPerso "*" *--> "1\n_gre" Genre : pers a un >
+
 
 
 Obstacle "*" *--> "1\n_pos" Position : a une position >

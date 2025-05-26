@@ -16,4 +16,9 @@ public class Nain implements Races {
     {
         return _stat;
     }
+
+    public String getRa()
+    {
+        return "Nain";
+    }
 }

@@ -5,6 +5,7 @@ import entite.Entite;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.Classe;
+import entite.personnages.genre.Genre;
 import entite.personnages.races.Races;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
@@ -19,11 +20,12 @@ import java.util.Scanner;
 
 import java.util.ArrayList;
 
-public class Personnage implements Entite {
+public class Personnage implements Vivant {
 
-    private final String _nom;
-    private final Races _race;
-    private final Classe _classe;
+    private String _nom;
+    private Races _race;
+    private Classe _classe;
+    private Genre _gre;
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
     //pv, for, dex, vit, ini
@@ -37,25 +39,35 @@ public class Personnage implements Entite {
 
     Scanner sc = new Scanner(System.in);
 
-
-    public Personnage(String nom, Races race, Classe classe)
+    public Personnage()
     {
-        _nom = nom;
-        _race = race;
-        _classe = classe;
         _stock = new ArrayList<>();
         _equipee = new ArrayList<>();
         _stats = new Stats();
         _pos = new Position();
+    }
+
+    public void CreaPers(String nom, Races race, Classe classe, Genre gre)
+    {
+        _nom = nom;
+        _race = race;
+        _classe = classe;
+        _gre = gre;
 
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
 
-        System.out.println("===== initialisation perso =====");
+        System.out.println("===== caractéristiques perso =====");
         _stats.forc(_deChar.roll() + 3);
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
         _stats.ini(_deChar.roll() + 3);
+
+        for(Equipement equi : _classe.getEquiBase())
+        {
+            _stock.add(equi);
+        }
+
     }
 
     public void position(int pos1, int pos2)
@@ -404,7 +416,12 @@ public class Personnage implements Entite {
 
     public String getInfos()
     {
-        return getStat() + "\n\nEquipement :\n" + getEquipee() + "\nStock :\n" + getStock();
+        return getStat() + "\n\nEquipement :\n" + getEquipee() + "\nInventaire :\n" + getStock();
+    }
+
+    public String getLilInfos()
+    {
+        return (aff() + "    " + _nom + " (" + _gre.genrer(_classe.getCla()) + " " + _gre.genrer(_race.getRa()) + " " + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
     }
 
     public int[] getPos()
@@ -413,6 +430,11 @@ public class Personnage implements Entite {
         pos[0] = _pos.getAbscisse();
         pos[1] = _pos.getOrdonnee();
         return pos;
+    }
+
+    public int getIni()
+    {
+        return _stats.retIni();
     }
 
     public String aff()
