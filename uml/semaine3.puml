@@ -1,0 +1,492 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle Bold
+skinparam style strictuml
+hide empty members
+
+
+
+package de
+{
+    class De
+    {
+        - _name : String
+        - _number : Integer
+        - _faces : Integer
+        + <<create>> De()
+        + <<create>> De(faces : Integer)
+        + <<create>> De(number : Integer, faces : Integer)
+        + roll() : Integer
+        + changeDe(nbDe : Integer, nbFacesDe : Integer)
+        + toString() : String
+    }
+}
+
+package entite
+{
+
+    interface Entite <<interface>>
+                {
+                    + {abstract} aff() : String
+                    + {abstract} code() : Integer
+                }
+
+    class Monstre implements Entite
+    {
+        - _espece : String
+        - _numero : Integer
+        - _portAtt : Integer
+        + <<create>> Monstre()
+        + creaMonstre(espece : String, portAtt : Integer, degAtt : De, charac : De)
+        + position(pos1 : Integer, pos2 : Integer)
+        + action(DJ : Donjon) : Integer
+        + seDeplacer(DJ Donjon)
+        + attaquer(cas String, DJ Donjon) : Integer
+        + getArmorClass() : Integer
+        + seFaitAttaquer(degats : Integer, DJ Donjon) : Integer
+        + getStat() : String
+        + getPos() : Integer[2]
+        + aff() : String
+        + code() : Integer
+        + getNom() : String
+        + toString() : String
+    }
+
+    class Obstacle implements Entite
+    {
+        + <<create>> Obstacle
+        + position(pos1 : Integer, pos2 : Integer)
+        + addPos(pos : String, DJ : Donjon)
+        + aff() : String
+        + code() : Integer
+    }
+
+    package personnages
+    {
+        package classes
+        {
+            interface Classe <<interface>>
+            {
+                + {abstract} pv() : Integer
+            }
+
+            class Clerc implements Classe
+            {
+                - {static} _pv : Integer
+                + pv() : Integer
+            }
+
+            class Guerrier implements Classe
+            {
+                - {static} _pv : Integer
+                + pv() : Integer
+            }
+
+            class Magicien implements Classe
+            {
+                - {static} _pv : Integer
+                + pv() : Integer
+            }
+
+            class Roublard implements Classe
+            {
+                - {static} _pv : Integer
+                + pv() : Integer
+            }
+        }
+
+        package races
+        {
+            interface Races <<interface>>
+            {
+                + {abstract} stat() : Stats
+            }
+
+            class Elfes implements Races
+            {
+                + <<create>> Elfes()
+                + stat() : Stats
+            }
+
+            class Halfelins implements Races
+            {
+                + <<create>> Halfelins()
+                + stat() : Stats
+            }
+
+            class Humain implements Races
+            {
+                + <<create>> Humain()
+                + stat() : Stats
+            }
+
+            class Nain implements Races
+            {
+                + <<create>> Nain()
+                + stat() : Stats
+            }
+        }
+
+        class Personnage
+        {
+            - _nom : String
+            - _peutRamasser : Boolean
+            + <<create>> Personnage(nom : String, race : Races, classe : Classe)
+            + position(pos1 : Integer, pos2 : Integer)
+            + action(DJ : Donjon) : Integer
+            + seDplacer(DJ : Donjon)
+            + seDesequiper(equipement : Equipement)
+            + sEquiper(equipement : Equipement)
+            - getArmeEquipe() : Arme
+            - getArmureEquipe() : Armure
+            + attaquer(cas : String, DJ Donjon) : Integer
+            + getArmorClass() : Integer
+            + seFaitAttaquer(degats : Integer, DJ Donjon) : Integer
+            + ramasser(DJ : Donjon)
+            + comAction() : String
+            + getStat() : String
+            + getEquipee() : String
+            + getStock() : String
+            + getInfos() : String
+            + getPos() : Integer[2]
+            + aff() : String
+            + code() : Integer
+            + lancerSort(DJ : Donjon)
+            + seSoigner(soin : Integer)
+            + toString() : String
+        }
+    }
+
+    package equipement
+    {
+        abstract class Equipement <<abstract>>
+        {
+            - _name : String
+            - _speedMalus : Integer
+            - _forceBonus : Integer
+            + <<create>> Equipement(name : String, speedMalus : Integer, forceBonus : Integer)
+            + <<create>> Equipement(name : String, speedMalus : Integer)
+            + <<create>> Equipement(name : String)
+            + getName() : String
+            + getSpeedMalus() : Integer
+            + getForceBonus() : Integer
+            + position(pos1 : Integer, pos2 : Integer)
+            + aff() : String
+            + code() : Integer
+        }
+
+        package arme
+        {
+            abstract class Arme <<abstract>>
+            {
+                - _nbDe : Integer
+                - _nbFacesDe : Integer
+                - _range : Integer
+                + <<create>> Arme(name : String, nbDe : Integer, nbFacesDe : Integer, range : Integer, speedMalus : Integer, forceBonus : Integer)
+                + <<create>> Arme(name : String, nbDe : Integer, nbFacesDe : Integer, range : Integer)
+                + getDegats() : Integer[2]
+                + getRange() : Integer
+                + bonusMagique()
+                + getBonusMagique : Integer
+                + toString() : String
+            }
+
+            package courante
+            {
+                abstract class ArmeCourante <<abstract>>
+                {
+                    + <<create>> ArmeCourante(name : String, nbDe : Integer, nbFacesDe : Integer)
+                }
+
+                class Baton extends ArmeCourante
+                {
+                    + <<create>> Baton()
+                }
+
+                class MasseArme extends ArmeCourante
+                {
+                    + <<create>> MasseArme()
+                }
+            }
+
+            package distance
+            {
+                abstract class ArmeDistance <<abstract>>
+                {
+                    + <<create>> ArmeDistance(name : String, nbDe : Integer, nbFacesDe : Integer)
+                }
+
+                class ArbaleteLegere extends ArmeDistance
+                {
+                    + <<create>> ArbaleteLegere()
+                }
+
+                class ArcCourt extends ArmeDistance
+                {
+                    + <<create>> ArcCourt()
+                }
+
+                class Fronde extends ArmeDistance
+                {
+                    + <<create>> Fronde()
+                }
+            }
+
+            package guerre
+            {
+                abstract class ArmeGuerre <<abstract>>
+                {
+                    + <<create>> ArmeGuerre(name : String, nbDe : Integer, nbFacesDe : Integer)
+                }
+
+                class EpeeLongue extends ArmeGuerre
+                {
+                    + <<create>> EpeeLongue()
+                }
+
+                class Rapiere extends ArmeGuerre
+                {
+                    + <<create>> Rapiere()
+                }
+            }
+        }
+
+        package armure
+        {
+            abstract class Armure <<abstract>>
+            {
+                - _armorClass : Integer
+                + <<create>> Armure(name : String, armorClass : Integer, speedMalus : Integer)
+                + <<create>> Armure(name : String, armorClass : Integer)
+                + getArmorClass() : Integer
+                + toString() : String
+            }
+
+            package legere
+            {
+                abstract class ArmureLegere <<abstract>>
+                {
+                    + <<create>> ArmureLegere(name : String, armorClass : Integer)
+                }
+
+                class ArmureEcaille extends ArmureLegere
+                {
+                    + <<create>> ArmureEcaille()
+                }
+
+                class DemiPlate extends ArmureLegere
+                {
+                    + <<create>> DemiPlate()
+                }
+            }
+
+            package lourde
+            {
+                abstract class ArmureLourde
+                {
+                    + <<create>> ArmureLourde(name : String, armorClass : Integer)
+                }
+
+                class CotteMaille extends ArmureLourde
+                {
+                    + <<create>> CotteMaille()
+                }
+
+                class Harnois extends ArmureLourde
+                {
+                    + <<create>> Harnois()
+                }
+            }
+        }
+    }
+}
+
+
+class MJ
+{
+    + <<create>> MJ()
+    + createDJ(DJ : Donjon)
+    + choixPos(txt : String) : String
+    + addObst(DJ : Donjon)
+    + createM(mons : Monstre)
+    + posJ(DJ : Donjon, perso : Personnage)
+    + posM(DJ : Donjon, mons : Monstre)
+    + posEquip(DJ : Donjon, equip : Equipement)
+    + presContext() : String
+    + comAction() : String
+}
+
+package donjon
+{
+    class Donjon
+    {
+        - _tc1 : Integer
+        - _tc2 : Integer
+        - {static} _ord : String[26]
+        + <<create>> Donjon()
+        + creaDonjon(tc1 : Integer, tc2 : Integer)
+        + posInt(pos : String) : Integer[2]
+        + addObst(pos : String, obst Obstacle) : Boolean
+        + posJ(pos : String, perso : Personnage) : Boolean
+        + posM(pos : String, mons : Monstre) : Boolean
+        + posE(pos : String, equip : Equipement) : Boolean
+        + posE(pc : Integer[2], equip : Equipement) : Boolean
+        + getMons(pc : Integer[2]) : Monstre
+        + getPers(pc : Integer[2]) : Personnage
+        + ramasser(equip : Equipement)
+        + tuerMonstre(mons : Monstre) : Integer
+        + tuerPerso(pers : Personnage) : Integer
+        + emptyCase(pc : Integer[2])
+        + getListePerso() : Personnage[]
+        + getListeMonstre() : Monstre[]
+        + afficherDJ()
+    }
+
+    class AffichDJ
+    {
+        - _tc1 : Integer
+        - _tc2 : Integer
+        - _donjon : String[*]
+        - {static} _ord : String[26]
+        + <<create>> AffichDJ(tc1 : Integer, tc2 : Integer)
+        + rempDJ(dj : Entite[][])
+        + afficherDJ(dj : Entite[][])
+    }
+}
+
+package statistiques
+{
+    class Position
+    {
+        - _abscisse : Integer
+        - _ordonnee : Integer
+        + <<create>> Position()
+        + changPos(pos1 : Integer, pos2 : Integer)
+        + getAbscisse() : Integer
+        + getOrdonnee() : Integer
+    }
+
+    class Stats
+    {
+        - _pointDeVieTot : Integer
+        - _pointDeVie : Integer
+        - _force : Integer
+        - _dexterite : Integer
+        - _vitesse : Integer
+        - _initiative : Integer
+        - _armure : Integer
+        + <<create>> Stats()
+        + pvt(st : Integer)
+        + pv(st : Integer)
+        + forc(st : Integer)
+        + dex(st : Integer)
+        + vit(st : Integer)
+        + ini(st : Integer)
+        + arm(st : Integer)
+        + add(other : Stats)
+        + retPvT() : Integer
+        + retPv() : Integer
+        + retFor() : Integer
+        + retDex() : Integer
+        + retVit() : Integer
+        + retIni() : Integer
+        + retArm() : Integer
+
+    }
+}
+
+package sort
+{
+    interface Sort <<interface>>
+    {
+        + getNom() : String
+        + getDescription() : String
+    }
+    class ArmeMagique implements Sort
+    {
+        + getNom() : String
+        + getDescription() : String
+        + lancer(arme : Arme)
+    }
+    class BoogieWoogie implements Sort
+    {
+        + getNom() : String
+        + getDescription() : String
+        + lancer(perso1 : Personnage, perso2 : Personnage)
+        + lancer(monstre1 : Monstre, monstre2 : Monstre)
+        + lancer(perso : Personnage, monstre : Monstre)
+        + lancer(monstre : Monstre, perso : Personnage)
+    }
+    class Guerison implements Sort
+    {
+        + getNom() : String
+        + getDescription() : String
+        + lancer(perso : Personnage)
+    }
+}
+
+
+Monstre "*" *--> "1\n_degAtt" De : a une puissance d'attaque >
+Monstre "*" *--> "1\n_deChar" De : a des caractéristiques >
+Monstre "*" *--> "1\n_stats" Stats : a des statistiques >
+Monstre "*" *--> "1\n_pos" Position : a une position >
+
+Monstre .> Personnage : <<use>>
+Monstre .> Donjon : <<call/use>>
+
+
+Personnage "*" *--> "1\n_race" Races : fait parti de >
+Personnage "*" *--> "1\n_classe" Classe : fait parti de >
+Personnage "*" *--> "1\n_deChar" De : a des caractéristiques >
+Personnage "*" *--> "1\n_stats" Stats : a des statistiques >
+Personnage "*" *--> "1\n_pos" Position : a une position >
+Personnage "*" o--> "1\n_peutRamEqu" Equipement : peut ramasser >
+Personnage "*" *--> "1\n_stock" Equipement : a dans son inventaire >
+Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
+Personnage "*" *--> "*\n-_sorts" Sort : possède >
+
+Personnage .> Monstre : <<use>>
+Personnage .> Donjon : <<call/use>>
+Personnage .> Equipement : <<call/use>>
+
+
+Obstacle "*" *--> "1\n_pos" Position : a une position >
+
+Obstacle .> Donjon : <<call/use>>
+
+
+Equipement "*" *--> "1\n_pos" Position : a une position >
+
+
+Donjon "*" *--> "1\n_donjon" Entite : le donjon est composé de >
+Donjon "*" *--> "1\n_affDJ" AffichDJ : affiche le donjon >
+Donjon "*" *--> "1\n_equip" Equipement : liste des équipements >
+Donjon "*" *--> "1\n_pers" Personnage : liste des personnages >
+Donjon "*" *--> "1\n_mons" Monstre : liste des monstres >
+
+Donjon .> Personnage : <<call/use>>
+Donjon .> Monstre : <<call/use>>
+Donjon .> Obstacle : <<call/use>>
+Donjon .> Equipement : <<call/use>>
+
+
+MJ .> Donjon : <<use/call>>
+MJ .> Personnage : <<use/call>>
+MJ .> Monstre : <<instantiate/use/call>>
+
+
+Personnage .|> Entite
+Equipement .|> Entite
+
+
+Arme -up-|> Equipement
+ArmeCourante -up-|> Arme
+ArmeDistance -up-|> Arme
+ArmeGuerre -up-|> Arme
+Armure -up-|> Equipement
+ArmureLegere -up-|> Armure
+ArmureLourde -up-|> Armure
+
+@enduml
