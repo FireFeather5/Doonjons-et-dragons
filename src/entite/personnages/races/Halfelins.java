@@ -17,4 +17,9 @@ public class Halfelins implements Races {
     {
         return _stat;
     }
+
+    public String getRa()
+    {
+        return "Halfelin";
+    }
 }

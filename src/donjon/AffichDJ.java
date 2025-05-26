@@ -2,6 +2,8 @@ package donjon;
 
 import entite.Entite;
 
+import java.util.ArrayList;
+
 public class AffichDJ {
     private int _tc1;
     private int _tc2;
@@ -59,6 +61,11 @@ public class AffichDJ {
             }
             System.out.print("\n");
         }
+
+        System.out.print("                  ");
+        System.out.print(" *  = equipement     ");
+        System.out.print("[ ] = obstacle");
+
     }
 
 }

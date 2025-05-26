@@ -5,6 +5,7 @@ import entite.Entite;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.Classe;
+import entite.personnages.genre.Genre;
 import entite.personnages.classes.Clerc;
 import entite.personnages.classes.Magicien;
 import entite.personnages.races.Races;
@@ -14,10 +15,7 @@ import entite.equipement.arme.guerre.ArmeGuerre;
 import entite.equipement.armure.Armure;
 import entite.equipement.armure.lourde.ArmureLourde;
 import de.*;
-import sort.ArmeMagique;
-import sort.BoogieWoogie;
-import sort.Guerison;
-import sort.Sort;
+import sort.*;
 import statistiques.Position;
 import statistiques.Stats;
 
@@ -26,11 +24,12 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class Personnage implements Entite {
+public class Personnage implements Vivant {
 
-    private final String _nom;
-    private final Races _race;
-    private final Classe _classe;
+    private String _nom;
+    private Races _race;
+    private Classe _classe;
+    private Genre _gre;
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
     //pv, for, dex, vit, ini
@@ -45,26 +44,37 @@ public class Personnage implements Entite {
 
     Scanner sc = new Scanner(System.in);
 
-
-    public Personnage(String nom, Races race, Classe classe)
+    public Personnage()
     {
-        _nom = nom;
-        _race = race;
-        _classe = classe;
         _stock = new ArrayList<>();
         _equipee = new ArrayList<>();
         _stats = new Stats();
         _pos = new Position();
         _sorts = new ArrayList<>();
+    }
+
+    public void CreaPers(String nom, Races race, Classe classe, Genre gre)
+    {
+        _nom = nom;
+        _race = race;
+        _classe = classe;
+        _gre = gre;
+
 
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
 
-        System.out.println("===== initialisation perso =====");
+        System.out.println("===== caractéristiques perso =====");
         _stats.forc(_deChar.roll() + 3);
         _stats.dex(_deChar.roll() + 3);
         _stats.vit(_deChar.roll() + 3);
         _stats.ini(_deChar.roll() + 3);
+
+        for(Equipement equi : _classe.getEquiBase())
+        {
+            _stock.add(equi);
+        }
+
 
         if (classe instanceof Clerc) {
             this._sorts.add(new Guerison());
@@ -566,7 +576,12 @@ public class Personnage implements Entite {
 
     public String getInfos()
     {
-        return getStat() + "\n\nEquipement :\n" + getEquipee() + "\nStock :\n" + getStock();
+        return getStat() + "\n\nEquipement :\n" + getEquipee() + "\nInventaire :\n" + getStock();
+    }
+
+    public String getLilInfos()
+    {
+        return (aff() + "    " + _nom + " (" + _gre.genrer(_classe.getCla()) + " " + _gre.genrer(_race.getRa()) + " " + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
     }
 
     public int[] getPos()
@@ -575,6 +590,11 @@ public class Personnage implements Entite {
         pos[0] = _pos.getAbscisse();
         pos[1] = _pos.getOrdonnee();
         return pos;
+    }
+
+    public int getIni()
+    {
+        return _stats.retIni();
     }
 
     public String aff()

@@ -9,8 +9,9 @@ import statistiques.Stats;
 
 import java.util.Scanner;
 
-public class Monstre implements Entite{
+public class Monstre implements Vivant {
     private String _espece;
+    private String _symb;
     private int _numero = 1;    //a voir plus tard
     private int _portAtt;
     private De _degAtt;
@@ -26,14 +27,15 @@ public class Monstre implements Entite{
         _stats = new Stats();
     }
 
-    public void creaMonstre(String espece, int portAtt, De degAtt, De charac)
+    public void creaMonstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
         _deChar = charac;
         _espece = espece + " " + this._numero;
+        _symb = symb;
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        System.out.println("===== initialisation monstre =====");
+        System.out.println("\n\n===== initialisation monstre =====");
         _stats.pvt(_deChar.roll());
         _stats.vit(_deChar.roll());
         _stats.ini(_deChar.roll());
@@ -200,6 +202,15 @@ public class Monstre implements Entite{
         return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
+    public String getInfos() {
+        return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+    }
+
+    public String getLilInfos()
+    {
+        return (aff() + "    " + toString() + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
+    }
+
     public int[] getPos()
     {
         int[] pos = new int[2];
@@ -208,13 +219,27 @@ public class Monstre implements Entite{
         return pos;
     }
 
+    public int getIni()
+    {
+        return _stats.retIni();
+    }
+
     public String getNom() {
         return this._espece;
     }
 
     public String aff()
     {
-        return " Xv";
+        if (_symb.length() == 3) {
+            return _symb;
+        }
+        else if (_symb.length() == 2) {
+            return " " + _symb;
+        }
+        else if (_symb.length() == 1) {
+            return " " + _symb + " ";
+        }
+        return " X)";
     }
 
     public int code()
