@@ -365,7 +365,7 @@ public class Personnage implements Vivant {
                                 System.out.println("Personnage : " + perso._nom);
                                 for (Equipement equipement : perso._stock) {
                                     if (equipement instanceof Arme) {
-                                        System.out.println("\t" + choixArme++ + equipement.getName());
+                                        System.out.println("\t" + choixArme++ + ". " + equipement.getName());
                                     }
                                 }
                                 for (Equipement equipement : perso._equipee) {
@@ -384,6 +384,7 @@ public class Personnage implements Vivant {
                                         if (choixArme == idArme) {
                                             ((Arme) equipement).bonusMagique();
                                             ok = true;
+                                            break;
                                         }
                                         else {
                                             idArme++;
@@ -395,6 +396,7 @@ public class Personnage implements Vivant {
                                         if (choixArme == idArme) {
                                             ((Arme) equipement).bonusMagique();
                                             ok = true;
+                                            break;
                                         }
                                         else {
                                             idArme++;

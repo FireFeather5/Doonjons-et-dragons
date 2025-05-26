@@ -39,6 +39,6 @@ public abstract class Arme extends Equipement {
 
     @Override
     public String toString() {
-        return this.getName() + " [dégats : " + this._nbDe + "d" + this._nbFacesDe + ", portée : " + this._range + "] ";
+        return this.getName() + " [dégats : " + this._nbDe + "d" + this._nbFacesDe + ", portée : " + this._range + ", bonus magique : " + this._bonusMagique + "] ";
     }
 }
