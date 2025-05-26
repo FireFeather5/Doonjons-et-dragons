@@ -155,6 +155,14 @@ public class Donjon {
         }
     }
 
+    public void mondeParallele(Personnage perso) {
+        _donjon[perso.getPos()[0] -1][perso.getPos()[1] - 1] = null;
+    }
+
+    public void mondeParallele(Monstre mons) {
+        _donjon[mons.getPos()[0] -1][mons.getPos()[1] - 1] = null;
+    }
+
     public boolean posE(String pos, Equipement equip)
     {
         int[] pc = posInt(pos);

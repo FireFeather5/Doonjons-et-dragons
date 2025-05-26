@@ -24,6 +24,7 @@ import statistiques.Stats;
 import java.util.Scanner;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class Personnage implements Entite {
 
@@ -301,6 +302,9 @@ public class Personnage implements Entite {
                         choixPerso = sc.nextInt();
                         ((Guerison) this._sorts.getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
                     }
+                    else {
+                        throw new Exception();
+                    }
                 }
                 else if (this._classe instanceof Magicien) {
                     switch (choix) {
@@ -333,16 +337,16 @@ public class Personnage implements Entite {
                             choixEntite2 = sc.nextInt();
 
                             if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 <= DJ.getListePerso().size()) {
-                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListePerso().get(-1), DJ);
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListePerso().get(choixEntite2-1), DJ);
                             }
                             else if (choixEntite1 > DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
-                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1), DJ);
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1-DJ.getListePerso().size()), DJ.getListeMonstre().get(choixEntite2-1-DJ.getListePerso().size()), DJ);
                             }
                             else if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
-                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1), DJ);
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1-DJ.getListePerso().size()), DJ);
                             }
                             else {
-                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1), DJ.getListePerso().get(choixEntite2-1), DJ);
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1-DJ.getListePerso().size()), DJ.getListePerso().get(choixEntite2-1), DJ);
                             }
                             break;
                         case 3:
@@ -362,12 +366,14 @@ public class Personnage implements Entite {
                             }
                             System.out.println("Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
                             choixArme = sc.nextInt();
+                            boolean ok = false;
                             int idArme = 1;
                             for (Personnage perso : DJ.getListePerso()) {
                                 for (Equipement equipement : perso._stock) {
                                     if (equipement instanceof Arme) {
                                         if (choixArme == idArme) {
                                             ((Arme) equipement).bonusMagique();
+                                            ok = true;
                                         }
                                         else {
                                             idArme++;
@@ -378,14 +384,20 @@ public class Personnage implements Entite {
                                     if (equipement instanceof Arme) {
                                         if (choixArme == idArme) {
                                             ((Arme) equipement).bonusMagique();
+                                            ok = true;
                                         }
                                         else {
                                             idArme++;
                                         }
                                     }
                                 }
+                                if (!ok) {
+                                    throw new Exception();
+                                }
                             }
                             break;
+                        default:
+                            throw new Exception();
                     }
                 }
             }

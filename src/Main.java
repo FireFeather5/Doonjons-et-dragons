@@ -17,16 +17,17 @@ public class Main {
         Donjon tesssst = new Donjon();
         Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
         Personnage u = new Personnage("uhu", new Humain(), new Magicien());
-        Monstre pjpegfs = new Monstre();
         Equipement arme = new EpeeLongue();
         Equipement armee = new ArcCourt();
         Equipement armure = new ArmureEcaille();
 
         test.createDJ(tesssst);
         test.posJ(tesssst, u);
+        test.posJ(tesssst, fesmfjeio);
         tesssst.afficherDJ();
         u.action(tesssst);
         tesssst.afficherDJ();
+        System.out.println("Inventaire de uhu : " + u.getStock() + " (equipee) " + u.getEquipee());
 //
 //        test.createM(pjpegfs);
 //

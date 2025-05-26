@@ -19,26 +19,38 @@ public class BoogieWoogie implements Sort {
     }
 
     public void lancer(Personnage perso1, Personnage perso2, Donjon DJ) {
-        int[] posTemp = perso1.getPos();
-        DJ.posJ(ALPHABET[perso2.getPos()[0]-1] + perso2.getPos()[1], perso1);
-        DJ.posJ(ALPHABET[posTemp[0]-1] + posTemp[1], perso2);
+        System.out.println("Positions avant changement :\nperso1 : " + perso1.getPos()[0] + " " + perso1.getPos()[1] + "\nperso2 : "  + perso2.getPos()[0] + " " + perso2.getPos()[1]);
+        int[] posTemp = perso1.getPos().clone();
+        DJ.mondeParallele(perso1);
+        DJ.mondeParallele(perso2);
+        DJ.posJ(ALPHABET[perso2.getPos()[1]-1] + perso2.getPos()[0], perso1);
+        DJ.posJ(ALPHABET[posTemp[1]-1] + posTemp[0], perso2);
+        System.out.println("Positions apres changement :\nperso1 : " + perso1.getPos()[0] + " " + perso1.getPos()[1] + "\nperso2 : "  + perso2.getPos()[0] + " " + perso2.getPos()[1]);
     }
 
     public void lancer(Monstre monstre1, Monstre monstre2, Donjon DJ) {
-        int[] posTemp = monstre1.getPos();
-        DJ.posM(ALPHABET[monstre2.getPos()[0]-1] + monstre2.getPos()[1], monstre1);
-        DJ.posM(ALPHABET[posTemp[0]-1] + posTemp[1], monstre2);
+        System.out.println("Positions avant changement :\nmonstre1 : " + monstre1.getPos()[0] + " " + monstre1.getPos()[1] + "\nmonstre2 : "  + monstre2.getPos()[0] + " " + monstre2.getPos()[1]);
+        int[] posTemp = monstre1.getPos().clone();
+        DJ.mondeParallele(monstre1);
+        DJ.mondeParallele(monstre2);
+        DJ.posM(ALPHABET[monstre2.getPos()[1]-1] + monstre2.getPos()[0], monstre1);
+        DJ.posM(ALPHABET[posTemp[1]-1] + posTemp[0], monstre2);
+        System.out.println("Positions apres changement :\nmonstre1 : " + monstre1.getPos()[0] + " " + monstre1.getPos()[1] + "\nmobstre2 : "  + monstre2.getPos()[0] + " " + monstre2.getPos()[1]);
+
     }
 
     public void lancer(Personnage perso, Monstre monstre, Donjon DJ) {
-        int[] posTemp = perso.getPos();
-        DJ.posM(ALPHABET[perso.getPos()[0]-1] + perso.getPos()[1], monstre);
-        DJ.posJ(ALPHABET[posTemp[0]-1] + posTemp[1], perso);
+        System.out.println("Positions avant changement :\nperso : " + perso.getPos()[0] + " " + perso.getPos()[1] + "\nmonstre : "  + monstre.getPos()[0] + " " + monstre.getPos()[1]);
+        int[] posTemp = perso.getPos().clone();
+        DJ.mondeParallele(perso);
+        DJ.mondeParallele(monstre);
+        DJ.posJ(ALPHABET[monstre.getPos()[1]-1] + monstre.getPos()[0], perso);
+        DJ.posM(ALPHABET[posTemp[1]-1] + posTemp[0], monstre);
+        System.out.println("Positions apres changement :\nperso : " + perso.getPos()[0] + " " + perso.getPos()[1] + "\nmonstre : "  + monstre.getPos()[0] + " " + monstre.getPos()[1]);
+
     }
 
     public void lancer(Monstre monstre, Personnage perso, Donjon DJ) {
-        int[] posTemp = perso.getPos();
-        DJ.posM(ALPHABET[perso.getPos()[0]-1] + perso.getPos()[1], monstre);
-        DJ.posJ(ALPHABET[posTemp[0]-1] + posTemp[1], perso);
+        lancer(perso, monstre, DJ);
     }
 }
