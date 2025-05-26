@@ -287,7 +287,7 @@ public class Personnage implements Entite {
             int choix = 1;
             System.out.println("Liste des sorts :");
             for (Sort sort : this._sorts) {
-                System.out.println(choix + ". " + sort.getNom() + " : " + sort.getDescription());
+                System.out.println(choix++ + ". " + sort.getNom() + " : " + sort.getDescription());
             }
             System.out.println("Lequel voulez-vous lancer ?");
             try {
@@ -306,11 +306,11 @@ public class Personnage implements Entite {
                     switch (choix) {
                         case 1:
                             int choixPerso = 1;
-                            System.out.println("Choisissez un allie a soigner :");
                             for (Personnage perso : DJ.getListePerso()) {
                                 System.out.println("\t" + choixPerso + ". " + perso._nom);
                                 choixPerso++;
                             }
+                            System.out.println("Choisissez un allie a soigner :");
                             choixPerso = sc.nextInt();
                             ((Guerison) this._sorts.getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
                             break;
@@ -321,17 +321,76 @@ public class Personnage implements Entite {
                                 System.out.println("\t" + choixEntite1 + ". " + perso._nom);
                                 choixEntite1++;
                             }
-                            int choixEntite2 = choixEntite1 + 1;
+                            int choixEntite2 = choixEntite1;
                             for (Monstre mons : DJ.getListeMonstre()) {
                                 System.out.println("\t" + choixEntite2 + ". " + mons.getNom());
                                 choixEntite2++;
                             }
 
+                            System.out.println("Choisissez la première entité à téléporter :");
+                            choixEntite1 = sc.nextInt();
+                            System.out.println("Choisissez la deuxième entité à téléporter :");
+                            choixEntite2 = sc.nextInt();
+
+                            if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 <= DJ.getListePerso().size()) {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListePerso().get(-1), DJ);
+                            }
+                            else if (choixEntite1 > DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1), DJ);
+                            }
+                            else if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1), DJ);
+                            }
+                            else {
+                                ((BoogieWoogie) this._sorts.get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1), DJ.getListePerso().get(choixEntite2-1), DJ);
+                            }
+                            break;
+                        case 3:
+                            int choixArme = 1;
+                            for (Personnage perso : DJ.getListePerso()) {
+                                System.out.println("Personnage : " + perso._nom);
+                                for (Equipement equipement : perso._stock) {
+                                    if (equipement instanceof Arme) {
+                                        System.out.println("\t" + choixArme++ + equipement.getName());
+                                    }
+                                }
+                                for (Equipement equipement : perso._equipee) {
+                                    if (equipement instanceof Arme) {
+                                        System.out.println("\t" + "(Equipée) " + choixArme++ + equipement.getName());
+                                    }
+                                }
+                            }
+                            System.out.println("Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
+                            choixArme = sc.nextInt();
+                            int idArme = 1;
+                            for (Personnage perso : DJ.getListePerso()) {
+                                for (Equipement equipement : perso._stock) {
+                                    if (equipement instanceof Arme) {
+                                        if (choixArme == idArme) {
+                                            ((Arme) equipement).bonusMagique();
+                                        }
+                                        else {
+                                            idArme++;
+                                        }
+                                    }
+                                }
+                                for (Equipement equipement : perso._equipee) {
+                                    if (equipement instanceof Arme) {
+                                        if (choixArme == idArme) {
+                                            ((Arme) equipement).bonusMagique();
+                                        }
+                                        else {
+                                            idArme++;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
                     }
                 }
             }
             catch (Exception e) {
-                System.out.println("Choix invalide");
+                System.out.println("Choix invalide : " + e);
                 lancerSort(DJ);
             }
 

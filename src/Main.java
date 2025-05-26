@@ -5,6 +5,7 @@ import entite.equipement.arme.distance.ArcCourt;
 import entite.equipement.arme.guerre.EpeeLongue;
 import entite.equipement.armure.legere.ArmureEcaille;
 import entite.personnages.Personnage;
+import entite.personnages.classes.Magicien;
 import entite.personnages.classes.Roublard;
 import entite.personnages.races.Humain;
 
@@ -15,13 +16,16 @@ public class Main {
         MJ test = new MJ();
         Donjon tesssst = new Donjon();
         Personnage fesmfjeio = new Personnage("Céleste", new Humain(), new Roublard());
+        Personnage u = new Personnage("uhu", new Humain(), new Magicien());
         Monstre pjpegfs = new Monstre();
         Equipement arme = new EpeeLongue();
         Equipement armee = new ArcCourt();
         Equipement armure = new ArmureEcaille();
 
         test.createDJ(tesssst);
-
+        test.posJ(tesssst, u);
+        tesssst.afficherDJ();
+        u.action(tesssst);
         tesssst.afficherDJ();
 //
 //        test.createM(pjpegfs);
