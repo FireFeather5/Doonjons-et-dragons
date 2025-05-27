@@ -418,7 +418,7 @@ public class Personnage implements Vivant {
                                 }
                                 for (Equipement equipement : perso._equipee) {
                                     if (equipement instanceof Arme) {
-                                        System.out.println("\t" + "(Equipée) " + choixArme++ + equipement.getName());
+                                        System.out.println("\t" + "(Equipée) " + choixArme++ + ". " + equipement.getName());
                                     }
                                 }
                             }

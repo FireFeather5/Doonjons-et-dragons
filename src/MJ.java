@@ -257,4 +257,16 @@ public class MJ {
         System.out.println("Le MJ commente l'action effectuée");
         return "MJ - " + sc.nextLine();
     }
+
+    public String degatJoueur(Personnage perso, Donjon DJ, int nbDe, int nbFaceDe) {
+        int dgt = new De(nbDe, nbFaceDe).roll();
+        perso.seFaitAttaquer(dgt, DJ);
+        return "Le MJ inflige " + dgt + " a " + perso;
+    }
+
+    public String degatMonstre(Monstre monstre, Donjon DJ, int nbDe, int nbFaceDe) {
+        int dgt = new De(nbDe, nbFaceDe).roll();
+        monstre.seFaitAttaquer(dgt, DJ);
+        return "Le MJ inflige " + dgt + " a " + monstre;
+    }
 }
