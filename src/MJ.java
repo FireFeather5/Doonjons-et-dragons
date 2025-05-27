@@ -257,4 +257,38 @@ public class MJ {
         System.out.println("Le MJ commente l'action effectuée");
         return "MJ - " + sc.nextLine();
     }
+
+    public void actionFT(Donjon DJ)
+    {
+        System.out.println("Que veut faire le Maitre du Jeu ?");
+        System.out.println("0- Ne rien faire\n1- Déplacer un joueur/monstre\n2- Faire ds dégats à un joueur/monstre\n3- Ajouter des obstacles");
+        int choix = Integer.parseInt(sc.nextLine());
+        switch (choix) {
+            case 1:
+                depViv(DJ);
+            case 2:
+
+                break;
+            case 3:
+                String ch = "o";
+                while (ch.equals("o")) {
+                    addObst(DJ);
+                    System.out.println("Voulez-vous ajouter un autre obstacle ? (o/n)");
+                    ch = sc.nextLine();
+                }
+                break;
+            default:
+        }
+    }
+
+    public void depViv(Donjon DJ)
+    {
+        String posD = choixPos(" de l'entité à déplacer");
+
+        String posF = choixPos(" finale de l'entité");
+
+        DJ.switchCase(posD, posF);
+    }
+
+
 }

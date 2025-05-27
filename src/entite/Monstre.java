@@ -71,7 +71,7 @@ public class Monstre implements Vivant {
     public int action(Donjon DJ)
     {
         int val = 0;
-        System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
+        System.out.println("Choisir une action :\nSe déplacer : 0\nAttaquer : 1");
         try {
             int choix = Integer.parseInt(sc.nextLine());
 

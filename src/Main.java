@@ -17,47 +17,18 @@ public class Main {
 
         System.out.println("Bienvenue dans DOOnjon et Dragons");
 
-        MJ test = new MJ();
-        Donjon tesssst = new Donjon();
-
-        int nbMons = test.createDJ(tesssst);
-        int nbrViv = nbMons;
-
-        if (nbMons == 0)
-        {
-            Monstre demogordgon = new Monstre();
-            demogordgon.creaMonstre("Demogorgon", "XP", 1, new De(2, 8), new De(3, 6));
-            tesssst.posM("P14", demogordgon);
-            Viv.add(demogordgon);
-            Monstre dragonBleu = new Monstre();
-            dragonBleu.creaMonstre("Dragon Bleu", "B)", 8, new De(2, 8), new De(3, 6));
-            tesssst.posM("E4", dragonBleu);
-            Viv.add(dragonBleu);
-            nbrViv += 2;
-            tesssst.afficherDJ();
-        }
-        else {
-            for (int i = 1; i <= nbMons; i++)
-            {
-                Monstre mons = new Monstre();
-                test.createM(mons);
-                test.posM(tesssst, mons);
-                Viv.add(mons);
-                tesssst.afficherDJ();
-            }
-        }
+        MJ mj = new MJ();
+        Donjon donjon = new Donjon();
 
         System.out.println("\n\nCombien de personnages voulez-vous créer ?");
         int nbrPers = Integer.parseInt(sc.nextLine());
         CreaPerso CreaPer = new CreaPerso();
 
-        nbrViv += nbrPers;
-
         for (int i = 0; i < nbrPers; i++) {
             System.out.println("\n\nCréation Personnage " + (i+1));
             Personnage pers = new Personnage();
             CreaPer.CreaPers(pers);
-            test.posJ(tesssst, pers);
+            mj.posJ(donjon, pers);
             System.out.println(pers.getInfos());
 
             System.out.println("Voulez-vous équiper une arme ? (o/n)");
@@ -74,130 +45,130 @@ public class Main {
             }
 
             Viv.add(pers);
-            tesssst.afficherDJ();
+            donjon.afficherDJ();
         }
 
-        for (int j = 0; j < nbrViv; j++) {
-            System.out.println(Viv.get(j).getStat());
-        }
+        for (int pt = 1; pt <= 3; pt++) {
+            int nbMons = mj.createDJ(donjon);
+            int nbrViv = nbMons;
+            nbrViv += nbrPers;
 
-        De deIni = new De(1, 20);
-
-        ArrayList<Integer> ArrIni = new ArrayList<Integer>();
-        ArrayList<Vivant> VivTri = new ArrayList<Vivant>();
-
-        for (int j = 0; j < nbrViv; j++)
-        {
-            int init = Viv.get(j).getIni();
-            init += deIni.roll();
-            System.out.println(init);
-
-            if (ArrIni.isEmpty()) {
-                ArrIni.add(init);
-                VivTri.add(Viv.get(j));
-            }
-            else
-            {
-                boolean inVivTri = false;
-                for (int i = 0; i < ArrIni.size(); i++)
-                {
-                    if (!inVivTri) {
-                        if (init < ArrIni.get(i)) {
-                            ArrIni.add(i, init);
-                            VivTri.add(i, Viv.get(j));
-                            inVivTri = true;
-                        }
-                    }
+            if (nbMons == 0) {
+                Monstre demogordgon = new Monstre();
+                demogordgon.creaMonstre("Demogorgon", "XP", 1, new De(2, 8), new De(3, 6));
+                donjon.posM("P14", demogordgon);
+                Viv.add(demogordgon);
+                Monstre dragonBleu = new Monstre();
+                dragonBleu.creaMonstre("Dragon Bleu", "B)", 8, new De(2, 8), new De(3, 6));
+                donjon.posM("E4", dragonBleu);
+                Viv.add(dragonBleu);
+                nbrViv += 2;
+                donjon.afficherDJ();
+            } else {
+                for (int i = 1; i <= nbMons; i++) {
+                    Monstre mons = new Monstre();
+                    mj.createM(mons);
+                    mj.posM(donjon, mons);
+                    Viv.add(mons);
+                    donjon.afficherDJ();
                 }
-                if (!inVivTri)
-                {
+            }
+
+
+            for (int j = 0; j < nbrViv; j++) {
+                System.out.println(Viv.get(j).getStat());
+            }
+
+            De deIni = new De(1, 20);
+
+            ArrayList<Integer> ArrIni = new ArrayList<Integer>();
+            ArrayList<Vivant> VivTri = new ArrayList<Vivant>();
+
+            for (int j = 0; j < nbrViv; j++) {
+                int init = Viv.get(j).getIni();
+                init += deIni.roll();
+                System.out.println(init);
+
+                if (ArrIni.isEmpty()) {
                     ArrIni.add(init);
                     VivTri.add(Viv.get(j));
-                }
-            }
-        }
-
-        System.out.print("\n\n");
-        for (Vivant vi : VivTri)
-        {
-            System.out.println(vi.toString());
-        }
-
-
-
-        int val = 0;
-        int compTour = 1;
-
-        while (val == 0) {
-            for (int j = 0; j < nbrViv; j++)
-            {
-                if (val == 0)
-                {
-                    for (int i = 0; i < 3; i++) {
-                        System.out.print("\n\n");
-                        System.out.println("---------------------------------------------------------");
-                        System.out.print("\n           Tour de "+ VivTri.get(j).getLilInfos() +"\n Tour N°" + compTour + "\n");
-                        System.out.println("---------------------------------------------------------\n");
-                        for (int k = 0; k < nbrViv; k++) {
-                            if (k != j) {
-                                System.out.print("           ");
-                                System.out.print(VivTri.get(k).getLilInfos());
-                            }
-                            else
-                            {
-                                System.out.print("       --> ");
-                                System.out.print(VivTri.get(k).getLilInfos());
+                } else {
+                    boolean inVivTri = false;
+                    for (int i = 0; i < ArrIni.size(); i++) {
+                        if (!inVivTri) {
+                            if (init < ArrIni.get(i)) {
+                                ArrIni.add(i, init);
+                                VivTri.add(i, Viv.get(j));
+                                inVivTri = true;
                             }
                         }
-
-
-                        tesssst.afficherDJ();
-                        System.out.println(VivTri.get(j).getInfos());
-                        System.out.println("Il vous reste " + (3-i) + " actions.");
-                        val = VivTri.get(j).action(tesssst);
-
-                        if (val == 3)
-                        {
-                            for (Vivant mosMo : VivTri)
-                            {
-                                if (mosMo.getPV() <= 0)
-                                {
-                                    VivTri.remove(mosMo);
-                                    nbrViv--;
-                                }
-                            }
-                            val = 0;
-                        }
-
-
-                        System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
-                        String comm = sc.nextLine();
-                        if (comm.equals("o"))
-                        {
-                            System.out.println(VivTri.get(j).comAction());
-                        }
-                        else if (comm.equals("mj"))
-                        {
-                            System.out.println(test.comAction());
-                        }
+                    }
+                    if (!inVivTri) {
+                        ArrIni.add(init);
+                        VivTri.add(Viv.get(j));
                     }
                 }
             }
-            compTour++;
-        }
 
-        String[] arg = new String[] {};
+            System.out.print("\n\n");
+            for (Vivant vi : VivTri) {
+                System.out.println(vi.toString());
+            }
 
-        if (val == 1)
-        {
-            System.out.println("\nLes joueurs ont perdu");
-            main(arg);
-        }
-        else
-        {
-            System.out.println("\nLes joueurs ont fini le donjon");
-            main(arg);
-            //les persos regagnent leur vie
+
+            int val = 0;
+            int compTour = 1;
+
+            while (val == 0) {
+                for (int j = 0; j < nbrViv; j++) {
+                    for (int i = 0; i < 3; i++) {
+                        if (val == 0) {
+                            System.out.print("\n\n");
+                            System.out.println("---------------------------------------------------------");
+                            System.out.print("\n           Tour de " + VivTri.get(j).getLilInfos() + "\n Tour N°" + compTour + "\n");
+                            System.out.println("---------------------------------------------------------\n");
+                            for (int k = 0; k < nbrViv; k++) {
+                                if (k != j) {
+                                    System.out.print("           ");
+                                    System.out.print(VivTri.get(k).getLilInfos());
+                                } else {
+                                    System.out.print("       --> ");
+                                    System.out.print(VivTri.get(k).getLilInfos());
+                                }
+                            }
+
+
+                            donjon.afficherDJ();
+                            System.out.println(VivTri.get(j).getInfos());
+                            System.out.println("\nIl vous reste " + (3 - i) + " actions.");
+                            val = VivTri.get(j).action(donjon);
+
+                            if (val == 3) {
+                                for (int n = 0; n < nbrViv; n++) {
+                                    if (VivTri.get(n).getPV() <= 0) {
+                                        VivTri.remove(VivTri.get(n));
+                                        nbrViv--;
+
+                                        if (n <= j) {
+                                            j--;
+                                        }
+                                    }
+                                }
+                                val = 0;
+                            }
+                        }
+                    }
+                }
+                compTour++;
+            }
+
+
+            if (val == 1) {
+                System.out.println("\nLes joueurs ont perdu");
+            } else {
+                System.out.println("\nLes joueurs ont fini le donjon");
+                //les persos regagnent leur vie
+            }
         }
     }
 }

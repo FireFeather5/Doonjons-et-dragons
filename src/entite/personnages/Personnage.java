@@ -95,7 +95,7 @@ public class Personnage implements Vivant {
         //doit pouvoir etre amélioré mais fonctionne pour le moment
         if (_peutRamasser)
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3\nRamasser : 4");
+            System.out.println("Choisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3\nRamasser : 4");
             try {
                 int choix = Integer.parseInt(sc.nextLine());
 

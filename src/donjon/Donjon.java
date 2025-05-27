@@ -259,6 +259,48 @@ public class Donjon {
         return 1;
     }
 
+    public void switchCase(String posDep, String posFin)
+    {
+        int[] pcD = posInt(posDep);
+        int[] pcF = posInt(posFin);
+
+        boolean caseVal = false;
+        for (Personnage per : _pers)
+        {
+            if (per.equals(_donjon[pcD[0]-1][pcD[1]-1]))
+            {
+                caseVal = true;
+                break;
+            }
+        }
+        for (Monstre mos : _mons)
+        {
+            if (mos.equals(_donjon[pcD[0]-1][pcD[1]-1]))
+            {
+                caseVal = true;
+                break;
+            }
+        }
+
+        if (caseVal)
+        {
+            if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
+            {
+                _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
+                System.out.println("Le déplacement à fonctionné");
+                emptyCase(pcD);
+            }
+            else
+            {
+                System.out.println("La case d'arrivée n'est pas vide");
+            }
+        }
+        else
+        {
+            System.out.println("Il n'y a ni personnage ni monstre sur la case départ");
+        }
+    }
+
     public void emptyCase(int[] pc)
     {
         _donjon[pc[0]-1][pc[1]-1] = null;
