@@ -180,6 +180,14 @@ public class Main {
                         {
                             System.out.println(test.comAction());
                         }
+                        System.out.println("MJ, voulez-vous infliger des dégats à quelqu'un ?\n(j[oueur] / m[onstre] / n[on])");
+                        String infDgt = sc.nextLine();
+                        if (infDgt.equals("j") || infDgt.equals("joueur")) {
+                            System.out.println(test.degatJoueur(tesssst));
+                        }
+                        else if (infDgt.equals("m") || infDgt.equals("monstre")) {
+                            System.out.println(test.degatMonstre(tesssst));
+                        }
                     }
                 }
             }
