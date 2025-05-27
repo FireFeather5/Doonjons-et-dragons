@@ -68,10 +68,7 @@ public class Personnage implements Vivant {
         _stats.vit(_deChar.roll() + 3);
         _stats.ini(_deChar.roll() + 3);
 
-        for(Equipement equi : _classe.getEquiBase())
-        {
-            _stock.add(equi);
-        }
+        _stock.addAll(_classe.getEquiBase());
 
 
         if (classe instanceof Clerc) {
@@ -95,75 +92,128 @@ public class Personnage implements Vivant {
         //doit pouvoir etre amélioré mais fonctionne pour le moment
         if (_peutRamasser)
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3\nSorts : 4");
-            try {
-                int choix = Integer.parseInt(sc.nextLine());
+            if (this._classe instanceof Clerc || this._classe instanceof Magicien) {
+                System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3\nSorts : 4");
+                try {
+                    int choix = Integer.parseInt(sc.nextLine());
 
-                switch (choix) {
-                    case 0:
-                        seDeplacer(DJ);
-                        break;
-                    case 1:
-                        val = attaquer(DJ);
-                        break;
-                    case 2:
-                        sEquiper();
-                        break;
-                    case 3:
-                        ramasser(DJ);
-                        break;
-                    case 4:
-                        lancerSort(DJ);
-                        break;
-                    default:
-                        System.out.println("Mauvais choix d'action");
-                        action(DJ);
+                    switch (choix) {
+                        case 0:
+                            seDeplacer(DJ);
+                            break;
+                        case 1:
+                            val = attaquer(DJ);
+                            break;
+                        case 2:
+                            sEquiper();
+                            break;
+                        case 3:
+                            ramasser(DJ);
+                            break;
+                        case 4:
+                            lancerSort(DJ);
+                            break;
+                        default:
+                            System.out.println("Mauvais choix d'action");
+                            action(DJ);
+                    }
+                } catch (NumberFormatException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+                } catch (NullPointerException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
                 }
             }
-            catch (NumberFormatException erreur)
-            {
-                System.out.println("Mauvais choix d'action");
-                action(DJ);
-            }
-            catch (NullPointerException erreur)
-            {
-                System.out.println("Mauvais choix d'action");
-                action(DJ);
+            else {
+                System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3");
+                try {
+                    int choix = Integer.parseInt(sc.nextLine());
+
+                    switch (choix) {
+                        case 0:
+                            seDeplacer(DJ);
+                            break;
+                        case 1:
+                            val = attaquer(DJ);
+                            break;
+                        case 2:
+                            sEquiper();
+                            break;
+                        case 3:
+                            ramasser(DJ);
+                            break;
+                        default:
+                            System.out.println("Mauvais choix d'action");
+                            action(DJ);
+                    }
+                } catch (NumberFormatException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+                } catch (NullPointerException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+                }
             }
         }
         else
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3");
+            if (this._classe instanceof Clerc || this._classe instanceof Magicien) {
+                System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3");
 
-            try {
-                int choix = Integer.parseInt(sc.nextLine());
-                switch (choix) {
-                    case 0:
-                        seDeplacer(DJ);
-                        break;
-                    case 1:
-                        val = attaquer(DJ);
-                        break;
-                    case 2:
-                        sEquiper();
-                        break;
-                    case 3:
-                        lancerSort(DJ);
-                        break;
-                    default:
-                        System.out.println("Mauvais choix d'action");
-                        action(DJ);
+                try {
+                    int choix = Integer.parseInt(sc.nextLine());
+                    switch (choix) {
+                        case 0:
+                            seDeplacer(DJ);
+                            break;
+                        case 1:
+                            val = attaquer(DJ);
+                            break;
+                        case 2:
+                            sEquiper();
+                            break;
+                        case 3:
+                            lancerSort(DJ);
+                            break;
+                        default:
+                            System.out.println("Mauvais choix d'action");
+                            action(DJ);
+                    }
+                } catch (NumberFormatException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+                } catch (NullPointerException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
                 }
             }
-            catch (NumberFormatException erreur)
-            {
-                System.out.println("Mauvais choix d'action");
-                action(DJ);
-            }
-            catch (NullPointerException erreur)
-            {
-                System.out.println("Mauvais choix d'action");
-                action(DJ);
+            else {
+                System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2");
+
+                try {
+                    int choix = Integer.parseInt(sc.nextLine());
+                    switch (choix) {
+                        case 0:
+                            seDeplacer(DJ);
+                            break;
+                        case 1:
+                            val = attaquer(DJ);
+                            break;
+                        case 2:
+                            sEquiper();
+                            break;
+                        default:
+                            System.out.println("Mauvais choix d'action");
+                            action(DJ);
+                    }
+                } catch (NumberFormatException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+                } catch (NullPointerException erreur) {
+                    System.out.println("Mauvais choix d'action");
+                    action(DJ);
+                }
             }
         }
         return val;
