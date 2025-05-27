@@ -183,50 +183,10 @@ public class Main {
                         System.out.println("MJ, voulez-vous infliger des dégats à quelqu'un ?\n(j[oueur] / m[onstre] / n[on])");
                         String infDgt = sc.nextLine();
                         if (infDgt.equals("j") || infDgt.equals("joueur")) {
-                            int choix = 1;
-                            int posListe = 0;
-                            for (int k = 0; k < nbrViv; k++) {
-                                if (VivTri.get(k) instanceof Personnage) {
-                                    System.out.println(choix++ + ". " + VivTri.get(k));
-                                }
-                            }
-                            System.out.println("Choisissez un joueur :");
-                            choix = sc.nextInt();
-                            for (int k = 0; k < nbrViv; k++) {
-                                if (VivTri.get(k) instanceof Personnage) {
-                                    posListe++;
-                                }
-                                if (posListe == choix) {
-                                    System.out.println("Combien de dé(s) pour infliger les dégats ?");
-                                    int nbDe = sc.nextInt();
-                                    System.out.println("Combien de faces pour les dés ?");
-                                    int nbFaceDe = sc.nextInt();
-                                    System.out.println(test.degatJoueur((Personnage)VivTri.get(k), tesssst, nbDe, nbFaceDe));
-                                }
-                            }
+                            System.out.println(test.degatJoueur(tesssst));
                         }
                         else if (infDgt.equals("m") || infDgt.equals("monstre")) {
-                            int choix = 1;
-                            int posListe = 0;
-                            for (int k = 0; k < nbrViv; k++) {
-                                if (VivTri.get(k) instanceof Monstre) {
-                                    System.out.println(choix++ + ". " + VivTri.get(k));
-                                }
-                            }
-                            System.out.println("Choisissez un monstre :");
-                            choix = sc.nextInt();
-                            for (int k = 0; k < nbrViv; k++) {
-                                if (VivTri.get(k) instanceof Monstre) {
-                                    posListe++;
-                                }
-                                if (posListe == choix) {
-                                    System.out.println("Combien de dé(s) pour infliger les dégats ?");
-                                    int nbDe = sc.nextInt();
-                                    System.out.println("Combien de faces pour les dés ?");
-                                    int nbFaceDe = sc.nextInt();
-                                    System.out.println(test.degatMonstre((Monstre) VivTri.get(k), tesssst, nbDe, nbFaceDe));
-                                }
-                            }
+                            System.out.println(test.degatMonstre(tesssst));
                         }
                     }
                 }
