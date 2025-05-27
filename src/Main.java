@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(){
 
         ArrayList<Vivant> Viv = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
@@ -188,10 +188,12 @@ public class Main {
         if (val == 1)
         {
             System.out.println("\nLes joueurs ont perdu");
+            main();
         }
         else
         {
             System.out.println("\nLes joueurs ont fini le donjon");
+            main();
             //les persos regagnent leur vie
         }
     }
