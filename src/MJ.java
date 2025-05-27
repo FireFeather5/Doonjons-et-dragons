@@ -291,4 +291,46 @@ public class MJ {
     }
 
 
+
+    public String degatJoueur(Donjon DJ) {
+        int choix = 1;
+
+        for (Personnage pers : DJ.getListePerso()) {
+            System.out.println(choix++ + ". " + pers);
+        }
+
+        System.out.println("Choisissez un joueur :");
+        choix = sc.nextInt();
+
+        System.out.println("Combien de dé(s) pour infliger les dégats ?");
+        int nbDe = sc.nextInt();
+        System.out.println("Combien de faces pour les dés ?");
+        int nbFaceDe = sc.nextInt();
+
+        int dgt = new De(nbDe, nbFaceDe).roll();
+        DJ.getListePerso().get(choix-1).seFaitAttaquer(dgt, DJ);
+
+        return "Le MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix-1);
+    }
+
+    public String degatMonstre(Donjon DJ) {
+        int choix = 1;
+
+        for (Monstre mons : DJ.getListeMonstre()) {
+            System.out.println(choix++ + ". " + mons);
+        }
+
+        System.out.println("Choisissez un monstre :");
+        choix = sc.nextInt();
+
+        System.out.println("Combien de dé(s) pour infliger les dégats ?");
+        int nbDe = sc.nextInt();
+        System.out.println("Combien de faces pour les dés ?");
+        int nbFaceDe = sc.nextInt();
+
+        int dgt = new De(nbDe, nbFaceDe).roll();
+        DJ.getListeMonstre().get(choix-1).seFaitAttaquer(dgt, DJ);
+
+        return "Le MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix-1);
+    }
 }
