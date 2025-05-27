@@ -95,7 +95,7 @@ public class Personnage implements Vivant {
         //doit pouvoir etre amélioré mais fonctionne pour le moment
         if (_peutRamasser)
         {
-            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3\nSorts : 4");
+            System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3\nRamasser : 4");
             try {
                 int choix = Integer.parseInt(sc.nextLine());
 
@@ -110,10 +110,10 @@ public class Personnage implements Vivant {
                         sEquiper();
                         break;
                     case 3:
-                        ramasser(DJ);
+                        lancerSort(DJ);
                         break;
                     case 4:
-                        lancerSort(DJ);
+                        ramasser(DJ);
                         break;
                     default:
                         System.out.println("Mauvais choix d'action");
@@ -550,8 +550,8 @@ public class Personnage implements Vivant {
 
     public String comAction()
     {
-        System.out.println("Commentez l'action effectuée");
-        return sc.nextLine();
+        System.out.println(toString() + " commente l'action effectuée");
+        return toString() + " - " + sc.nextLine();
     }
 
     public String getStat() {
@@ -595,6 +595,11 @@ public class Personnage implements Vivant {
     public int getIni()
     {
         return _stats.retIni();
+    }
+
+    public int getPV()
+    {
+        return _stats.retPv();
     }
 
     public String aff()
