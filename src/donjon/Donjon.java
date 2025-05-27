@@ -248,7 +248,7 @@ public class Donjon {
         {
             return 2;
         }
-        return 0;
+        return 3;
     }
 
     public int tuerPerso(Personnage pers)

@@ -15,6 +15,10 @@ public interface Vivant extends Entite {
 
     public int getIni();
 
+    public int getPV();
+
+    public String comAction();
+
     @Override
     public String toString();
 

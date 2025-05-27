@@ -47,8 +47,6 @@ public class Main {
             }
         }
 
-
-
         System.out.println("\n\nCombien de personnages voulez-vous créer ?");
         int nbrPers = Integer.parseInt(sc.nextLine());
         CreaPerso CreaPer = new CreaPerso();
@@ -56,27 +54,28 @@ public class Main {
         nbrViv += nbrPers;
 
         for (int i = 0; i < nbrPers; i++) {
-            System.out.println("Création Personnage " + (i+1));
+            System.out.println("\n\nCréation Personnage " + (i+1));
             Personnage pers = new Personnage();
             CreaPer.CreaPers(pers);
             test.posJ(tesssst, pers);
+            System.out.println(pers.getInfos());
+
+            System.out.println("Voulez-vous équiper une arme ? (o/n)");
+            String choix = sc.nextLine();
+            if (choix.equals("o"))
+            {
+                pers.sEquiper();
+            }
+            System.out.println("Voulez-vous équiper une armure ? (o/n)");
+            String choixx = sc.nextLine();
+            if (choixx.equals("o"))
+            {
+                pers.sEquiper();
+            }
+
             Viv.add(pers);
             tesssst.afficherDJ();
         }
-
-        /*tesssst.afficherDJ();
-        test.addObst(tesssst);
-        tesssst.afficherDJ();
-        test.posM(tesssst, mos);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, arme);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, armee);
-        tesssst.afficherDJ();
-        test.posEquip(tesssst, armure);
-        tesssst.afficherDJ();*/
-
-
 
         for (int j = 0; j < nbrViv; j++) {
             System.out.println(Viv.get(j).getStat());
@@ -127,6 +126,7 @@ public class Main {
 
 
         int val = 0;
+        int compTour = 1;
 
         while (val == 0) {
             for (int j = 0; j < nbrViv; j++)
@@ -134,33 +134,70 @@ public class Main {
                 if (val == 0)
                 {
                     for (int i = 0; i < 3; i++) {
-                        //faire une fonction (dans donjon ? )   A MODIFIER
-                        System.out.print("\n\n\n");
-                        System.out.print("    --> ");
-                        System.out.print(VivTri.get(j).getLilInfos());
-                        //_______________________________
+                        System.out.print("\n\n");
+                        System.out.println("---------------------------------------------------------");
+                        System.out.print("\n           Tour de "+ VivTri.get(j).getLilInfos() +"\n Tour N°" + compTour + "\n");
+                        System.out.println("---------------------------------------------------------\n");
+                        for (int k = 0; k < nbrViv; k++) {
+                            if (k != j) {
+                                System.out.print("           ");
+                                System.out.print(VivTri.get(k).getLilInfos());
+                            }
+                            else
+                            {
+                                System.out.print("       --> ");
+                                System.out.print(VivTri.get(k).getLilInfos());
+                            }
+                        }
+
+
                         tesssst.afficherDJ();
                         System.out.println(VivTri.get(j).getInfos());
+                        System.out.println("Il vous reste " + (3-i) + " actions.");
                         val = VivTri.get(j).action(tesssst);
+
+                        if (val == 3)
+                        {
+                            for (Vivant mosMo : VivTri)
+                            {
+                                if (mosMo.getPV() <= 0)
+                                {
+                                    VivTri.remove(mosMo);
+                                    nbrViv--;
+                                }
+                            }
+                            val = 0;
+                        }
+
+
+                        System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
+                        String comm = sc.nextLine();
+                        if (comm.equals("o"))
+                        {
+                            System.out.println(VivTri.get(j).comAction());
+                        }
+                        else if (comm.equals("mj"))
+                        {
+                            System.out.println(test.comAction());
+                        }
                     }
                 }
             }
+            compTour++;
         }
+
+        String[] arg = new String[] {};
+
         if (val == 1)
         {
             System.out.println("\nLes joueurs ont perdu");
+            main(arg);
         }
         else
         {
             System.out.println("\nLes joueurs ont fini le donjon");
+            main(arg);
             //les persos regagnent leur vie
         }
-
-        //          A FAIRE
-        // améliorer l'affichage
-        // trucs à ajouter
-        //      - créer persos, monstre et autre en mode console (sans le main)
-        //      - choix ordre (initiative)
-
     }
 }
