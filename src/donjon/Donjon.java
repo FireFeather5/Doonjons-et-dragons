@@ -1,6 +1,7 @@
 package donjon;
 
 import Utils.Couleurs;
+import Utils.StatusDonjon;
 import entite.Entite;
 import entite.Obstacle;
 import entite.Monstre;
@@ -11,8 +12,7 @@ import java.util.ArrayList;
 
 public class Donjon {
 
-    private Couleurs _cl = new Couleurs();
-
+    private final Couleurs _cl = new Couleurs();
     private int _tc1;
     private int _tc2;
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -225,24 +225,24 @@ public class Donjon {
         _equip.remove(equip);
     }
 
-    public int tuerMonstre(Monstre mons)
+    public StatusDonjon tuerMonstre(Monstre mons)
     {
         _mons.remove(mons);
         int[] pc = mons.getPos();
         emptyCase(pc);
         if (_mons.isEmpty())
         {
-            return 2;
+            return StatusDonjon.AUCUN_MONSTRE;
         }
-        return 3;
+        return StatusDonjon.MONSTRE_MORT;
     }
 
-    public int tuerPerso(Personnage pers)
+    public StatusDonjon tuerPerso(Personnage pers)
     {
         _pers.remove(pers);
         int[] pc = pers.getPos();
         emptyCase(pc);
-        return 1;
+        return StatusDonjon.JOUEUR_MORT;
     }
 
     public void switchCase(String posDep, String posFin)
