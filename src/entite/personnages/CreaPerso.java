@@ -1,5 +1,6 @@
 package entite.personnages;
 
+import Utils.Couleurs;
 import entite.personnages.classes.Classe;
 import entite.personnages.classes.*;
 import entite.personnages.genre.Feminin;
@@ -14,6 +15,7 @@ public class CreaPerso {
     private Races _ra;
     private Classe _cla;
     private Genre _gre;
+    private Couleurs _cl = new Couleurs();
 
     Scanner sc = new Scanner(System.in);
 
@@ -23,7 +25,7 @@ public class CreaPerso {
 
     public Personnage CreaPers(Personnage pers) {
 
-        System.out.println("nom ?");
+        System.out.println("\nnom ?");
         String _nom = sc.nextLine();
         Race();
         Classe();
@@ -42,28 +44,34 @@ public class CreaPerso {
                 2- Halfelin
                 3- Humain
                 4- Nain""");
-        String race = sc.nextLine();
-        switch (Integer.parseInt(race)) {
-            case 1: {
-                _ra = new Elfes();
-                break;
+        try {
+            int race = Integer.parseInt(sc.nextLine());
+            switch (race) {
+                case 1: {
+                    _ra = new Elfes();
+                    break;
+                }
+                case 2: {
+                    _ra = new Halfelins();
+                    break;
+                }
+                case 3: {
+                    _ra = new Humain();
+                    break;
+                }
+                case 4: {
+                    _ra = new Nain();
+                    break;
+                }
+                default: {
+                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    Race();
+                }
             }
-            case 2: {
-                _ra = new Halfelins();
-                break;
-            }
-            case 3: {
-                _ra = new Humain();
-                break;
-            }
-            case 4: {
-                _ra = new Nain();
-                break;
-            }
-            default: {
-                System.out.println("Mauvais chiffre choisit.");
-                Race();
-            }
+        }
+        catch (NumberFormatException | NullPointerException erreur) {
+            System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
+            Race();
         }
     }
 
@@ -76,28 +84,34 @@ public class CreaPerso {
                 2- Guerrier
                 3- Magicien
                 4- Roublard""");
-        String race = sc.nextLine();
-        switch (Integer.parseInt(race)) {
-            case 1: {
-                _cla = new Clerc();
-                break;
+        try {
+            int classe = Integer.parseInt(sc.nextLine());
+            switch (classe) {
+                case 1: {
+                    _cla = new Clerc();
+                    break;
+                }
+                case 2: {
+                    _cla = new Guerrier();
+                    break;
+                }
+                case 3: {
+                    _cla = new Magicien();
+                    break;
+                }
+                case 4: {
+                    _cla = new Roublard();
+                    break;
+                }
+                default: {
+                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    Classe();
+                }
             }
-            case 2: {
-                _cla = new Guerrier();
-                break;
-            }
-            case 3: {
-                _cla = new Magicien();
-                break;
-            }
-            case 4: {
-                _cla = new Roublard();
-                break;
-            }
-            default: {
-                System.out.println("Mauvais chiffre choisit.");
-                Classe();
-            }
+        }
+        catch (NumberFormatException | NullPointerException erreur) {
+            System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
+            Classe();
         }
     }
 
@@ -107,20 +121,26 @@ public class CreaPerso {
                 Genre ?
                 1- Homme
                 2- Femme""");
-        String race = sc.nextLine();
-        switch (Integer.parseInt(race)) {
-            case 1: {
-                _gre = new Masculin();
-                break;
+        try {
+            int gre = Integer.parseInt(sc.nextLine());
+            switch (gre) {
+                case 1: {
+                    _gre = new Masculin();
+                    break;
+                }
+                case 2: {
+                    _gre = new Feminin();
+                    break;
+                }
+                default: {
+                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    Genre();
+                }
             }
-            case 2: {
-                _gre = new Feminin();
-                break;
-            }
-            default: {
-                System.out.println("Mauvais chiffre choisit.");
-                Genre();
-            }
+        }
+        catch (NumberFormatException | NullPointerException erreur) {
+            System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
+            Genre();
         }
     }
 }

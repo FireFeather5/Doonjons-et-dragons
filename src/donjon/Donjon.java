@@ -1,5 +1,6 @@
 package donjon;
 
+import Utils.Couleurs;
 import entite.Entite;
 import entite.Obstacle;
 import entite.Monstre;
@@ -9,6 +10,8 @@ import entite.personnages.Personnage;
 import java.util.ArrayList;
 
 public class Donjon {
+
+    private Couleurs _cl = new Couleurs();
     private int _tc1;
     private int _tc2;
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -62,7 +65,7 @@ public class Donjon {
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
-            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "[lettre][nombre]" + _cl.reset());
             return null;
         }
     }
@@ -239,6 +242,48 @@ public class Donjon {
         int[] pc = pers.getPos();
         emptyCase(pc);
         return 1;
+    }
+
+    public void switchCase(String posDep, String posFin)
+    {
+        int[] pcD = posInt(posDep);
+        int[] pcF = posInt(posFin);
+
+        boolean caseVal = false;
+        for (Personnage per : _pers)
+        {
+            if (per.equals(_donjon[pcD[0]-1][pcD[1]-1]))
+            {
+                caseVal = true;
+                break;
+            }
+        }
+        for (Monstre mos : _mons)
+        {
+            if (mos.equals(_donjon[pcD[0]-1][pcD[1]-1]))
+            {
+                caseVal = true;
+                break;
+            }
+        }
+
+        if (caseVal)
+        {
+            if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
+            {
+                _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
+                System.out.println("Le déplacement à fonctionné");
+                emptyCase(pcD);
+            }
+            else
+            {
+                System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
+            }
+        }
+        else
+        {
+            System.out.println(_cl.rouge() + "Il n'y a ni personnage ni monstre sur la case départ" + _cl.reset());
+        }
     }
 
     public void emptyCase(int[] pc)

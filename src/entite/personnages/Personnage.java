@@ -1,5 +1,6 @@
 package entite.personnages;
 
+import Utils.Couleurs;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class Personnage implements Vivant {
 
+    private Couleurs _cl = new Couleurs();
     private String _nom;
     private Races _race;
     private Classe _classe;
@@ -61,9 +63,13 @@ public class Personnage implements Vivant {
         _stats.add(_race.stat());
 
         System.out.println("===== caractéristiques perso =====");
+        System.out.println("\nLancement d'un dé pour la caractéristique de force.");
         _stats.forc(_deChar.roll() + 3);
+        System.out.println("\nLancement d'un dé pour la caractéristique de dextérité.");
         _stats.dex(_deChar.roll() + 3);
+        System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
         _stats.vit(_deChar.roll() + 3);
+        System.out.println("\nLancement d'un dé pour la caractéristique d'initiative.");
         _stats.ini(_deChar.roll() + 3);
 
         _stock.addAll(_classe.getEquiBase());
@@ -91,7 +97,7 @@ public class Personnage implements Vivant {
         if (_peutRamasser)
         {
             if (this._classe instanceof Clerc || this._classe instanceof Magicien) {
-                System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3\nSorts : 4");
+                System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3\nRamasser : 4");
                 try {
                     int choix = Integer.parseInt(sc.nextLine());
 
@@ -106,10 +112,10 @@ public class Personnage implements Vivant {
                             sEquiper();
                             break;
                         case 3:
-                            ramasser(DJ);
+                            lancerSort(DJ);
                             break;
                         case 4:
-                            lancerSort(DJ);
+                            ramasser(DJ);
                             break;
                         default:
                             System.out.println("Mauvais choix d'action");
@@ -205,9 +211,10 @@ public class Personnage implements Vivant {
         return val;
     }
 
+
     public void seDeplacer(Donjon DJ)
     {
-        System.out.println("Choisir une case où se déplacer");
+        System.out.println("\nChoisir une case où se déplacer [lettre][nombre]");
         String dep = sc.nextLine();
 
         try {
@@ -574,6 +581,11 @@ public class Personnage implements Vivant {
     {
         System.out.println(this + " commente l'action effectuée");
         return this + " - " + sc.nextLine();
+    }
+
+    public void regePV()
+    {
+        _stats.pv(_stats.retPvT());
     }
 
     public String getStat() {
