@@ -39,7 +39,7 @@ public class CreaPerso {
     public void Race()
     {
         System.out.println("""
-                Race ?
+               \nRace ?
                 1- Elfe
                 2- Halfelin
                 3- Humain
@@ -79,7 +79,7 @@ public class CreaPerso {
     public void Classe()
     {
         System.out.println("""
-                Classe ?
+                \nClasse ?
                 1- Clerc
                 2- Guerrier
                 3- Magicien
@@ -118,7 +118,7 @@ public class CreaPerso {
     public void Genre()
     {
         System.out.println("""
-                Genre ?
+                \nGenre ?
                 1- Homme
                 2- Femme""");
         try {

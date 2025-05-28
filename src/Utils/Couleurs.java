@@ -12,11 +12,6 @@ public class Couleurs {
         return "\u001B[33m";
     }
 
-    public String orange()
-    {
-        return "\u001B[43m";
-    }
-
     public String rouge()
     {
         return "\u001B[31m";
