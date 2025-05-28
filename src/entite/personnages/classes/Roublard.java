@@ -1,17 +1,14 @@
 package entite.personnages.classes;
 
 import entite.equipement.Equipement;
-import entite.equipement.arme.courante.MasseArme;
-import entite.equipement.arme.distance.ArbaleteLegere;
 import entite.equipement.arme.distance.ArcCourt;
 import entite.equipement.arme.guerre.Rapiere;
-import entite.equipement.armure.legere.ArmureEcaille;
 
 import java.util.ArrayList;
 
 public class Roublard implements Classe {
 
-    private static int _pv = 16;
+    private final static int _pv = 16;
     private static ArrayList<Equipement> _equiBase;
 
     public Roublard()

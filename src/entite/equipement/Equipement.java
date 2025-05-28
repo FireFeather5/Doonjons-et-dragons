@@ -7,7 +7,7 @@ public abstract class Equipement implements Entite {
     private final String _name;
     private final int _speedMalus;
     private final int _forceBonus;
-    private Position _pos;
+    private final Position _pos;
 
     public Equipement(String name) {
         this(name, 0, 0);

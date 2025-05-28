@@ -1,6 +1,5 @@
 import de.De;
 import donjon.Donjon;
-import entite.Entite;
 import entite.Monstre;
 import entite.personnages.CreaPerso;
 import entite.personnages.Personnage;
@@ -83,8 +82,8 @@ public class Main {
 
         De deIni = new De(1, 20);
 
-        ArrayList<Integer> ArrIni = new ArrayList<Integer>();
-        ArrayList<Vivant> VivTri = new ArrayList<Vivant>();
+        ArrayList<Integer> ArrIni = new ArrayList<>();
+        ArrayList<Vivant> VivTri = new ArrayList<>();
 
         for (int j = 0; j < nbrViv; j++)
         {
