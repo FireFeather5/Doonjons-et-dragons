@@ -35,20 +35,26 @@ public class Monstre implements Vivant {
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        System.out.println("\n\n===== initialisation monstre =====");
+        System.out.println("\n\n===== initialisation monstre " + toString() + " =====");
+        System.out.println("\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
+        System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
         _stats.vit(_deChar.roll());
+        System.out.println("\nLancement d'un dé pour la caractéristique d'initiative.");
         _stats.ini(_deChar.roll());
+        System.out.println("\nLancement d'un dé pour la caractéristique d'armure.");
         _stats.arm(_deChar.roll());
 
         if (_portAtt == 1)
         {
             _stats.dex(0);
+            System.out.println("\nLancement d'un dé pour la caractéristique de force.");
             _stats.forc(_deChar.roll());
         }
         else
         {
             _stats.forc(0);
+            System.out.println("\nLancement d'un dé pour la caractéristique de dextérité.");
             _stats.dex(_deChar.roll());
         }
     }
@@ -71,7 +77,7 @@ public class Monstre implements Vivant {
     public int action(Donjon DJ)
     {
         int val = 0;
-        System.out.println("Choisir une action :\nSe déplacer : 0\nAttaquer : 1");
+        System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
         try {
             int choix = Integer.parseInt(sc.nextLine());
 

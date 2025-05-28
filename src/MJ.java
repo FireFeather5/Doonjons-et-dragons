@@ -25,7 +25,7 @@ public class MJ {
 
     public int createDJ(Donjon DJ)
     {
-        System.out.println("Voulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjons par défaut sera utilisé)");
+        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjons par défaut sera utilisé)");
         if (sc.nextLine().equals("o")) {
             System.out.println("\n\ntaille cote 1");
             String tc1s = sc.nextLine();
@@ -152,7 +152,7 @@ public class MJ {
 
     public String choixPos(String txt)
     {
-        System.out.println("\nposition " + txt);
+        System.out.println("\n\nposition " + txt + " : [lettre][nombre]");
         String pc = sc.nextLine();
 
         return pc;
@@ -260,24 +260,40 @@ public class MJ {
 
     public void actionFT(Donjon DJ)
     {
-        System.out.println("Que veut faire le Maitre du Jeu ?");
+        System.out.println("\nQue veut faire le Maitre du Jeu ?");
         System.out.println("0- Ne rien faire\n1- Déplacer un joueur/monstre\n2- Faire ds dégats à un joueur/monstre\n3- Ajouter des obstacles");
-        int choix = Integer.parseInt(sc.nextLine());
-        switch (choix) {
-            case 1:
-                depViv(DJ);
-            case 2:
-
-                break;
-            case 3:
-                String ch = "o";
-                while (ch.equals("o")) {
-                    addObst(DJ);
-                    System.out.println("Voulez-vous ajouter un autre obstacle ? (o/n)");
-                    ch = sc.nextLine();
-                }
-                break;
-            default:
+        try {
+            int choix = Integer.parseInt(sc.nextLine());
+            switch (choix) {
+                case 1:
+                    depViv(DJ);
+                    break;
+                case 2:
+                    System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
+                    String infDgt = sc.nextLine();
+                    if (infDgt.equals("j") || infDgt.equals("joueur")) {
+                        System.out.println(degatJoueur(DJ));
+                    } else if (infDgt.equals("m") || infDgt.equals("monstre")) {
+                        System.out.println(degatMonstre(DJ));
+                    }
+                    break;
+                case 3:
+                    String ch = "o";
+                    while (ch.equals("o")) {
+                        addObst(DJ);
+                        System.out.println("Voulez-vous ajouter un autre obstacle ? (o/n)");
+                        ch = sc.nextLine();
+                    }
+                    break;
+                default:
+            }
+        }
+        catch (NumberFormatException erreur) {
+            System.out.println("Mauvais choix d'action");
+            actionFT(DJ);
+        } catch (NullPointerException erreur) {
+            System.out.println("Mauvais choix d'action");
+            actionFT(DJ);
         }
     }
 

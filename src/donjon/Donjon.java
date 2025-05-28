@@ -62,17 +62,17 @@ public class Donjon {
         }
         catch (NullPointerException erreur)
         {
-            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
             return null;
         }
         catch (StringIndexOutOfBoundsException erreur)
         {
-            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
             return null;
         }
         catch (NumberFormatException erreur)
         {
-            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
             return null;
         }
     }
