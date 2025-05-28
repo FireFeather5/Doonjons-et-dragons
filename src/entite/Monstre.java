@@ -1,5 +1,6 @@
 package entite;
 
+import Utils.StatusDonjon;
 import de.De;
 import entite.personnages.*;
 import donjon.Donjon;
@@ -34,7 +35,7 @@ public class Monstre implements Vivant {
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        System.out.println("\n\n===== initialisation monstre " + toString() + " =====");
+        System.out.println("\n\n===== initialisation monstre " + this + " =====");
         System.out.println("\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
         System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
@@ -73,9 +74,9 @@ public class Monstre implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public int action(Donjon DJ)
+    public StatusDonjon action(Donjon DJ)
     {
-        int val = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
         System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
         try {
             int choix = Integer.parseInt(sc.nextLine());
@@ -131,9 +132,9 @@ public class Monstre implements Vivant {
         }
     }
 
-    public int attaquer(Donjon DJ)
+    public StatusDonjon attaquer(Donjon DJ)
     {
-        int val = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
         System.out.println("Choisir la case à attaquer");
 
         try {
@@ -182,8 +183,8 @@ public class Monstre implements Vivant {
         return this._stats.retArm();
     }
 
-    public int seFaitAttaquer(int degats, Donjon DJ) {
-        int val = 0;
+    public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
+        StatusDonjon val = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
         _stats.pv(pv);
         if (pv <= 0)

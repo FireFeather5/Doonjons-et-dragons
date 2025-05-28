@@ -29,9 +29,7 @@ public class Main {
                 if (nbrPers == 0) {
                     System.out.println(cl.rouge() + "\nIl doit y avoir au moins un personnage !" + cl.reset());
                 }
-            } catch (NumberFormatException erreur) {
-                System.out.println(cl.rouge() + "Mauvaise entrée clavier" + cl.reset());
-            } catch (NullPointerException erreur) {
+            } catch (NumberFormatException | NullPointerException erreur) {
                 System.out.println(cl.rouge() + "Mauvaise entrée clavier" + cl.reset());
             }
         }
