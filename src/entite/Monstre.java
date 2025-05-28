@@ -1,7 +1,6 @@
 package entite;
 
 import de.De;
-import entite.equipement.Equipement;
 import entite.personnages.*;
 import donjon.Donjon;
 import statistiques.Position;
@@ -15,8 +14,8 @@ public class Monstre implements Vivant {
     private int _numero = 1;    //a voir plus tard
     private int _portAtt;
     private De _degAtt;
-    private Stats _stats;
-    private Position _pos;
+    private final Stats _stats;
+    private final Position _pos;
     private De _deChar;
 
     Scanner sc = new Scanner(System.in);
@@ -93,12 +92,7 @@ public class Monstre implements Vivant {
                     action(DJ);
             }
         }
-        catch (NumberFormatException erreur)
-        {
-            System.out.println("Mauvais choix d'action");
-            action(DJ);
-        }
-        catch (NullPointerException erreur)
+        catch (NumberFormatException | NullPointerException erreur)
         {
             System.out.println("Mauvais choix d'action");
             action(DJ);
@@ -155,16 +149,16 @@ public class Monstre implements Vivant {
                         // un des deux est forcément à 0 donc on peut directement ajouter les deux
                         // (évite un if else)
                         int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
-                        System.out.println(toString() + " perce l'armure de " + pers.toString() + " (jet de touche : " + touche + ").");
+                        System.out.println(this + " perce l'armure de " + pers + " (jet de touche : " + touche + ").");
                         if (touche > pers.getArmorClass()) {
                             int atk = this._degAtt.roll();
-                            System.out.println(toString() + " fait " + atk + " dégats à " + pers.toString() + " !");
+                            System.out.println(this + " fait " + atk + " dégats à " + pers + " !");
                             val = pers.seFaitAttaquer(atk, DJ);
                         } else {
-                            System.out.println(toString() + " ne perce pas l'armure de " + pers.toString() + " (jet de touche : " + touche + ")");
+                            System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + touche + ")");
                         }
                     } else {
-                        System.out.println(toString() + " n'a pas une portée suffisante");
+                        System.out.println(this + " n'a pas une portée suffisante");
                     }
                 } else {
                     System.out.println("Il n'y a pas de personnage à attaquer sur cette case.");
@@ -194,33 +188,33 @@ public class Monstre implements Vivant {
         _stats.pv(pv);
         if (pv <= 0)
         {
-            System.out.println("\n" + toString() + " à été achevé.");
+            System.out.println("\n" + this + " à été achevé.");
             val = DJ.tuerMonstre(this);
         }
         else
         {
-            System.out.println("\n" + toString() + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
+            System.out.println("\n" + this + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
         return val;
     }
 
     public String comAction()
     {
-        System.out.println(toString() + " commente l'action effectuée");
-        return toString() + " - " + sc.nextLine();
+        System.out.println(this + " commente l'action effectuée");
+        return this + " - " + sc.nextLine();
     }
 
     public String getStat() {
-        return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return "\n\n===== " + this + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos() {
-        return "\n\n===== " + toString() + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return "\n\n===== " + this + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getLilInfos()
     {
-        return (aff() + "    " + toString() + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
+        return (aff() + "    " + this + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
     }
 
     public int[] getPos()

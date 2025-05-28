@@ -104,8 +104,8 @@ public class Main {
 
             De deIni = new De(1, 20);
 
-            ArrayList<Integer> ArrIni = new ArrayList<Integer>();
-            ArrayList<Vivant> VivTri = new ArrayList<Vivant>();
+        ArrayList<Integer> ArrIni = new ArrayList<>();
+        ArrayList<Vivant> VivTri = new ArrayList<>();
 
             System.out.println("\n\nChoix de l'ordre de jeu");
 

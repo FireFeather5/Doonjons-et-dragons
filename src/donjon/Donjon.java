@@ -11,12 +11,12 @@ import java.util.ArrayList;
 public class Donjon {
     private int _tc1;
     private int _tc2;
-    private static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+    private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private Entite[][] _donjon;
     private AffichDJ _affDJ;
-    private ArrayList<Equipement> _equip;
-    private ArrayList<Personnage> _pers;
-    private ArrayList<Monstre> _mons;
+    private final ArrayList<Equipement> _equip;
+    private final ArrayList<Personnage> _pers;
+    private final ArrayList<Monstre> _mons;
 
     public Donjon()
     {
@@ -60,17 +60,7 @@ public class Donjon {
 
             return posi;
         }
-        catch (NullPointerException erreur)
-        {
-            System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
-            return null;
-        }
-        catch (StringIndexOutOfBoundsException erreur)
-        {
-            System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
-            return null;
-        }
-        catch (NumberFormatException erreur)
+        catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
             System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
             return null;
@@ -153,14 +143,6 @@ public class Donjon {
         {
             return false;
         }
-    }
-
-    public void mondeParallele(Personnage perso) {
-        _donjon[perso.getPos()[0] -1][perso.getPos()[1] - 1] = null;
-    }
-
-    public void mondeParallele(Monstre mons) {
-        _donjon[mons.getPos()[0] -1][mons.getPos()[1] - 1] = null;
     }
 
     public boolean posE(String pos, Equipement equip)

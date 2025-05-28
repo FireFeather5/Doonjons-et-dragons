@@ -8,15 +8,12 @@ import entite.personnages.genre.Genre;
 import entite.personnages.genre.Masculin;
 import entite.personnages.races.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CreaPerso {
 
-    private Personnage _pers;
     private Races _ra;
     private Classe _cla;
-    private String _nom;
     private Genre _gre;
     private Couleurs _cl = new Couleurs();
 
@@ -28,21 +25,25 @@ public class CreaPerso {
 
     public Personnage CreaPers(Personnage pers) {
 
-        _pers = pers;
         System.out.println("\nnom ?");
-        _nom = sc.nextLine();
+        String _nom = sc.nextLine();
         Race();
         Classe();
         Genre();
-        _pers.CreaPers(_nom, _ra, _cla, _gre);
-        return _pers;
+        pers.CreaPers(_nom, _ra, _cla, _gre);
+        return pers;
     }
 
 
 
     public void Race()
     {
-        System.out.println("\nRace ?" + "\n1- Elfe" + "\n2- Halfelin" + "\n3- Humain" + "\n4- Nain");
+        System.out.println("""
+                Race ?
+                1- Elfe
+                2- Halfelin
+                3- Humain
+                4- Nain""");
         try {
             int race = Integer.parseInt(sc.nextLine());
             switch (race) {
@@ -80,7 +81,12 @@ public class CreaPerso {
 
     public void Classe()
     {
-        System.out.println("\nClasse ?" + "\n1- Clerc" + "\n2- Guerrier" + "\n3- Magicien" + "\n4- Roublard");
+        System.out.println("""
+                Classe ?
+                1- Clerc
+                2- Guerrier
+                3- Magicien
+                4- Roublard""");
         try {
             int classe = Integer.parseInt(sc.nextLine());
             switch (classe) {
@@ -117,7 +123,10 @@ public class CreaPerso {
 
     public void Genre()
     {
-        System.out.println("\nGenre ?" + "\n1- Homme" + "\n2- Femme");
+        System.out.println("""
+                Genre ?
+                1- Homme
+                2- Femme""");
         try {
             int gre = Integer.parseInt(sc.nextLine());
             switch (gre) {

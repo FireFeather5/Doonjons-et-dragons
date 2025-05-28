@@ -2,13 +2,11 @@ package donjon;
 
 import entite.Entite;
 
-import java.util.ArrayList;
-
 public class AffichDJ {
-    private int _tc1;
-    private int _tc2;
-    private String[][] _donjon;
-    private static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+    private final int _tc1;
+    private final int _tc2;
+    private final String[][] _donjon;
+    private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     public AffichDJ(int tc1, int tc2)
     {

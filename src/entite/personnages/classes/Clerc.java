@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Clerc implements Classe {
 
-    private static int _pv = 16;
+    private final static int _pv = 16;
     private static ArrayList<Equipement> _equiBase;
 
     public Clerc()

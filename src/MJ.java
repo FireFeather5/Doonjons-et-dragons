@@ -152,10 +152,9 @@ public class MJ {
 
     public String choixPos(String txt)
     {
-        System.out.println("\n\nposition " + txt + " : [lettre][nombre]");
-        String pc = sc.nextLine();
+        System.out.println("\n\nposition " + txt);
 
-        return pc;
+        return sc.nextLine();
     }
 
     public void addObst(Donjon DJ)
