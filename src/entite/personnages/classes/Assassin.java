@@ -1,21 +1,23 @@
 package entite.personnages.classes;
 
 import entite.equipement.Equipement;
-import entite.equipement.arme.distance.ArcCourt;
+import entite.equipement.arme.distance.ArbaleteLegere;
 import entite.equipement.arme.courante.Rapiere;
+import entite.equipement.armure.legere.DemiPlate;
 
 import java.util.ArrayList;
 
-public class Roublard implements Classe {
+public class Assassin implements Classe{
 
-    private final static int _pv = 16;
+    private final static int _pv = 14;
     private static ArrayList<Equipement> _equiBase;
 
-    public Roublard()
+    public Assassin()
     {
         _equiBase = new ArrayList<>();
+        _equiBase.add(new DemiPlate());
         _equiBase.add(new Rapiere());
-        _equiBase.add(new ArcCourt());
+        _equiBase.add(new ArbaleteLegere());
     }
 
     public int pv()
@@ -30,7 +32,7 @@ public class Roublard implements Classe {
 
     public String getCla()
     {
-        return "Roublard";
+        return "Assassin";
     }
 
 }

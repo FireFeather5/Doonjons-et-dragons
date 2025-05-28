@@ -1,7 +1,7 @@
 package entite.personnages.classes;
 
 import entite.equipement.Equipement;
-import entite.equipement.arme.courante.MasseArme;
+import entite.equipement.arme.guerre.MasseArme;
 import entite.equipement.arme.distance.ArbaleteLegere;
 import entite.equipement.armure.legere.ArmureEcaille;
 
@@ -15,8 +15,8 @@ public class Clerc implements Classe {
     public Clerc()
     {
         _equiBase = new ArrayList<>();
-        _equiBase.add(new MasseArme());
         _equiBase.add(new ArmureEcaille());
+        _equiBase.add(new MasseArme());
         _equiBase.add(new ArbaleteLegere());
     }
 

@@ -83,7 +83,8 @@ public class CreaPerso {
                 1- Clerc
                 2- Guerrier
                 3- Magicien
-                4- Roublard""");
+                4- Roublard
+                5- Assassin""");
         try {
             int classe = Integer.parseInt(sc.nextLine());
             switch (classe) {
@@ -101,6 +102,10 @@ public class CreaPerso {
                 }
                 case 4: {
                     _cla = new Roublard();
+                    break;
+                }
+                case 5: {
+                    _cla = new Assassin();
                     break;
                 }
                 default: {
