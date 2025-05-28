@@ -5,21 +5,21 @@ import entite.Entite;
 
 public interface Vivant extends Entite {
 
-    public String getStat();
+    String getStat();
 
-    public String getInfos();
+    String getInfos();
 
-    public String getLilInfos();
+    String getLilInfos();
 
-    public int action(Donjon DJ);
+    int action(Donjon DJ);
 
-    public int getIni();
+    int getIni();
 
-    public int getPV();
+    int getPV();
 
-    public String comAction();
+    String comAction();
 
     @Override
-    public String toString();
+    String toString();
 
 }

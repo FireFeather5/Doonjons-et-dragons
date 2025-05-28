@@ -2,9 +2,9 @@ package entite;
 
 public interface Entite {
 
-    public String aff();
+    String aff();
 
-    public int code();
+    int code();
 
 
 }

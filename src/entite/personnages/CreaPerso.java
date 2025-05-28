@@ -7,15 +7,12 @@ import entite.personnages.genre.Genre;
 import entite.personnages.genre.Masculin;
 import entite.personnages.races.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CreaPerso {
 
-    private Personnage _pers;
     private Races _ra;
     private Classe _cla;
-    private String _nom;
     private Genre _gre;
 
     Scanner sc = new Scanner(System.in);
@@ -26,21 +23,25 @@ public class CreaPerso {
 
     public Personnage CreaPers(Personnage pers) {
 
-        _pers = pers;
         System.out.println("nom ?");
-        _nom = sc.nextLine();
+        String _nom = sc.nextLine();
         Race();
         Classe();
         Genre();
-        _pers.CreaPers(_nom, _ra, _cla, _gre);
-        return _pers;
+        pers.CreaPers(_nom, _ra, _cla, _gre);
+        return pers;
     }
 
 
 
     public void Race()
     {
-        System.out.println("Race ?" + "\n1- Elfe" + "\n2- Halfelin" + "\n3- Humain" + "\n4- Nain");
+        System.out.println("""
+                Race ?
+                1- Elfe
+                2- Halfelin
+                3- Humain
+                4- Nain""");
         String race = sc.nextLine();
         switch (Integer.parseInt(race)) {
             case 1: {
@@ -69,7 +70,12 @@ public class CreaPerso {
 
     public void Classe()
     {
-        System.out.println("Classe ?" + "\n1- Clerc" + "\n2- Guerrier" + "\n3- Magicien" + "\n4- Roublard");
+        System.out.println("""
+                Classe ?
+                1- Clerc
+                2- Guerrier
+                3- Magicien
+                4- Roublard""");
         String race = sc.nextLine();
         switch (Integer.parseInt(race)) {
             case 1: {
@@ -97,7 +103,10 @@ public class CreaPerso {
 
     public void Genre()
     {
-        System.out.println("Genre ?" + "\n1- Homme" + "\n2- Femme");
+        System.out.println("""
+                Genre ?
+                1- Homme
+                2- Femme""");
         String race = sc.nextLine();
         switch (Integer.parseInt(race)) {
             case 1: {

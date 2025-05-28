@@ -4,7 +4,7 @@ import donjon.Donjon;
 import statistiques.Position;
 
 public class Obstacle implements Entite {
-    private Position _pos;
+    private final Position _pos;
 
     public Obstacle()
     {
@@ -18,9 +18,7 @@ public class Obstacle implements Entite {
 
     public boolean addPos(String pos, Donjon DJ)
     {
-        boolean test = DJ.addObst(pos, this);
-
-        return test;
+        return DJ.addObst(pos, this);
     }
 
     public String aff()
