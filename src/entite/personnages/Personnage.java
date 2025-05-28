@@ -1,6 +1,7 @@
 package entite.personnages;
 
 import Utils.Couleurs;
+import Utils.StatusDonjon;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
@@ -24,8 +25,7 @@ import java.util.ArrayList;
 
 public class Personnage implements Vivant {
 
-    private Couleurs _cl = new Couleurs();
-
+    private final Couleurs _cl = new Couleurs();
     private String _nom;
     private Races _race;
     private Classe _classe;
@@ -92,9 +92,9 @@ public class Personnage implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public int action(Donjon DJ)
+    public StatusDonjon action(Donjon DJ)
     {
-        int val = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
         //doit pouvoir etre amélioré mais fonctionne pour le moment
         if (_peutRamasser)
         {
@@ -476,9 +476,9 @@ public class Personnage implements Vivant {
         return null;
     }
 
-    public int attaquer(Donjon DJ)
+    public StatusDonjon attaquer(Donjon DJ)
     {
-        int val = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
         System.out.println("Choisir la case à attaquer");
 
         try {
@@ -509,7 +509,8 @@ public class Personnage implements Vivant {
                                 System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
                                 this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
                                 int atk = this._deChar.roll() + arme.getBonusMagique();
-                                System.out.println(this._nom + " fait " + atk + " dégats à " + mons + " !");
+                                int bonus = arme.getBonusMagique();
+                                System.out.println(this._nom + " fait " + (atk - bonus) + " + " + bonus + " = " + atk + " dégats à " + mons + " !");
                                 val = mons.seFaitAttaquer(atk, DJ);
                             } else {
                                 System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
@@ -520,6 +521,7 @@ public class Personnage implements Vivant {
                     } else {
                         System.out.println(_cl.rouge() + "Il n'y a pas de monstre à attaquer sur cette case." + _cl.reset());
                         //est ce qu'on rapelle la fonction ?
+                        //non
                     }
                 }
                 catch (ArrayIndexOutOfBoundsException erreur)
@@ -547,8 +549,8 @@ public class Personnage implements Vivant {
         return 0;
     }
 
-    public int seFaitAttaquer(int degats, Donjon DJ) {
-        int val = 0;
+    public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
+        StatusDonjon val = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
         _stats.pv(pv);
         if (pv <= 0)

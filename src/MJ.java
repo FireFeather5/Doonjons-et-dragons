@@ -1,4 +1,5 @@
 import Utils.Couleurs;
+import Utils.StatusDonjon;
 import de.De;
 import donjon.Donjon;
 import entite.Obstacle;
@@ -16,7 +17,7 @@ import java.util.Scanner;
 
 public class MJ {
 
-    private Couleurs _cl = new Couleurs();
+    private final Couleurs _cl = new Couleurs();
 
     ArrayList<String> _monstresCrees = new ArrayList<>();
 
@@ -261,9 +262,9 @@ public class MJ {
         return "MJ - " + sc.nextLine();
     }
 
-    public int actionFT(Donjon DJ)
+    public StatusDonjon actionFT(Donjon DJ)
     {
-        int val = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\nQue veut faire le Maitre du Jeu ?");
         System.out.println("0- Ne rien faire\n1- Déplacer un joueur/monstre\n2- Faire ds dégats à un joueur/monstre\n3- Ajouter des obstacles");
@@ -335,9 +336,9 @@ public class MJ {
         return val;
     }
 
-    public int degatMonstre(Donjon DJ) {
+    public StatusDonjon degatMonstre(Donjon DJ) {
         int choix = 1;
-        int val = 0;
+        StatusDonjon val;
 
         for (Monstre mons : DJ.getListeMonstre()) {
             System.out.println(choix++ + ". " + mons);
