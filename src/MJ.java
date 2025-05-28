@@ -17,6 +17,7 @@ import java.util.Scanner;
 public class MJ {
 
     private Couleurs _cl = new Couleurs();
+
     Scanner sc = new Scanner(System.in);
     ArrayList<String> _monstresCrees = new ArrayList<>();
 
@@ -168,7 +169,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position + _cl.reset()");
+            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
             addObst(DJ);
         }
     }

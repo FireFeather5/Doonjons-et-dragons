@@ -107,7 +107,7 @@ public class Main {
         ArrayList<Integer> ArrIni = new ArrayList<>();
         ArrayList<Vivant> VivTri = new ArrayList<>();
 
-            System.out.println("\n\n===== Choix de l'ordre de jeu =====");
+            System.out.println(cl.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + cl.reset());
 
             for (int j = 0; j < nbrViv; j++) {
                 System.out.println("\n" + Viv.get(j).toString() + " : ");
