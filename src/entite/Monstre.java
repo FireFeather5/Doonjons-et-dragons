@@ -1,6 +1,7 @@
 package entite;
 
 import Utils.StatusDonjon;
+import Utils.Couleurs;
 import de.De;
 import entite.personnages.*;
 import donjon.Donjon;
@@ -10,6 +11,9 @@ import statistiques.Stats;
 import java.util.Scanner;
 
 public class Monstre implements Vivant {
+
+    private Couleurs _cl = new Couleurs();
+
     private String _espece;
     private String _symb;
     private int _numero = 1;    //a voir plus tard
@@ -35,7 +39,7 @@ public class Monstre implements Vivant {
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        System.out.println("\n\n===== initialisation monstre " + this + " =====");
+        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + this + " =====" + _cl.reset());
         System.out.println("\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
         System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
@@ -89,13 +93,13 @@ public class Monstre implements Vivant {
                     val = attaquer(DJ);
                     break;
                 default:
-                    System.out.println("Mauvais choix d'action");
+                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                     action(DJ);
             }
         }
         catch (NumberFormatException | NullPointerException erreur)
         {
-            System.out.println("Mauvais choix d'action");
+            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
             action(DJ);
         }
         return val;
@@ -119,11 +123,11 @@ public class Monstre implements Vivant {
                     DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
                     System.out.println("Déplacement effectué");
                 } else {
-                    System.out.println("Problème dans le choix de la case");
+                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
                     seDeplacer(DJ);
                 }
             } else {
-                System.out.println("Problème dans le choix de la case");
+                System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
                 seDeplacer(DJ);
             }
         }
@@ -149,31 +153,32 @@ public class Monstre implements Vivant {
                     if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt))) {
                         // un des deux est forcément à 0 donc on peut directement ajouter les deux
                         // (évite un if else)
-                        int touche = this._deChar.roll() + _stats.retFor() + _stats.retDex();
-                        System.out.println(this + " perce l'armure de " + pers + " (jet de touche : " + touche + ").");
+                        int detou = this._deChar.roll();
+                        int touche = detou + _stats.retFor() + _stats.retDex();
+                        System.out.println(this + " perce l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ").");
                         if (touche > pers.getArmorClass()) {
                             int atk = this._degAtt.roll();
                             System.out.println(this + " fait " + atk + " dégats à " + pers + " !");
                             val = pers.seFaitAttaquer(atk, DJ);
                         } else {
-                            System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + touche + ")");
+                            System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ")");
                         }
                     } else {
                         System.out.println(this + " n'a pas une portée suffisante");
                     }
                 } else {
-                    System.out.println("Il n'y a pas de personnage à attaquer sur cette case.");
+                    System.out.println(_cl.rouge() + "Il n'y a pas de personnage à attaquer sur cette case." + _cl.reset());
                 }
             }
             catch (ArrayIndexOutOfBoundsException erreur)
             {
-                System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+                System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
                 attaquer(DJ);
             }
         }
         catch (NullPointerException erreur)
         {
-            System.out.println("\nLes cases sont dans le format suivant : [lettre][nombre]");
+            System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
             attaquer(DJ);
         }
         return val;
@@ -189,7 +194,7 @@ public class Monstre implements Vivant {
         _stats.pv(pv);
         if (pv <= 0)
         {
-            System.out.println("\n" + this + " à été achevé.");
+            System.out.println(_cl.rouge() + "\n" + this + " à été achevé." + _cl.reset());
             val = DJ.tuerMonstre(this);
         }
         else
@@ -210,7 +215,7 @@ public class Monstre implements Vivant {
     }
 
     public String getInfos() {
-        return "\n\n===== " + this + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getLilInfos()
