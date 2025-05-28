@@ -69,10 +69,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
-            Race();
-        } catch (NullPointerException erreur) {
+        catch (NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
             Race();
         }
@@ -112,10 +109,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
-            Classe();
-        } catch (NullPointerException erreur) {
+        catch (NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Classe();
         }
@@ -144,10 +138,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
-            Genre();
-        } catch (NullPointerException erreur) {
+        catch (NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Genre();
         }

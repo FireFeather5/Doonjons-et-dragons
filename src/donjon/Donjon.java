@@ -1,5 +1,6 @@
 package donjon;
 
+import Utils.Couleurs;
 import entite.Entite;
 import entite.Obstacle;
 import entite.Monstre;
@@ -9,6 +10,8 @@ import entite.personnages.Personnage;
 import java.util.ArrayList;
 
 public class Donjon {
+
+    private Couleurs _cl = new Couleurs();
     private int _tc1;
     private int _tc2;
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -62,7 +65,7 @@ public class Donjon {
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
-            System.out.println("Les cases sont dans le format suivant : [lettre][nombre]");
+            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "[lettre][nombre]" + _cl.reset());
             return null;
         }
     }
@@ -274,12 +277,12 @@ public class Donjon {
             }
             else
             {
-                System.out.println("La case d'arrivée n'est pas vide");
+                System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
             }
         }
         else
         {
-            System.out.println("Il n'y a ni personnage ni monstre sur la case départ");
+            System.out.println(_cl.rouge() + "Il n'y a ni personnage ni monstre sur la case départ" + _cl.reset());
         }
     }
 

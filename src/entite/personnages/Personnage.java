@@ -1,5 +1,6 @@
 package entite.personnages;
 
+import Utils.Couleurs;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.equipement.arme.distance.ArmeDistance;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 public class Personnage implements Vivant {
 
+    private Couleurs _cl = new Couleurs();
     private String _nom;
     private Races _race;
     private Classe _classe;

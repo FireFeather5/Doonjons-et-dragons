@@ -80,7 +80,21 @@ public class Tour {
                         }
 
 
-                        _mj.actionFT(_dj);
+                        val = _mj.actionFT(_dj);
+
+                        if (val == 3) {
+                            for (int n = 0; n < _nbViv; n++) {
+                                if (_vivTri.get(n).getPV() <= 0) {
+                                    _vivTri.remove(_vivTri.get(n));
+                                    _nbViv--;
+
+                                    if (n <= j) {
+                                        j--;
+                                    }
+                                }
+                            }
+                            val = 0;
+                        }
 
 
                     }

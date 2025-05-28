@@ -1,3 +1,4 @@
+import Utils.Couleurs;
 import de.De;
 import donjon.Donjon;
 import entite.Obstacle;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 
 public class MJ {
 
+    private Couleurs _cl = new Couleurs();
     Scanner sc = new Scanner(System.in);
     ArrayList<String> _monstresCrees = new ArrayList<>();
 
@@ -38,13 +40,13 @@ public class MJ {
                 if (((15 <= tc1) && (tc1 <= 25)) && ((15 <= tc2) && (tc2 <= 25))) {
                     DJ.creaDonjon(tc1, tc2);
                 } else {
-                    System.out.println("Erreur dans la taille du donjon");
+                    System.out.println(_cl.rouge() + "Erreur dans la taille du donjon" + _cl.reset());
                     this.createDJ(DJ);
                 }
             }
             catch (NumberFormatException erreur)
             {
-                System.out.println("\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres");
+                System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
                 this.createDJ(DJ);
             }
 
@@ -108,7 +110,7 @@ public class MJ {
                     case null, default -> ok = false;
                 }
                 if (!ok) {
-                    System.out.println("/!\\ ATTENTION : Equipement non crée");
+                    System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
                 } else {
                     this.posEquip(DJ, equip);
                     DJ.afficherDJ();
@@ -166,7 +168,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println("Erreur dans la selection de la position");
+            System.out.println(_cl.rouge() + "Erreur dans la selection de la position + _cl.reset()");
             addObst(DJ);
         }
     }
@@ -201,7 +203,7 @@ public class MJ {
         }
         catch (NumberFormatException erreur)
         {
-            System.out.println("\nSeul l'espèce du monstre peut contenir autre chose que des entier.\nRecomencez");
+            System.out.println(_cl.rouge() + "\nSeul l'espèce du monstre peut contenir autre chose que des entier." + _cl.reset() + "\nRecomencez");
             createM(mons);
         }
     }
@@ -214,7 +216,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println("Erreur dans la selection de la position");
+            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
             this.posJ(DJ, perso);
         }
     }
@@ -227,7 +229,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println("Erreur dans la selection de la position");
+            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
             this.posM(DJ, mons);
         }
     }
@@ -240,7 +242,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println("Erreur dans la selection de la position");
+            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
             this.posEquip(DJ, equip);
         }
     }
@@ -257,8 +259,10 @@ public class MJ {
         return "MJ - " + sc.nextLine();
     }
 
-    public void actionFT(Donjon DJ)
+    public int actionFT(Donjon DJ)
     {
+        int val = 0;
+
         System.out.println("\nQue veut faire le Maitre du Jeu ?");
         System.out.println("0- Ne rien faire\n1- Déplacer un joueur/monstre\n2- Faire ds dégats à un joueur/monstre\n3- Ajouter des obstacles");
         try {
@@ -271,9 +275,9 @@ public class MJ {
                     System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
                     String infDgt = sc.nextLine();
                     if (infDgt.equals("j") || infDgt.equals("joueur")) {
-                        System.out.println(degatJoueur(DJ));
+                        val = degatJoueur(DJ);
                     } else if (infDgt.equals("m") || infDgt.equals("monstre")) {
-                        System.out.println(degatMonstre(DJ));
+                        val = degatMonstre(DJ);
                     }
                     break;
                 case 3:
@@ -287,13 +291,11 @@ public class MJ {
                 default:
             }
         }
-        catch (NumberFormatException erreur) {
-            System.out.println("Mauvais choix d'action");
-            actionFT(DJ);
-        } catch (NullPointerException erreur) {
-            System.out.println("Mauvais choix d'action");
+        catch (NumberFormatException | NullPointerException erreur) {
+            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
             actionFT(DJ);
         }
+        return val;
     }
 
     public void depViv(Donjon DJ)
@@ -307,8 +309,9 @@ public class MJ {
 
 
 
-    public String degatJoueur(Donjon DJ) {
+    public int degatJoueur(Donjon DJ) {
         int choix = 1;
+        int val = 0;
 
         for (Personnage pers : DJ.getListePerso()) {
             System.out.println(choix++ + ". " + pers);
@@ -323,13 +326,16 @@ public class MJ {
         int nbFaceDe = sc.nextInt();
 
         int dgt = new De(nbDe, nbFaceDe).roll();
-        DJ.getListePerso().get(choix-1).seFaitAttaquer(dgt, DJ);
 
-        return "Le MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix-1);
+        System.out.println("Le MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix-1));
+        val = DJ.getListePerso().get(choix-1).seFaitAttaquer(dgt, DJ);
+
+        return val;
     }
 
-    public String degatMonstre(Donjon DJ) {
+    public int degatMonstre(Donjon DJ) {
         int choix = 1;
+        int val = 0;
 
         for (Monstre mons : DJ.getListeMonstre()) {
             System.out.println(choix++ + ". " + mons);
@@ -344,8 +350,10 @@ public class MJ {
         int nbFaceDe = sc.nextInt();
 
         int dgt = new De(nbDe, nbFaceDe).roll();
-        DJ.getListeMonstre().get(choix-1).seFaitAttaquer(dgt, DJ);
 
-        return "Le MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix-1);
+        System.out.println("Le MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix-1));
+        val = DJ.getListeMonstre().get(choix-1).seFaitAttaquer(dgt, DJ);
+
+        return val;
     }
 }
