@@ -1,6 +1,6 @@
 import Utils.Couleurs;
 import donjon.Donjon;
-import entite.personnages.Vivant;
+import entite.Vivant;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -112,7 +112,6 @@ public class Tour {
             {
                 vi.getPV();
             }
-            //les persos regagnent leur vie
         }
     }
 

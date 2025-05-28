@@ -1,7 +1,6 @@
-package entite.personnages;
+package entite;
 
 import donjon.Donjon;
-import entite.Entite;
 
 public interface Vivant extends Entite {
 

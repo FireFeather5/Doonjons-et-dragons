@@ -4,7 +4,7 @@ import donjon.Donjon;
 import entite.Monstre;
 import entite.personnages.CreaPerso;
 import entite.personnages.Personnage;
-import entite.personnages.Vivant;
+import entite.Vivant;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -140,5 +140,11 @@ public class Main {
             tr.tour();
 
         }
+
+        //faire classes pour l'affichage/interaction user
+        //pas faire une classe qui gère tout !
+        //les classes métier (donjon/personnage/...) ne doivent pas connaitre le user et doivent tourner sans input !
+
+
     }
 }

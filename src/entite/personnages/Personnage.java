@@ -3,6 +3,7 @@ package entite.personnages;
 import Utils.Couleurs;
 import donjon.Donjon;
 import entite.Monstre;
+import entite.Vivant;
 import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.*;
 import entite.personnages.genre.Genre;

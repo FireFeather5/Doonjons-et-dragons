@@ -18,8 +18,9 @@ public class MJ {
 
     private Couleurs _cl = new Couleurs();
 
-    Scanner sc = new Scanner(System.in);
     ArrayList<String> _monstresCrees = new ArrayList<>();
+
+    Scanner sc = new Scanner(System.in);
 
     public MJ()
     {
