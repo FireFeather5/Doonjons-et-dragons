@@ -488,13 +488,16 @@ public class Personnage implements Vivant {
             if (arme != null) {
                 System.out.print("\n");
                 this._deChar.changeDe(1, 20);
-                int touche = this._deChar.roll() + arme.getBonusMagique();
+                int detou = this._deChar.roll() + arme.getBonusMagique();
+                int touche = detou;
+                int tou;
 
                 if (arme instanceof ArmeDistance) {
-                    touche += this._stats.retDex();
+                    tou = this._stats.retDex();
                 } else {
-                    touche += this._stats.retFor();
+                    tou = this._stats.retFor();
                 }
+                touche += tou;
 
                 try {
                     int[] posAtt = DJ.posInt(cas);
@@ -505,7 +508,8 @@ public class Personnage implements Vivant {
                                 System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
                                 this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
                                 int atk = this._deChar.roll() + arme.getBonusMagique();
-                                System.out.println(this._nom + " fait " + atk + " dégats à " + mons + " !");
+                                int bonus = arme.getBonusMagique();
+                                System.out.println(this._nom + " fait " + (atk - bonus) + " + " + bonus + " = " + atk + " dégats à " + mons + " !");
                                 val = mons.seFaitAttaquer(atk, DJ);
                             } else {
                                 System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
@@ -516,6 +520,7 @@ public class Personnage implements Vivant {
                     } else {
                         System.out.println(_cl.rouge() + "Il n'y a pas de monstre à attaquer sur cette case." + _cl.reset());
                         //est ce qu'on rapelle la fonction ?
+                        //non
                     }
                 }
                 catch (ArrayIndexOutOfBoundsException erreur)

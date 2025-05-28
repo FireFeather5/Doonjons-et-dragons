@@ -119,7 +119,7 @@ public class Main {
                     boolean inVivTri = false;
                     for (int i = 0; i < ArrIni.size(); i++) {
                         if (!inVivTri) {
-                            if (init < ArrIni.get(i)) {
+                            if (init > ArrIni.get(i)) {
                                 ArrIni.add(i, init);
                                 VivTri.add(i, Viv.get(j));
                                 inVivTri = true;
