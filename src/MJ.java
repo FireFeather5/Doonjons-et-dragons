@@ -312,9 +312,9 @@ public class MJ {
 
 
 
-    public int degatJoueur(Donjon DJ) {
+    public StatusDonjon degatJoueur(Donjon DJ) {
         int choix = 1;
-        int val = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
 
         for (Personnage pers : DJ.getListePerso()) {
             System.out.println(choix++ + ". " + pers);
