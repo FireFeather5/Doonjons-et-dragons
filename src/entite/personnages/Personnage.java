@@ -1,7 +1,9 @@
 package entite.personnages;
 
 import Utils.Couleurs;
+import Utils.Inputs;
 import Utils.StatusDonjon;
+import Utils.TypeVivant;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
@@ -26,13 +28,15 @@ import java.util.ArrayList;
 public class Personnage implements Vivant {
 
     private final Couleurs _cl = new Couleurs();
+    private final Inputs _input = new Inputs();
+
     private String _nom;
     private Races _race;
     private Classe _classe;
     private Genre _gre;
+
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
-    //pv, for, dex, vit, ini
     private final Position _pos;
 
     private Equipement _peutRamEqu = null;
@@ -92,7 +96,7 @@ public class Personnage implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public StatusDonjon action(Donjon DJ)
+    /*public StatusDonjon action(Donjon DJ)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
         //doit pouvoir etre amélioré mais fonctionne pour le moment
@@ -211,23 +215,23 @@ public class Personnage implements Vivant {
             }
         }
         return val;
-    }
+    }*/
 
 
     public void seDeplacer(Donjon DJ)
     {
-        System.out.println("\nChoisir une case où se déplacer [lettre][nombre]");
-        String dep = sc.nextLine();
+        /*System.out.println("\nChoisir une case où se déplacer [lettre][nombre]");
+        String dep = sc.nextLine();*/
 
         try {
             int distDep = _stats.retVit() / 3;
 
-            int[] pos = DJ.posInt(dep);
+            int[] pos = _input.choixCase("où se déplacer");
 
             int[] posOld = getPos();
 
             if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
-                boolean val = DJ.posJ(dep, this);
+                boolean val = DJ.positionPersonnage(pos, this);
                 if (!_peutRamasser) {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
@@ -239,7 +243,7 @@ public class Personnage implements Vivant {
                 } else {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        DJ.posE(posOld, _peutRamEqu);       //remet l'objet dans la case
+                        DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case
                         System.out.println("Déplacement effectué");
                         _peutRamasser = false;
                         _peutRamEqu = null;
@@ -479,65 +483,53 @@ public class Personnage implements Vivant {
     public StatusDonjon attaquer(Donjon DJ)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
-        System.out.println("Choisir la case à attaquer");
 
-        try {
-            String cas = sc.nextLine();
+        Arme arme = getArmeEquipe();
 
-            Arme arme = getArmeEquipe();
+        if (arme != null) {
+            System.out.print("\n");
+            this._deChar.changeDe(1, 20);
+            int touche;
+            int tou;
 
-            if (arme != null) {
-                System.out.print("\n");
-                this._deChar.changeDe(1, 20);
+            if (arme instanceof ArmeDistance) {
+                tou = this._stats.retDex();
+            } else {
+                tou = this._stats.retFor();
+            }
+            touche = tou;
+
+            try {
+                int[] posAtt = _input.choixCase("à attaquer");
                 int detou = this._deChar.roll() + arme.getBonusMagique();
-                int touche = detou;
-                int tou;
-
-                if (arme instanceof ArmeDistance) {
-                    tou = this._stats.retDex();
-                } else {
-                    tou = this._stats.retFor();
-                }
-                touche += tou;
-
-                try {
-                    int[] posAtt = DJ.posInt(cas);
-                    Monstre mons = DJ.getMons(posAtt);
-                    if (mons != null) {
-                        if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange())))) {
-                            if (touche > mons.getArmorClass()) {
-                                System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
-                                this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
-                                int atk = this._deChar.roll() + arme.getBonusMagique();
-                                int bonus = arme.getBonusMagique();
-                                System.out.println(this._nom + " fait " + (atk - bonus) + " + " + bonus + " = " + atk + " dégats à " + mons + " !");
-                                val = mons.seFaitAttaquer(atk, DJ);
-                            } else {
-                                System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
-                            }
+                touche += detou;
+                Monstre mons = DJ.getMons(posAtt);
+                if (mons != null) {
+                    if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange())))) {
+                        if (touche > mons.getArmorClass()) {
+                            System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+                            this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
+                            int atk = this._deChar.roll() + arme.getBonusMagique();
+                            int bonus = arme.getBonusMagique();
+                            System.out.println(this._nom + " fait " + (atk - bonus) + " + " + bonus + " = " + atk + " dégats à " + mons + " !");
+                            val = mons.seFaitAttaquer(atk, DJ);
                         } else {
-                            System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
+                            System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
                         }
                     } else {
-                        System.out.println(_cl.rouge() + "Il n'y a pas de monstre à attaquer sur cette case." + _cl.reset());
-                        //est ce qu'on rapelle la fonction ?
-                        //non
+                        System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
                     }
+                } else {
+                    System.out.println(_cl.rouge() + "Il n'y a pas de monstre à attaquer sur cette case." + _cl.reset());
                 }
-                catch (ArrayIndexOutOfBoundsException erreur)
-                {
-                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                    attaquer(DJ);
-                }
-            } else {
-                System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
             }
-            return val;
-        }
-        catch (NullPointerException erreur)
-        {
-            System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-            attaquer(DJ);
+            catch (ArrayIndexOutOfBoundsException erreur)
+            {
+                System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                attaquer(DJ);
+            }
+        } else {
+            System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
         }
         return val;
     }
@@ -578,16 +570,15 @@ public class Personnage implements Vivant {
     public void ramasser(Donjon DJ)
     {
         _stock.add(_peutRamEqu);
-        DJ.ramasser(_peutRamEqu);
+        DJ.ramasserEquipement(_peutRamEqu);
         System.out.println(_peutRamEqu.getName() + " à été ramassé");
         _peutRamasser = false;
         _peutRamEqu = null;
     }
 
-    public String comAction()
+    public void comAction()
     {
-        System.out.println(this + " commente l'action effectuée");
-        return this + " - " + sc.nextLine();
+        System.out.println(this + _input.persoCommenteAction());
     }
 
     public void regePV()
@@ -627,10 +618,7 @@ public class Personnage implements Vivant {
 
     public int[] getPos()
     {
-        int[] pos = new int[2];
-        pos[0] = _pos.getAbscisse();
-        pos[1] = _pos.getOrdonnee();
-        return pos;
+        return _pos.getPosition();
     }
 
     public int getIni()
@@ -648,9 +636,19 @@ public class Personnage implements Vivant {
         return _nom.substring(0, 3);
     }
 
-    public int code()
+    public String getClasse()
     {
-        return 0;
+        return _classe.getCla();
+    }
+
+    public boolean peutRam()
+    {
+        return _peutRamasser;
+    }
+
+    public TypeVivant getTypeVivant()
+    {
+        return TypeVivant.PERSONNAGE;
     }
 
     @Override

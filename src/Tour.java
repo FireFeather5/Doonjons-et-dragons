@@ -1,7 +1,8 @@
-import Utils.Couleurs;
-import Utils.StatusDonjon;
+import Utils.*;
 import donjon.Donjon;
+import entite.Monstre;
 import entite.Vivant;
+import entite.personnages.Personnage;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,6 +10,8 @@ import java.util.Scanner;
 public class Tour {
     private final ArrayList<Vivant> _vivTri;
     private int _nbViv;
+
+    private final Actions _action = new Actions();
     private final MJ _mj;
     private final Donjon _dj;
     private final Couleurs _cl = new Couleurs();
@@ -52,7 +55,13 @@ public class Tour {
                         _dj.afficherDJ();
                         System.out.println(_vivTri.get(j).getInfos());
                         System.out.println("\nIl vous reste " + _cl.cyan() + (3 - i) + _cl.reset() + " actions.");
-                        val = _vivTri.get(j).action(_dj);
+
+                        if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
+                            val = _action.actionPerso(_dj, (Personnage) _vivTri.get(j));
+                        }
+                        else {
+                            val = _action.actionMonstre(_dj, (Monstre) _vivTri.get(j));
+                        }
 
                         if (val == StatusDonjon.MONSTRE_MORT) {
                             for (int n = 0; n < _nbViv; n++) {
@@ -73,29 +82,29 @@ public class Tour {
                         String comm = sc.nextLine();
                         if (comm.equals("o"))
                         {
-                            System.out.println(_vivTri.get(j).comAction());
+                            _vivTri.get(j).comAction();
                         }
                         else if (comm.equals("mj"))
                         {
-                            System.out.println(_mj.comAction());
+                            _mj.comAction();
                         }
 
+                        if (val.equals(StatusDonjon.NORMAL)) {
+                            val = _mj.actionFT(_dj);
+                            if (val == StatusDonjon.MONSTRE_MORT) {
+                                for (int n = 0; n < _nbViv; n++) {
+                                    if (_vivTri.get(n).getPV() <= 0) {
+                                        _vivTri.remove(_vivTri.get(n));
+                                        _nbViv--;
 
-                        val = _mj.actionFT(_dj);
-                        if (val == StatusDonjon.MONSTRE_MORT) {
-                            for (int n = 0; n < _nbViv; n++) {
-                                if (_vivTri.get(n).getPV() <= 0) {
-                                    _vivTri.remove(_vivTri.get(n));
-                                    _nbViv--;
-
-                                    if (n <= j) {
-                                        j--;
+                                        if (n <= j) {
+                                            j--;
+                                        }
                                     }
                                 }
+                                val = StatusDonjon.NORMAL;
                             }
-                            val = StatusDonjon.NORMAL;
                         }
-
 
                     }
                 }

@@ -1,5 +1,8 @@
 import Utils.Couleurs;
+import Utils.Inputs;
+import Utils.MJ;
 import de.De;
+import donjon.CreationDonjonDefault;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.personnages.CreaPerso;
@@ -13,12 +16,16 @@ public class Main {
     public static void main(String[] args){
 
         Couleurs cl = new Couleurs();
+        Inputs _input = new Inputs();
+
         MJ mj = new MJ();
-        Donjon donjon = new Donjon();
         ArrayList<Vivant> Viv = new ArrayList<>();
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println(cl.rouge() + "Bienvenue dans DOOnjon et Dragons" + cl.reset());
+
+
 
         //                     Crea persos
         int nbrPers = 0;
@@ -37,18 +44,18 @@ public class Main {
         CreaPerso CreaPer = new CreaPerso();
 
         for (int i = 0; i < nbrPers; i++) {
-            System.out.println("\nCréation Personnage " + (i+1));
+            System.out.println("\n\nCréation Personnage " + (i+1));
             Personnage pers = new Personnage();
             CreaPer.CreaPers(pers);
             System.out.println(pers.getInfos());
 
-            System.out.println("Voulez-vous équiper une arme ? (o/n)");
+            System.out.println("\nVoulez-vous équiper une arme ? (o/n)");
             String choix = sc.nextLine();
             if (choix.equals("o"))
             {
                 pers.sEquiper();
             }
-            System.out.println("Voulez-vous équiper une armure ? (o/n)");
+            System.out.println("\nVoulez-vous équiper une armure ? (o/n)");
             String choixx = sc.nextLine();
             if (choixx.equals("o"))
             {
@@ -58,43 +65,28 @@ public class Main {
             Viv.add(pers);
         }
 
+
+        //               TOURS
         for (int pt = 1; pt <= 3; pt++) {
 
-            int nbMons = mj.createDJ(donjon);
-            int nbrViv = nbMons;
-            nbrViv += nbrPers;
+            Donjon donjon  = mj.creationDonjon();
 
+            if (donjon == null)
+            {
+                CreationDonjonDefault creaDj = new CreationDonjonDefault();
+                donjon = creaDj.createDefaultDJ();
+            }
             for (int i = 0; i < nbrPers; i++) {
                 mj.posJ(donjon, (Personnage)Viv.get(i));
                 donjon.afficherDJ();
             }
 
-            //              Créa monstre
+            Viv.addAll(donjon.getListeMonstre());
 
-            if (nbMons == 0) {
-                Monstre demogordgon = new Monstre();
-                demogordgon.creaMonstre("Demogorgon", "XP", 1, new De(2, 8), new De(3, 6));
-                donjon.posM("P14", demogordgon);
-                Viv.add(demogordgon);
-                Monstre dragonBleu = new Monstre();
-                dragonBleu.creaMonstre("Dragon Bleu", "B)", 8, new De(2, 8), new De(3, 6));
-                donjon.posM("E4", dragonBleu);
-                Viv.add(dragonBleu);
-                nbrViv += 2;
-                donjon.afficherDJ();
-            } else {
-                for (int i = 1; i <= nbMons; i++) {
-                    Monstre mons = new Monstre();
-                    mj.createM(mons);
-                    mj.posM(donjon, mons);
-                    Viv.add(mons);
-                    donjon.afficherDJ();
-                }
-            }
 
+            int nbrViv = nbrPers + donjon.getListeMonstre().size();
 
             //                  Initiative
-
 
             for (int j = 0; j < nbrViv; j++) {
                 System.out.println(Viv.get(j).getStat());

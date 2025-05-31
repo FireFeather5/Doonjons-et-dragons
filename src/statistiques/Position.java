@@ -1,6 +1,9 @@
 package statistiques;
 
+import Utils.Inputs;
+
 public class Position {
+
     private int _abscisse;
     private int _ordonnee;
 
@@ -24,5 +27,10 @@ public class Position {
     public int getOrdonnee()
     {
         return _ordonnee;
+    }
+
+    public int[] getPosition()
+    {
+        return new int[] {_abscisse, _ordonnee};
     }
 }
