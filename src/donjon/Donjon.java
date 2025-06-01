@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class Donjon {
 
     private final Couleurs _cl = new Couleurs();
+
     private int _tc1;
     private int _tc2;
     private Entite[][] _donjon;
     private AffichDJ _affDJ;
+
     private final ArrayList<Equipement> _equip;
     private final ArrayList<Personnage> _pers;
     private final ArrayList<Monstre> _mons;
@@ -118,6 +120,9 @@ public class Donjon {
         try {
             if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
                 if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                    if (!_equip.contains(equip)) {
+                        _equipJ6.add(equip);
+                    }
                     equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
                     _donjon[pc[0] - 1][pc[1] - 1] = equip;
                     return true;

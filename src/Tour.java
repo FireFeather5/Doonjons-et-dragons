@@ -38,9 +38,9 @@ public class Tour {
                 for (int i = 0; i < 3; i++) {
                     if (val == StatusDonjon.NORMAL) {
                         System.out.print("\n\n");
-                        System.out.println(_cl.jaune() + "---------------------------------------------------------");
+                        System.out.println(_cl.jaune() + "-------------------------------------------------------------------");
                         System.out.print("\n           Tour de " + _vivTri.get(j).getLilInfos() + "\n Tour N°" + compTour + "\n");
-                        System.out.println("---------------------------------------------------------\n" + _cl.reset());
+                        System.out.println("-------------------------------------------------------------------\n" + _cl.reset());
                         for (int k = 0; k < _nbViv; k++) {
                             if (k != j) {
                                 System.out.print("           ");
@@ -90,6 +90,7 @@ public class Tour {
                         }
 
                         if (val.equals(StatusDonjon.NORMAL)) {
+                            _dj.afficherDJ();
                             val = _mj.actionFT(_dj);
                             if (val == StatusDonjon.MONSTRE_MORT) {
                                 for (int n = 0; n < _nbViv; n++) {

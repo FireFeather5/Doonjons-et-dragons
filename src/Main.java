@@ -4,7 +4,7 @@ import Utils.MJ;
 import de.De;
 import donjon.CreationDonjonDefault;
 import donjon.Donjon;
-import entite.Monstre;
+import entite.equipement.Equipement;
 import entite.personnages.CreaPerso;
 import entite.personnages.Personnage;
 import entite.Vivant;
@@ -19,7 +19,7 @@ public class Main {
         Inputs _input = new Inputs();
 
         MJ mj = new MJ();
-        ArrayList<Vivant> Viv = new ArrayList<>();
+        ArrayList<Personnage> Pers = new ArrayList<>();
 
         Scanner sc = new Scanner(System.in);
 
@@ -45,29 +45,37 @@ public class Main {
 
         for (int i = 0; i < nbrPers; i++) {
             System.out.println("\n\nCréation Personnage " + (i+1));
-            Personnage pers = new Personnage();
-            CreaPer.CreaPers(pers);
+            Personnage pers = CreaPer.CreaPers();
             System.out.println(pers.getInfos());
 
-            System.out.println("\nVoulez-vous équiper une arme ? (o/n)");
+            System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = sc.nextLine();
             if (choix.equals("o"))
             {
-                pers.sEquiper();
-            }
-            System.out.println("\nVoulez-vous équiper une armure ? (o/n)");
-            String choixx = sc.nextLine();
-            if (choixx.equals("o"))
-            {
-                pers.sEquiper();
-            }
+                Equipement equip = _input.equiperEquip(pers);
+                pers.sEquiper(equip);
 
-            Viv.add(pers);
+                System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
+                String choixx = sc.nextLine();
+                if (choixx.equals("o"))
+                {
+                    Equipement equipe = _input.equiperEquip(pers);
+                    pers.sEquiper(equipe);
+                }
+            }
+            Pers.add(pers);
         }
 
 
         //               TOURS
-        for (int pt = 1; pt <= 3; pt++) {
+        for (int tour = 1; tour <= 3; tour++) {
+
+            ArrayList<Vivant> Viv = new ArrayList<>();
+
+            System.out.print("\n\n");
+            System.out.println(cl.jaune() + "-------------------------------------------------------------------");
+            System.out.print("\n                    Donjon n°" + tour + "                       \n");
+            System.out.println("-------------------------------------------------------------------\n" + cl.reset());
 
             Donjon donjon  = mj.creationDonjon();
 
@@ -77,14 +85,16 @@ public class Main {
                 donjon = creaDj.createDefaultDJ();
             }
             for (int i = 0; i < nbrPers; i++) {
-                mj.posJ(donjon, (Personnage)Viv.get(i));
+                mj.posJ(donjon, Pers.get(i));
                 donjon.afficherDJ();
+                Viv.add(Pers.get(i));
             }
 
             Viv.addAll(donjon.getListeMonstre());
 
 
             int nbrViv = nbrPers + donjon.getListeMonstre().size();
+
 
             //                  Initiative
 
@@ -94,8 +104,8 @@ public class Main {
 
             De deIni = new De(1, 20);
 
-        ArrayList<Integer> ArrIni = new ArrayList<>();
-        ArrayList<Vivant> VivTri = new ArrayList<>();
+            ArrayList<Integer> ArrIni = new ArrayList<>();
+            ArrayList<Vivant> VivTri = new ArrayList<>();
 
             System.out.println(cl.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + cl.reset());
 
@@ -128,7 +138,6 @@ public class Main {
 
             Tour tr = new Tour(VivTri, mj, donjon);
             tr.tour();
-
         }
 
         //faire classes pour l'affichage/interaction user
@@ -136,5 +145,6 @@ public class Main {
         //les classes métier (donjon/personnage/...) ne doivent pas connaitre le user et doivent tourner sans input !
 
 
+        //BIEN BLOQUER LES INPUTS A o OU n QUAND DEMANDE (A FAIRE A LA FIN PSQ C'EST LONG DE TT METTRE PR LES TESTS)
     }
 }

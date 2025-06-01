@@ -23,18 +23,23 @@ public class CreaPerso {
     {
     }
 
-    public Personnage CreaPers(Personnage pers) {
+    public Personnage CreaPers() {
 
         System.out.println("\nnom ?");
         String _nom = sc.nextLine();
+        while (_nom.isEmpty())
+        {
+            System.out.println(_cl.rouge() + "Le nom ne peut pas être vide!" + _cl.reset());
+            System.out.println("\nnom ?");
+            _nom = sc.nextLine();
+        }
+
         Race();
         Classe();
         Genre();
-        pers.CreaPers(_nom, _ra, _cla, _gre);
+        Personnage pers = new Personnage(_nom, _ra, _cla, _gre);
         return pers;
     }
-
-
 
     public void Race()
     {
@@ -74,7 +79,6 @@ public class CreaPerso {
             Race();
         }
     }
-
 
     public void Classe()
     {

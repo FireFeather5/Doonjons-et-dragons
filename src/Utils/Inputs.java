@@ -9,8 +9,8 @@ import entite.equipement.arme.distance.*;
 import entite.equipement.arme.guerre.*;
 import entite.equipement.armure.legere.*;
 import entite.equipement.armure.lourde.*;
+import entite.personnages.Personnage;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Inputs {
@@ -25,7 +25,7 @@ public class Inputs {
 
     }
 
-    public int[] tailleDonjon(MJ mj)
+    public int[] tailleDonjon()
     {
         int[] tailleCote = new int[2];
 
@@ -44,27 +44,27 @@ public class Inputs {
             else
             {
                 System.out.println(_cl.rouge() + "Erreur dans la taille du donjon" + _cl.reset());
-                tailleDonjon(mj);
+                tailleDonjon();
             }
         }
         catch (NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
-            tailleDonjon(mj);
+            tailleDonjon();
         }
-        tailleDonjon(mj);
+        tailleDonjon();
         return null;
     }
 
     public void ajoutObstacle(Donjon DJ, MJ mj)
     {
-        System.out.println("Voulez-vous mettre des obstacles (o/n) ?");
+        System.out.println("\nVoulez-vous mettre des obstacles (o/n) ?");
         boolean fini = !sc.nextLine().equals("o");
 
         while (!fini) {
             mj.addObst(DJ);
             DJ.afficherDJ();
-            System.out.println("Créer un auter obstacle (o/n) ?");
+            System.out.println("\n\nCréer un auter obstacle (o/n) ?");
             if (!sc.nextLine().equals("o")) fini = true;
         }
     }
@@ -75,15 +75,17 @@ public class Inputs {
 
         while (!fini) {
             Monstre mons = creationMonstre(mj);
+            DJ.afficherDJ();
             mj.posM(DJ, mons);
-            System.out.println("Créer un autre monstre (o/n) ?");
+            DJ.afficherDJ();
+            System.out.println("\n\nCréer un autre monstre (o/n) ?");
             if (!sc.nextLine().equals("o")) fini = true;
         }
     }
 
     public void ajoutEquipement(Donjon DJ, MJ mj)
     {
-        System.out.println("Voulez-vous créer des Equipements (o/n) ?");
+        System.out.println("\nVoulez-vous créer des Equipements (o/n) ?");
         boolean fini = !sc.nextLine().equals("o");
         while (!fini) {
             Equipement equip = null;
@@ -127,17 +129,17 @@ public class Inputs {
             if (!ok) {
                 System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
             } else {
+                DJ.afficherDJ();
                 mj.posEquip(DJ, equip);
                 DJ.afficherDJ();
             }
-            System.out.println("Créer un autre equipement (o/n)?");
+            System.out.println("\n\nCréer un autre equipement (o/n)?");
             if (!sc.nextLine().equals("o")) fini = true;
         }
     }
 
 
-    public int[] choixCase(String context)        //potentiellement mettre un string pour dire pourquoi il faut choisir une case
-                                    // ex (choisir une case pour positionner le joueur)
+    public int[] choixCase(String context)
     {
         System.out.println("\n\nChoisir la case " + context + " [lettre][nombre]");
         String pos = sc.nextLine();
@@ -160,8 +162,6 @@ public class Inputs {
             }
             posi[0] = Integer.parseInt(pos2);
 
-            //System.out.println(posi[1] + "    " + posi[0]);
-
             return posi;
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
@@ -176,8 +176,20 @@ public class Inputs {
         System.out.println("\n\n===== Nouveau Monstre =====");
         System.out.println("Espèce ?");
         String espece = sc.nextLine();
+        while (espece.isEmpty())
+        {
+            System.out.println(_cl.rouge() + "L'espèce ne peut pas être vide!" + _cl.reset());
+            System.out.println("Espèce ?");
+            espece = sc.nextLine();
+        }
         System.out.println("Symbole d'affichage ?   (3 charactères max)");
         String symb = sc.nextLine();
+        while ((symb.isEmpty()) || (symb.length() > 3))
+        {
+            System.out.println(_cl.rouge() + "Le symbole doit être entre 1 et 3 caractères!" + _cl.reset());
+            System.out.println("Symbole d'affichage ?   (3 charactères max) ?");
+            symb = sc.nextLine();
+        }
         try {
             System.out.println("Portée de l'attaque ?");
             int portee = Integer.parseInt(sc.nextLine());
@@ -220,43 +232,29 @@ public class Inputs {
         return "- " + sc.nextLine();
     }
 
-    public StatusDonjon actionMjFinTour(Donjon DJ, MJ mj)
+    public Equipement equiperEquip(Personnage pers)
     {
-        StatusDonjon val = StatusDonjon.NORMAL;
+        if (!pers.getStock().isEmpty()) {
+            System.out.println("Quel équipement équiper ?");
 
-        System.out.println("\nQue veut faire le Maitre du Jeu ?");
-        System.out.println("0- Ne rien faire\n1- Déplacer un joueur/monstre\n2- Faire ds dégats à un joueur/monstre\n3- Ajouter des obstacles");
-        try {
-            int choix = Integer.parseInt(sc.nextLine());
-            switch (choix) {
-                case 1:
-                    mj.depViv(DJ);
-                    break;
-                case 2:
-                    System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
-                    String infDgt = sc.nextLine();
-                    if (infDgt.equals("j") || infDgt.equals("joueur")) {
-                        val = mj.degatJoueur(DJ);
-                    } else if (infDgt.equals("m") || infDgt.equals("monstre")) {
-                        val = mj.degatMonstre(DJ);
-                    }
-                    break;
-                case 3:
-                    String ch = "o";
-                    while (ch.equals("o")) {
-                        mj.addObst(DJ);
-                        System.out.println("Voulez-vous ajouter un autre obstacle ? (o/n)");
-                        ch = sc.nextLine();
-                    }
-                    break;
-                default:
+            int i = 0;
+            for (Equipement eqi : pers.getStock()) {
+                System.out.println(i + "- " + eqi.getName());
+                i++;
+            }
+
+            try {
+                int equ = Integer.parseInt(sc.nextLine());
+                Equipement equip = pers.getStock().get(equ);
+                return equip;
+            }
+            catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                equiperEquip(pers);
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            actionMjFinTour(DJ, mj);
-        }
-        return val;
+        return null;
     }
 
 }

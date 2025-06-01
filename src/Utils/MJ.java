@@ -5,11 +5,6 @@ import donjon.Donjon;
 import entite.Obstacle;
 import entite.equipement.Equipement;
 import entite.Monstre;
-import entite.equipement.arme.courante.*;
-import entite.equipement.arme.distance.*;
-import entite.equipement.arme.guerre.*;
-import entite.equipement.armure.legere.*;
-import entite.equipement.armure.lourde.*;
 import entite.personnages.Personnage;
 
 import java.util.ArrayList;
@@ -19,6 +14,7 @@ public class MJ {
 
     private final Couleurs _cl = new Couleurs();
     private final Inputs _input = new Inputs();
+    private final Actions _action = new Actions();
 
     ArrayList<String> _monstresCrees = new ArrayList<>();
 
@@ -29,12 +25,12 @@ public class MJ {
 
     }
 
-    public Donjon creationDonjon()          //a changer pour reprendre la creation des monstres
+    public Donjon creationDonjon()
     {
-        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjons par défaut sera utilisé)");
+        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjon par défaut sera utilisé)");
         if (sc.nextLine().equals("o"))
         {
-            int[] tailleDj = _input.tailleDonjon(this);
+            int[] tailleDj = _input.tailleDonjon();
             Donjon DJ = new Donjon(tailleDj);
 
             //boolean fini;
@@ -42,7 +38,7 @@ public class MJ {
             System.out.println("Aperçu du donjon :");
             DJ.afficherDJ();
 
-            System.out.println("\nLa taille vous convient-il (o/n) ?");
+            System.out.println("\n\nLa taille vous convient-il (o/n) ?");
             if (sc.nextLine().equals("n"))
             {
                 creationDonjon();
@@ -140,7 +136,7 @@ public class MJ {
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        _input.actionMjFinTour(DJ, this);
+        val = _action.actionMjFinTour(DJ, this);
 
         return val;
     }
@@ -149,29 +145,39 @@ public class MJ {
     {
         int choix = 0;
 
+        System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
         for (Personnage pers : DJ.getListePerso()) {
             System.out.println(choix++ + "- " + pers);
         }
+        for (Monstre mons : DJ.getListeMonstre()) {
+            System.out.println(choix++ + "- " + mons);
+        }
 
-        System.out.println("Choisissez un joueur :");
-        int perso = sc.nextInt();
+        try {
+            int perso = Integer.parseInt(sc.nextLine());
 
-        int[] posD = DJ.getListePerso().get(perso).getPos();
+            int[] posD = DJ.getListePerso().get(perso).getPos();
 
-        int[] posF = _input.choixCase("du personnage/monstre à déplacer");
+            int[] posF = _input.choixCase("où mettre l'entité");
 
-        DJ.switchCase(posD, posF);
+            DJ.switchCase(posD, posF);
+        }
+        catch (NumberFormatException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            depViv(DJ);
+        }
     }
 
     public StatusDonjon degatJoueur(Donjon DJ) {
         int choix = 0;
         StatusDonjon val = StatusDonjon.NORMAL;
 
+        System.out.println("\nChoisissez un joueur :");
         for (Personnage pers : DJ.getListePerso()) {
             System.out.println(choix++ + "- " + pers);
         }
 
-        System.out.println("Choisissez un joueur :");
         choix = sc.nextInt();
 
         System.out.println("Combien de dé(s) pour infliger les dégats ?");
@@ -191,11 +197,11 @@ public class MJ {
         int choix = 0;
         StatusDonjon val;
 
+        System.out.println("\nChoisissez un monstre :");
         for (Monstre mons : DJ.getListeMonstre()) {
             System.out.println(choix++ + ". " + mons);
         }
 
-        System.out.println("Choisissez un monstre :");
         choix = sc.nextInt();
 
         System.out.println("Combien de dé(s) pour infliger les dégats ?");

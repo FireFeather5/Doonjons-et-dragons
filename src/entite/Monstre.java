@@ -19,14 +19,12 @@ public class Monstre implements Vivant {
 
     private String _espece;
     private String _symb;
-    private int _numero = 1;    //a voir plus tard
+    private int _numero = 1;
     private int _portAtt;
     private De _degAtt;
     private final Stats _stats;
     private final Position _pos;
     private De _deChar;
-
-    Scanner sc = new Scanner(System.in);
 
     public Monstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
@@ -77,33 +75,6 @@ public class Monstre implements Vivant {
     {
         _pos.changPos(pos1, pos2);
     }
-
-    /*public StatusDonjon action(Donjon DJ)
-    {
-        StatusDonjon val = StatusDonjon.NORMAL;
-        System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
-        try {
-            int choix = Integer.parseInt(sc.nextLine());
-
-            switch (choix) {
-                case 0:
-                    seDeplacer(DJ);
-                    break;
-                case 1:
-                    val = attaquer(DJ);
-                    break;
-                default:
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    action(DJ);
-            }
-        }
-        catch (NumberFormatException | NullPointerException erreur)
-        {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            action(DJ);
-        }
-        return val;
-    }*/
 
     public void seDeplacer(Donjon DJ)
     {
@@ -167,10 +138,6 @@ public class Monstre implements Vivant {
         return val;
     }
 
-    public int getArmorClass() {
-        return this._stats.retArm();
-    }
-
     public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
         StatusDonjon val = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
@@ -192,8 +159,14 @@ public class Monstre implements Vivant {
         System.out.println(this + _input.persoCommenteAction());
     }
 
+
+
+    public int getArmorClass() {
+        return this._stats.retArm();
+    }
+
     public String getStat() {
-        return "\n\n===== " + this + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos() {

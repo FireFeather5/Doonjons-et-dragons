@@ -34,7 +34,7 @@ public class CreationDonjonDefault {
         obs.addPos(_input.positionCase("K10"), DJ);
         obs.addPos(_input.positionCase("K11"), DJ);
 
-        Monstre demogordgon = new Monstre("Demogorgon", ">X)", 1, new De(2, 6), new De(4, 4));
+        Monstre demogordgon = new Monstre("Demogorgon", ">X(", 1, new De(2, 6), new De(4, 4));
         DJ.positionMonstre(_input.positionCase("P14"), demogordgon);
         Monstre dragonBleu = new Monstre("Dragon Bleu", "B/", 3, new De(2, 6), new De(3, 4));
         DJ.positionMonstre(_input.positionCase("E4"), dragonBleu);
