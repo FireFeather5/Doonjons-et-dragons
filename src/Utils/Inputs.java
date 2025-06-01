@@ -15,8 +15,9 @@ import java.util.Scanner;
 
 public class Inputs {
 
-    private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private Couleurs _cl = new Couleurs();
+
+    private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     Scanner sc = new Scanner(System.in);
 

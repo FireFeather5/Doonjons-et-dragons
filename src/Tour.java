@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Tour {
+
+    private final Couleurs _cl = new Couleurs();
+
     private final ArrayList<Vivant> _vivTri;
     private int _nbViv;
-
     private final Actions _action = new Actions();
     private final MJ _mj;
     private final Donjon _dj;
-    private final Couleurs _cl = new Couleurs();
 
     Scanner sc = new Scanner(System.in);
 
@@ -116,6 +117,17 @@ public class Tour {
 
         if (val == StatusDonjon.JOUEUR_MORT) {
             System.out.println(_cl.rouge() + "\nLes joueurs ont perdu" + _cl.reset());
+            for (Vivant vi : _vivTri)
+            {
+                if (vi.getTypeVivant().equals(TypeVivant.MONSTRE))
+                {
+                    _vivTri.remove(vi);
+                }
+                else
+                {
+                    vi.getPV();
+                }
+            }
         } else {
             System.out.println(_cl.vert() + "\nLes joueurs ont fini le donjon" + _cl.reset());
             for (Vivant vi : _vivTri)

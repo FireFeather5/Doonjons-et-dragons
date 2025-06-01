@@ -121,7 +121,7 @@ public class Donjon {
             if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
                 if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
                     if (!_equip.contains(equip)) {
-                        _equipJ6.add(equip);
+                        _equip.add(equip);
                     }
                     equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
                     _donjon[pc[0] - 1][pc[1] - 1] = equip;
@@ -235,15 +235,18 @@ public class Donjon {
         _donjon[pc[0]-1][pc[1]-1] = null;
     }
 
+    public ArrayList<Personnage> getListePerso()
+    {
+        return new ArrayList<>(_pers);
+    }
+
+    public ArrayList<Monstre> getListeMonstre()
+    {
+        return new ArrayList<>(_mons);
+    }
+
     public void afficherDJ()
     {
         _affDJ.afficherDJ(_donjon);
-    }
-
-    public ArrayList<Personnage> getListePerso() {
-        return new ArrayList<>(_pers);
-    }
-    public ArrayList<Monstre> getListeMonstre() {
-        return new ArrayList<>(_mons);
     }
 }

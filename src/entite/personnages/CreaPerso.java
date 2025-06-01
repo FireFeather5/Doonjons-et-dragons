@@ -12,10 +12,11 @@ import java.util.Scanner;
 
 public class CreaPerso {
 
+    private Couleurs _cl = new Couleurs();
+
     private Races _ra;
     private Classe _cla;
     private Genre _gre;
-    private Couleurs _cl = new Couleurs();
 
     Scanner sc = new Scanner(System.in);
 

@@ -45,9 +45,4 @@ public abstract class Equipement implements Entite {
     {
         return " * ";
     }
-
-    public int code()
-    {
-        return 3;
-    }
 }

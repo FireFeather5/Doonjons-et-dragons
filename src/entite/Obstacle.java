@@ -28,9 +28,4 @@ public class Obstacle implements Entite {
     {
         return "[ ]";
     }
-
-    public int code()
-    {
-        return 2;
-    }
 }

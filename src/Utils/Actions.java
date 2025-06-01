@@ -20,6 +20,10 @@ public class Actions {
 
     Scanner sc = new Scanner(System.in);
 
+    public Actions()
+    {
+
+    }
 
     public StatusDonjon actionPerso(Donjon DJ, Personnage perso)
     {
