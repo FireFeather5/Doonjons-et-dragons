@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Tour {
 
     private final Couleurs _cl = new Couleurs();
+    private Inputs _input = new Inputs();
 
     private final ArrayList<Vivant> _vivTri;
     private int _nbViv;
@@ -83,11 +84,11 @@ public class Tour {
                         String comm = sc.nextLine();
                         if (comm.equals("o"))
                         {
-                            _vivTri.get(j).comAction();
+                            _input.persoCommenteAction((Personnage)_vivTri.get(j));
                         }
                         else if (comm.equals("mj"))
                         {
-                            _mj.comAction();
+                            _input.mjCommenteAction(_mj);
                         }
 
                         if (val.equals(StatusDonjon.NORMAL)) {

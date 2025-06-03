@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class Personnage implements Vivant {
 
     private final Couleurs _cl = new Couleurs();
-    private final Inputs _input = new Inputs();
 
     private String _nom;
     private Races _race;
@@ -95,15 +94,13 @@ public class Personnage implements Vivant {
 
 
 
-    public void seDeplacer(Donjon DJ)
+    public void seDeplacer(Donjon DJ, int[] pos)
     {
         /*System.out.println("\nChoisir une case où se déplacer [lettre][nombre]");
         String dep = sc.nextLine();*/
 
         try {
             int distDep = _stats.retVit() / 3;
-
-            int[] pos = _input.choixCase("où se déplacer");
 
             int[] posOld = getPos();
 
@@ -115,7 +112,7 @@ public class Personnage implements Vivant {
                         System.out.println("Déplacement effectué");
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        seDeplacer(DJ);
+                        seDeplacer(DJ, pos);
                     }
                 } else {
                     if (val) {
@@ -126,16 +123,16 @@ public class Personnage implements Vivant {
                         _peutRamEqu = null;
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        seDeplacer(DJ);
+                        seDeplacer(DJ, pos);
                     }
                 }
             } else {
                 System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                seDeplacer(DJ);
+                seDeplacer(DJ, pos);
             }
         }
         catch (NullPointerException erreur) {
-            seDeplacer(DJ);
+            seDeplacer(DJ, pos);
         }
     }
 
@@ -190,7 +187,7 @@ public class Personnage implements Vivant {
         }
     }
 
-    public StatusDonjon attaquer(Donjon DJ)
+    public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
@@ -210,7 +207,6 @@ public class Personnage implements Vivant {
             touche = tou;
 
             try {
-                int[] posAtt = _input.choixCase("à attaquer");
                 int detou = this._deChar.roll() + arme.getBonusMagique();
                 touche += detou;
                 Monstre mons = DJ.getMons(posAtt);
@@ -236,7 +232,7 @@ public class Personnage implements Vivant {
             catch (ArrayIndexOutOfBoundsException erreur)
             {
                 System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                attaquer(DJ);
+                attaquer(DJ, posAtt);
             }
         } else {
             System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
@@ -280,9 +276,9 @@ public class Personnage implements Vivant {
         _peutRamEqu = null;
     }
 
-    public void comAction()
+    public void comAction(String comAct)
     {
-        System.out.println(this + _input.persoCommenteAction());
+        System.out.println(this + "- " + comAct);
     }
 
     public void regePV()

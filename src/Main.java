@@ -77,15 +77,24 @@ public class Main {
             System.out.print("\n                    Donjon n°" + tour + "                       \n");
             System.out.println("-------------------------------------------------------------------\n" + cl.reset());
 
-            Donjon donjon  = mj.creationDonjon();
+            Donjon donjon  = _input.creationDonjon(mj);
 
             if (donjon == null)
             {
                 CreationDonjonDefault creaDj = new CreationDonjonDefault();
                 donjon = creaDj.createDefaultDJ();
             }
+            else
+            {
+                _input.ajoutObstacle(donjon, mj);
+                _input.ajoutMonstre(donjon, mj);
+                _input.ajoutEquipement(donjon, mj);
+            }
+
+
             for (int i = 0; i < nbrPers; i++) {
-                mj.posJ(donjon, Pers.get(i));
+                int[] pos = _input.choixCase("de " + Pers.get(i));
+                mj.posJ(donjon, Pers.get(i), pos);
                 donjon.afficherDJ();
                 Viv.add(Pers.get(i));
             }

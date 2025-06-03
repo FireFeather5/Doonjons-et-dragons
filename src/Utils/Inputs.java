@@ -26,6 +26,26 @@ public class Inputs {
 
     }
 
+    public Donjon creationDonjon(MJ mj)
+    {
+        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjon par défaut sera utilisé)");
+        if (sc.nextLine().equals("o"))
+        {
+            int[] tailleDj = tailleDonjon();
+            Donjon dj = mj.creationDonjon(tailleDj);
+            return dj;
+        }
+        else if (sc.nextLine().equals("n"))
+        {
+            return null;
+        }
+        else
+        {
+            creationDonjon(mj);
+        }
+        return null;
+    }
+
     public int[] tailleDonjon()
     {
         int[] tailleCote = new int[2];
@@ -63,7 +83,8 @@ public class Inputs {
         boolean fini = !sc.nextLine().equals("o");
 
         while (!fini) {
-            mj.addObst(DJ);
+            int[] pos = choixCase("de l'obstacle");
+            mj.addObst(DJ, pos);
             DJ.afficherDJ();
             System.out.println("\n\nCréer un auter obstacle (o/n) ?");
             if (!sc.nextLine().equals("o")) fini = true;
@@ -77,7 +98,8 @@ public class Inputs {
         while (!fini) {
             Monstre mons = creationMonstre(mj);
             DJ.afficherDJ();
-            mj.posM(DJ, mons);
+            int[] pos = choixCase("de " + mons);
+            mj.posM(DJ, mons, pos);
             DJ.afficherDJ();
             System.out.println("\n\nCréer un autre monstre (o/n) ?");
             if (!sc.nextLine().equals("o")) fini = true;
@@ -130,8 +152,9 @@ public class Inputs {
             if (!ok) {
                 System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
             } else {
+                int[] pos = choixCase("de l'équipement : " + equip);
                 DJ.afficherDJ();
-                mj.posEquip(DJ, equip);
+                mj.posEquip(DJ, equip, pos);
                 DJ.afficherDJ();
             }
             System.out.println("\n\nCréer un autre equipement (o/n)?");
@@ -221,16 +244,18 @@ public class Inputs {
         return sc.nextLine();
     }
 
-    public String mjCommenteAction()
+    public void mjCommenteAction(MJ mj)
     {
         System.out.println("Le MJ commente l'action effectuée");
-        return "MJ- " + sc.nextLine();
+        String comm = sc.nextLine();
+        mj.comAction(comm);
     }
 
-    public String persoCommenteAction()
+    public void persoCommenteAction(Personnage perso)
     {
         System.out.println("Le personnage commente l'action effectuée");
-        return "- " + sc.nextLine();
+        String comm = sc.nextLine();
+        perso.comAction(comm);
     }
 
     public Equipement equiperEquip(Personnage pers)

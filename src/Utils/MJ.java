@@ -25,47 +25,31 @@ public class MJ {
 
     }
 
-    public Donjon creationDonjon()
+    public Donjon creationDonjon(int[] tailleDj)
     {
-        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjon par défaut sera utilisé)");
-        if (sc.nextLine().equals("o"))
+        Donjon DJ = new Donjon(tailleDj);
+
+        System.out.println("Aperçu du donjon :");
+        DJ.afficherDJ();
+
+        System.out.println("\n\nLa taille vous convient-il (o/n) ?");
+        if (sc.nextLine().equals("n"))
         {
-            int[] tailleDj = _input.tailleDonjon();
-            Donjon DJ = new Donjon(tailleDj);
-
-            //boolean fini;
-
-            System.out.println("Aperçu du donjon :");
-            DJ.afficherDJ();
-
-            System.out.println("\n\nLa taille vous convient-il (o/n) ?");
-            if (sc.nextLine().equals("n"))
-            {
-                creationDonjon();
-            }
-
-            _input.ajoutObstacle(DJ, this);
-            _input.ajoutMonstre(DJ, this);
-            _input.ajoutEquipement(DJ, this);
-
-            return DJ;
+            _input.creationDonjon(this);
         }
-        else {
-            return null;
-        }
+
+        return DJ;
     }
 
-    public void addObst(Donjon DJ)
+    public void addObst(Donjon DJ, int[] pos)
     {
-        int[] pos = _input.choixCase("de l'obstacle");
-
         Obstacle obs = new Obstacle();
         boolean test = obs.addPos(pos, DJ);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            addObst(DJ);
+            addObst(DJ, pos);
         }
     }
 
@@ -83,53 +67,47 @@ public class MJ {
         return mons;
     }
 
-    public void posJ(Donjon DJ, Personnage perso)
+    public void posJ(Donjon DJ, Personnage perso, int[] pos)
     {
-        int[] pos = _input.choixCase("de " + perso);
-
         boolean test = DJ.positionPersonnage(pos, perso);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            this.posJ(DJ, perso);
+            this.posJ(DJ, perso, pos);
         }
     }
 
-    public void posM(Donjon DJ, Monstre mons)
+    public void posM(Donjon DJ, Monstre mons, int[] pos)
     {
-        int[] pos = _input.choixCase("de " + mons);
-
         boolean test = DJ.positionMonstre(pos, mons);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            this.posM(DJ, mons);
+            this.posM(DJ, mons, pos);
         }
     }
 
-    public void posEquip(Donjon DJ, Equipement equip)
+    public void posEquip(Donjon DJ, Equipement equip, int[] pos)
     {
-        int[] pos = _input.choixCase("de l'équipement : " + equip);
-
         boolean test = DJ.positionEquipement(pos, equip);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            this.posEquip(DJ, equip);
+            this.posEquip(DJ, equip, pos);
         }
     }
 
-    public void presContext()
+    public void presContext(String context)
     {
-        System.out.println(_input.contextDonjon());
+        System.out.println("MJ- " + context);
     }
 
-    public void comAction()
+    public void comAction(String commentaire)
     {
-        System.out.println(_input.mjCommenteAction());
+        System.out.println("MJ- " + commentaire);
     }
 
     public StatusDonjon actionFT(Donjon DJ)
@@ -140,6 +118,9 @@ public class MJ {
 
         return val;
     }
+
+
+    //      A VOIR PLUS TARD
 
     public void depViv(Donjon DJ)
     {

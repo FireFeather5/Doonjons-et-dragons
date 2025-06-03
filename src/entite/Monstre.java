@@ -15,7 +15,6 @@ import java.util.Scanner;
 public class Monstre implements Vivant {
 
     private Couleurs _cl = new Couleurs();
-    private final Inputs _input = new Inputs();
 
     private String _espece;
     private String _symb;
@@ -76,11 +75,9 @@ public class Monstre implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public void seDeplacer(Donjon DJ)
+    public void seDeplacer(Donjon DJ, int[] pos)
     {
         int distDep = _stats.retVit() / 3;
-
-        int[] pos = _input.choixCase("où se déplacer");
 
         int[] posOld = getPos();
 
@@ -91,15 +88,15 @@ public class Monstre implements Vivant {
                 System.out.println("Déplacement effectué");
             } else {
                 System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                seDeplacer(DJ);
+                seDeplacer(DJ, pos);
             }
         } else {
             System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-            seDeplacer(DJ);
+            seDeplacer(DJ, pos);
         }
     }
 
-    public StatusDonjon attaquer(Donjon DJ)
+    public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
@@ -107,7 +104,6 @@ public class Monstre implements Vivant {
         this._deChar.changeDe(1, 20);
 
         try {
-            int[] posAtt = _input.choixCase("à attaquer");
             Personnage pers = DJ.getPers(posAtt);
             if (pers != null) {
                 if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt))) {
@@ -133,7 +129,7 @@ public class Monstre implements Vivant {
         catch (ArrayIndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-            attaquer(DJ);
+            attaquer(DJ, posAtt);
         }
         return val;
     }
@@ -154,9 +150,9 @@ public class Monstre implements Vivant {
         return val;
     }
 
-    public void comAction()
+    public void comAction(String comAct)
     {
-        System.out.println(this + _input.persoCommenteAction());
+        System.out.println(this + "- " + comAct);
     }
 
 
