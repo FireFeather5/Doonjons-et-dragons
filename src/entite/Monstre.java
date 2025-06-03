@@ -1,6 +1,9 @@
 package entite;
 
+import Utils.Inputs;
+import Utils.StatusDonjon;
 import Utils.Couleurs;
+import Utils.TypeVivant;
 import de.De;
 import entite.personnages.*;
 import donjon.Donjon;
@@ -15,22 +18,14 @@ public class Monstre implements Vivant {
 
     private String _espece;
     private String _symb;
-    private int _numero = 1;    //a voir plus tard
+    private int _numero = 1;
     private int _portAtt;
     private De _degAtt;
     private final Stats _stats;
     private final Position _pos;
     private De _deChar;
 
-    Scanner sc = new Scanner(System.in);
-
-    public Monstre()
-    {
-        _pos = new Position();
-        _stats = new Stats();
-    }
-
-    public void creaMonstre(String espece, String symb, int portAtt, De degAtt, De charac)
+    public Monstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
         _deChar = charac;
         _espece = espece + " " + this._numero;
@@ -38,7 +33,10 @@ public class Monstre implements Vivant {
         _portAtt = portAtt;
         _degAtt = degAtt;
 
-        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + toString() + " =====" + _cl.reset());
+        _pos = new Position();
+        _stats = new Stats();
+
+        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + this + " =====" + _cl.reset());
         System.out.println("\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
         System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
@@ -77,118 +75,67 @@ public class Monstre implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public int action(Donjon DJ)
+    public void seDeplacer(Donjon DJ, int[] pos)
     {
-        int val = 0;
-        System.out.println("\n\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
-        try {
-            int choix = Integer.parseInt(sc.nextLine());
+        int distDep = _stats.retVit() / 3;
 
-            switch (choix) {
-                case 0:
-                    seDeplacer(DJ);
-                    break;
-                case 1:
-                    val = attaquer(DJ);
-                    break;
-                default:
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    action(DJ);
-            }
-        }
-        catch (NumberFormatException | NullPointerException erreur)
-        {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            action(DJ);
-        }
-        return val;
-    }
+        int[] posOld = getPos();
 
-    public void seDeplacer(Donjon DJ)
-    {
-        System.out.println("Choisir une case où se déplacer");
-        String dep = sc.nextLine();
-
-        try {
-            int distDep = _stats.retVit() / 3;
-
-            int[] pos = DJ.posInt(dep);
-
-            int[] posOld = getPos();
-
-            if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
-                boolean val = DJ.posM(dep, this);
-                if (val) {
-                    DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
-                    System.out.println("Déplacement effectué");
-                } else {
-                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                    seDeplacer(DJ);
-                }
+        if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
+            boolean val = DJ.positionMonstre(pos, this);
+            if (val) {
+                DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
+                System.out.println("Déplacement effectué");
             } else {
                 System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                seDeplacer(DJ);
+                seDeplacer(DJ, pos);
             }
-        }
-        catch (NullPointerException erreur) {
-            seDeplacer(DJ);
+        } else {
+            System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+            seDeplacer(DJ, pos);
         }
     }
 
-    public int attaquer(Donjon DJ)
+    public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
     {
-        int val = 0;
-        System.out.println("Choisir la case à attaquer");
+        StatusDonjon val = StatusDonjon.NORMAL;
+
+        System.out.print("\n");
+        this._deChar.changeDe(1, 20);
 
         try {
-            String cas = sc.nextLine();
-            System.out.print("\n");
-            this._deChar.changeDe(1, 20);
-
-            try {
-                int[] posAtt = DJ.posInt(cas);
-                Personnage pers = DJ.getPers(posAtt);
-                if (pers != null) {
-                    if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt))) {
-                        // un des deux est forcément à 0 donc on peut directement ajouter les deux
-                        // (évite un if else)
-                        int detou = this._deChar.roll();
-                        int touche = detou + _stats.retFor() + _stats.retDex();
-                        System.out.println(this + " perce l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ").");
-                        if (touche > pers.getArmorClass()) {
-                            int atk = this._degAtt.roll();
-                            System.out.println(this + " fait " + atk + " dégats à " + pers + " !");
-                            val = pers.seFaitAttaquer(atk, DJ);
-                        } else {
-                            System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ")");
-                        }
+            Personnage pers = DJ.getPers(posAtt);
+            if (pers != null) {
+                if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt))) {
+                    // un des deux est forcément à 0 donc on peut directement ajouter les deux
+                    // (évite un if else)
+                    int detou = this._deChar.roll();
+                    int touche = detou + _stats.retFor() + _stats.retDex();
+                    System.out.println(this + " perce l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ").");
+                    if (touche > pers.getArmorClass()) {
+                        int atk = this._degAtt.roll();
+                        System.out.println(this + " fait " + atk + " dégats à " + pers + " !");
+                        val = pers.seFaitAttaquer(atk, DJ);
                     } else {
-                        System.out.println(this + " n'a pas une portée suffisante");
+                        System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ")");
                     }
                 } else {
-                    System.out.println(_cl.rouge() + "Il n'y a pas de personnage à attaquer sur cette case." + _cl.reset());
+                    System.out.println(this + " n'a pas une portée suffisante");
                 }
-            }
-            catch (ArrayIndexOutOfBoundsException erreur)
-            {
-                System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                attaquer(DJ);
+            } else {
+                System.out.println(_cl.rouge() + "Il n'y a pas de personnage à attaquer sur cette case." + _cl.reset());
             }
         }
-        catch (NullPointerException erreur)
+        catch (ArrayIndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-            attaquer(DJ);
+            attaquer(DJ, posAtt);
         }
         return val;
     }
 
-    public int getArmorClass() {
-        return this._stats.retArm();
-    }
-
-    public int seFaitAttaquer(int degats, Donjon DJ) {
-        int val = 0;
+    public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
+        StatusDonjon val = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
         _stats.pv(pv);
         if (pv <= 0)
@@ -203,14 +150,19 @@ public class Monstre implements Vivant {
         return val;
     }
 
-    public String comAction()
+    public void comAction(String comAct)
     {
-        System.out.println(this + " commente l'action effectuée");
-        return this + " - " + sc.nextLine();
+        System.out.println(this + "- " + comAct);
+    }
+
+
+
+    public int getArmorClass() {
+        return this._stats.retArm();
     }
 
     public String getStat() {
-        return "\n\n===== " + this + " =====\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos() {
@@ -258,9 +210,9 @@ public class Monstre implements Vivant {
         return " X)";
     }
 
-    public int code()
+    public TypeVivant getTypeVivant()
     {
-        return 1;
+        return TypeVivant.MONSTRE;
     }
 
     @Override

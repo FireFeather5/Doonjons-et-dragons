@@ -1,10 +1,13 @@
 import Utils.Couleurs;
+import Utils.Inputs;
+import Utils.MJ;
 import de.De;
+import donjon.CreationDonjonDefault;
 import donjon.Donjon;
-import entite.Monstre;
+import entite.equipement.Equipement;
 import entite.personnages.CreaPerso;
 import entite.personnages.Personnage;
-import entite.personnages.Vivant;
+import entite.Vivant;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,12 +16,16 @@ public class Main {
     public static void main(String[] args){
 
         Couleurs cl = new Couleurs();
+        Inputs _input = new Inputs();
+
         MJ mj = new MJ();
-        Donjon donjon = new Donjon();
-        ArrayList<Vivant> Viv = new ArrayList<>();
+        ArrayList<Personnage> Pers = new ArrayList<>();
+
         Scanner sc = new Scanner(System.in);
 
         System.out.println(cl.rouge() + "Bienvenue dans DOOnjon et Dragons" + cl.reset());
+
+
 
         //                     Crea persos
         int nbrPers = 0;
@@ -29,9 +36,7 @@ public class Main {
                 if (nbrPers == 0) {
                     System.out.println(cl.rouge() + "\nIl doit y avoir au moins un personnage !" + cl.reset());
                 }
-            } catch (NumberFormatException erreur) {
-                System.out.println(cl.rouge() + "Mauvaise entrée clavier" + cl.reset());
-            } catch (NullPointerException erreur) {
+            } catch (NumberFormatException | NullPointerException erreur) {
                 System.out.println(cl.rouge() + "Mauvaise entrée clavier" + cl.reset());
             }
         }
@@ -39,64 +44,68 @@ public class Main {
         CreaPerso CreaPer = new CreaPerso();
 
         for (int i = 0; i < nbrPers; i++) {
-            System.out.println("\nCréation Personnage " + (i+1));
-            Personnage pers = new Personnage();
-            CreaPer.CreaPers(pers);
+            System.out.println("\n\nCréation Personnage " + (i+1));
+            Personnage pers = CreaPer.CreaPers();
             System.out.println(pers.getInfos());
 
-            System.out.println("Voulez-vous équiper une arme ? (o/n)");
+            System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = sc.nextLine();
             if (choix.equals("o"))
             {
-                pers.sEquiper();
-            }
-            System.out.println("Voulez-vous équiper une armure ? (o/n)");
-            String choixx = sc.nextLine();
-            if (choixx.equals("o"))
-            {
-                pers.sEquiper();
-            }
+                Equipement equip = _input.equiperEquip(pers);
+                pers.sEquiper(equip);
 
-            Viv.add(pers);
-        }
-
-        for (int pt = 1; pt <= 3; pt++) {
-
-            int nbMons = mj.createDJ(donjon);
-            int nbrViv = nbMons;
-            nbrViv += nbrPers;
-
-            for (int i = 0; i < nbrPers; i++) {
-                mj.posJ(donjon, (Personnage)Viv.get(i));
-                donjon.afficherDJ();
-            }
-
-            //              Créa monstre
-
-            if (nbMons == 0) {
-                Monstre demogordgon = new Monstre();
-                demogordgon.creaMonstre("Demogorgon", "XP", 1, new De(2, 8), new De(3, 6));
-                donjon.posM("P14", demogordgon);
-                Viv.add(demogordgon);
-                Monstre dragonBleu = new Monstre();
-                dragonBleu.creaMonstre("Dragon Bleu", "B)", 8, new De(2, 8), new De(3, 6));
-                donjon.posM("E4", dragonBleu);
-                Viv.add(dragonBleu);
-                nbrViv += 2;
-                donjon.afficherDJ();
-            } else {
-                for (int i = 1; i <= nbMons; i++) {
-                    Monstre mons = new Monstre();
-                    mj.createM(mons);
-                    mj.posM(donjon, mons);
-                    Viv.add(mons);
-                    donjon.afficherDJ();
+                System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
+                String choixx = sc.nextLine();
+                if (choixx.equals("o"))
+                {
+                    Equipement equipe = _input.equiperEquip(pers);
+                    pers.sEquiper(equipe);
                 }
             }
+            Pers.add(pers);
+        }
+
+
+        //               TOURS
+        for (int tour = 1; tour <= 3; tour++) {
+
+            ArrayList<Vivant> Viv = new ArrayList<>();
+
+            System.out.print("\n\n");
+            System.out.println(cl.jaune() + "-------------------------------------------------------------------");
+            System.out.print("\n                    Donjon n°" + tour + "                       \n");
+            System.out.println("-------------------------------------------------------------------\n" + cl.reset());
+
+            Donjon donjon  = _input.creationDonjon(mj);
+
+            if (donjon == null)
+            {
+                CreationDonjonDefault creaDj = new CreationDonjonDefault();
+                donjon = creaDj.createDefaultDJ();
+            }
+            else
+            {
+                _input.ajoutObstacle(donjon, mj);
+                _input.ajoutMonstre(donjon, mj);
+                _input.ajoutEquipement(donjon, mj);
+            }
+
+
+            for (int i = 0; i < nbrPers; i++) {
+                int[] pos = _input.choixCase("de " + Pers.get(i));
+                mj.posJ(donjon, Pers.get(i), pos);
+                donjon.afficherDJ();
+                Viv.add(Pers.get(i));
+            }
+
+            Viv.addAll(donjon.getListeMonstre());
+
+
+            int nbrViv = nbrPers + donjon.getListeMonstre().size();
 
 
             //                  Initiative
-
 
             for (int j = 0; j < nbrViv; j++) {
                 System.out.println(Viv.get(j).getStat());
@@ -104,8 +113,8 @@ public class Main {
 
             De deIni = new De(1, 20);
 
-        ArrayList<Integer> ArrIni = new ArrayList<>();
-        ArrayList<Vivant> VivTri = new ArrayList<>();
+            ArrayList<Integer> ArrIni = new ArrayList<>();
+            ArrayList<Vivant> VivTri = new ArrayList<>();
 
             System.out.println(cl.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + cl.reset());
 
@@ -121,7 +130,7 @@ public class Main {
                     boolean inVivTri = false;
                     for (int i = 0; i < ArrIni.size(); i++) {
                         if (!inVivTri) {
-                            if (init < ArrIni.get(i)) {
+                            if (init > ArrIni.get(i)) {
                                 ArrIni.add(i, init);
                                 VivTri.add(i, Viv.get(j));
                                 inVivTri = true;
@@ -138,7 +147,13 @@ public class Main {
 
             Tour tr = new Tour(VivTri, mj, donjon);
             tr.tour();
-
         }
+
+        //faire classes pour l'affichage/interaction user
+        //pas faire une classe qui gère tout !
+        //les classes métier (donjon/personnage/...) ne doivent pas connaitre le user et doivent tourner sans input !
+
+
+        //BIEN BLOQUER LES INPUTS A o OU n QUAND DEMANDE (A FAIRE A LA FIN PSQ C'EST LONG DE TT METTRE PR LES TESTS)
     }
 }

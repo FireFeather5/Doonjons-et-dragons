@@ -1,8 +1,11 @@
 package donjon;
 
+import Utils.Couleurs;
 import entite.Entite;
 
 public class AffichDJ {
+    private final Couleurs _cl = new Couleurs();
+
     private final int _tc1;
     private final int _tc2;
     private final String[][] _donjon;
@@ -40,17 +43,17 @@ public class AffichDJ {
         System.out.print("\n    ");
         for (int k = 1; k <= _tc2; k++)
         {
-            System.out.print(" " + _ord[k-1] + " ");
+            System.out.print(" " + _cl.jaune() + _ord[k-1] + _cl.reset() + " ");
         }
         System.out.print("\n");
         for (int i = 0; i < _tc1; i++)
         {
             if (i < 9) {
-                System.out.print(" " + (i+1) + "  ");
+                System.out.print(" " + _cl.jaune() + (i+1) + _cl.reset() + "  ");
             }
             else
             {
-                System.out.print(" " + (i+1) + " ");
+                System.out.print(" " + _cl.jaune() + (i+1) + _cl.reset() + " ");
             }
 
             for (int j = 0; j < _tc2; j++)
@@ -60,7 +63,7 @@ public class AffichDJ {
             System.out.print("\n");
         }
 
-        System.out.print("                  ");
+        System.out.print("                ");
         System.out.print(" *  = equipement     ");
         System.out.print("[ ] = obstacle");
 

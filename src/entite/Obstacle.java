@@ -1,9 +1,12 @@
 package entite;
 
+import Utils.Inputs;
 import donjon.Donjon;
 import statistiques.Position;
 
 public class Obstacle implements Entite {
+
+
     private final Position _pos;
 
     public Obstacle()
@@ -16,18 +19,13 @@ public class Obstacle implements Entite {
         _pos.changPos(pos1, pos2);
     }
 
-    public boolean addPos(String pos, Donjon DJ)
+    public boolean addPos(int[] pos, Donjon DJ)
     {
-        return DJ.addObst(pos, this);
+        return DJ.positionObstacle(pos, this);
     }
 
     public String aff()
     {
         return "[ ]";
-    }
-
-    public int code()
-    {
-        return 2;
     }
 }
