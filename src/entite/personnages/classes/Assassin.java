@@ -1,9 +1,9 @@
 package entite.personnages.classes;
 
 import entite.equipement.Equipement;
-import entite.equipement.arme.distance.ArbaleteLegere;
-import entite.equipement.arme.courante.Rapiere;
-import entite.equipement.armure.legere.DemiPlate;
+import entite.equipement.arme.courante.*;
+import entite.equipement.arme.distance.Couteaux;
+import entite.equipement.armure.legere.*;
 
 import java.util.ArrayList;
 
@@ -15,9 +15,9 @@ public class Assassin implements Classe{
     public Assassin()
     {
         _equiBase = new ArrayList<>();
-        _equiBase.add(new DemiPlate());
-        _equiBase.add(new Rapiere());
-        _equiBase.add(new ArbaleteLegere());
+        _equiBase.add(new Cape());
+        _equiBase.add(new Dague());
+        _equiBase.add(new Couteaux());
     }
 
     public int pv()
