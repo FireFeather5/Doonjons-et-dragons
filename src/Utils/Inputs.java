@@ -29,13 +29,14 @@ public class Inputs {
     public Donjon creationDonjon(MJ mj)
     {
         System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjon par défaut sera utilisé)");
-        if (sc.nextLine().equals("o"))
+        String choix = sc.nextLine();
+        if (choix.equals("o"))
         {
             int[] tailleDj = tailleDonjon();
             Donjon dj = mj.creationDonjon(tailleDj);
             return dj;
         }
-        else if (sc.nextLine().equals("n"))
+        else if (choix.equals("n"))
         {
             return null;
         }

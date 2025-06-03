@@ -28,7 +28,6 @@ public class MJ {
     public Donjon creationDonjon(int[] tailleDj)
     {
         Donjon DJ = new Donjon(tailleDj);
-
         System.out.println("Aperçu du donjon :");
         DJ.afficherDJ();
 

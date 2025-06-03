@@ -74,7 +74,7 @@ public class Main {
 
             System.out.print("\n\n");
             System.out.println(cl.jaune() + "-------------------------------------------------------------------");
-            System.out.print("\n                    Donjon n°" + tour + "                       \n");
+            System.out.print("\n                        Donjon n°" + tour + "\n\n");
             System.out.println("-------------------------------------------------------------------\n" + cl.reset());
 
             Donjon donjon  = _input.creationDonjon(mj);
