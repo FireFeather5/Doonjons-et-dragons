@@ -1,5 +1,8 @@
 package entite.equipement;
 
+import Utils.TypeArme;
+import Utils.TypeArmure;
+import Utils.TypeEquipement;
 import entite.Entite;
 import statistiques.Position;
 
@@ -8,24 +11,31 @@ public abstract class Equipement implements Entite {
     private final int _speedMalus;
     private final int _forceBonus;
     private final Position _pos;
+    private final TypeEquipement _typeEqu;
+    private TypeArme _typeArm = null;
+    private TypeArmure _typeArmur = null;
 
-    public Equipement(String name) {
-        this(name, 0, 0);
+    public Equipement(String name, TypeEquipement typeEqu, TypeArme typeArm, TypeArmure typeArmur) {
+        this(name, typeEqu, typeArm, typeArmur, 0, 0);
     }
 
-    public Equipement(String name, int speedMalus) {
-        this(name, speedMalus, 0);
+    public Equipement(String name, TypeEquipement typeEqu, TypeArme typeArm, TypeArmure typeArmur, int speedMalus) {
+        this(name, typeEqu, typeArm, typeArmur, speedMalus, 0);
     }
 
-    public Equipement(String name, int speedMalus, int forceBonus) {
+    public Equipement(String name, TypeEquipement typeEqu, TypeArme typeArm, TypeArmure typeArmur, int speedMalus, int forceBonus) {
         this._name = name;
         this._speedMalus = speedMalus;
         this._forceBonus = forceBonus;
+        _typeEqu = typeEqu;
+        _typeArm = typeArm;
+        _typeArmur = typeArmur;
         _pos = new Position();
     }
 
-    public String getName() {
-        return this._name;
+    public void position(int pos1, int pos2)
+    {
+        _pos.changPos(pos1, pos2);
     }
 
     public int getSpeedMalus() {
@@ -36,9 +46,23 @@ public abstract class Equipement implements Entite {
         return this._forceBonus;
     }
 
-    public void position(int pos1, int pos2)
+    public String getName() {
+        return this._name;
+    }
+
+    public TypeEquipement getTypeEquip()
     {
-        _pos.changPos(pos1, pos2);
+        return _typeEqu;
+    }
+
+    public TypeArme getTypeArm()
+    {
+        return _typeArm;
+    }
+
+    public TypeArmure getTypeArmur()
+    {
+        return _typeArmur;
     }
 
     public String aff()

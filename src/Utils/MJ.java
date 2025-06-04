@@ -13,12 +13,8 @@ import java.util.Scanner;
 public class MJ {
 
     private final Couleurs _cl = new Couleurs();
-    private final Inputs _input = new Inputs();
-    private final Actions _action = new Actions();
 
     ArrayList<String> _monstresCrees = new ArrayList<>();
-
-    Scanner sc = new Scanner(System.in);
 
     public MJ()
     {
@@ -31,11 +27,11 @@ public class MJ {
         System.out.println("Aperçu du donjon :");
         DJ.afficherDJ();
 
-        System.out.println("\n\nLa taille vous convient-il (o/n) ?");
+        /*System.out.println("\n\nLa taille vous convient-il (o/n) ?");
         if (sc.nextLine().equals("n"))
         {
             _input.creationDonjon(this);
-        }
+        }*/
 
         return DJ;
     }
@@ -109,63 +105,15 @@ public class MJ {
         System.out.println("MJ- " + commentaire);
     }
 
-    public StatusDonjon actionFT(Donjon DJ)
-    {
-        StatusDonjon val = StatusDonjon.NORMAL;
-
-        val = _action.actionMjFinTour(DJ, this);
-
-        return val;
-    }
-
 
     //      A VOIR PLUS TARD
 
-    public void depViv(Donjon DJ)
+    public void depViv(Donjon DJ, int[] posD, int[] posF)
     {
-        int choix = 0;
-
-        System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
-        for (Personnage pers : DJ.getListePerso()) {
-            System.out.println(choix++ + "- " + pers);
-        }
-        for (Monstre mons : DJ.getListeMonstre()) {
-            System.out.println(choix++ + "- " + mons);
-        }
-
-        try {
-            int perso = Integer.parseInt(sc.nextLine());
-
-            int[] posD = DJ.getListePerso().get(perso).getPos();
-
-            int[] posF = _input.choixCase("où mettre l'entité");
-
-            DJ.switchCase(posD, posF);
-        }
-        catch (NumberFormatException erreur)
-        {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            depViv(DJ);
-        }
+        DJ.switchCase(posD, posF);
     }
 
-    public StatusDonjon degatJoueur(Donjon DJ) {
-        int choix = 0;
-        StatusDonjon val = StatusDonjon.NORMAL;
-
-        System.out.println("\nChoisissez un joueur :");
-        for (Personnage pers : DJ.getListePerso()) {
-            System.out.println(choix++ + "- " + pers);
-        }
-
-        choix = sc.nextInt();
-
-        System.out.println("Combien de dé(s) pour infliger les dégats ?");
-        int nbDe = sc.nextInt();
-        System.out.println("Combien de faces pour les dés ?");
-        int nbFaceDe = sc.nextInt();
-
-        int dgt = new De(nbDe, nbFaceDe).roll();
+    public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt, StatusDonjon val) {
 
         System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix));
         val = DJ.getListePerso().get(choix).seFaitAttaquer(dgt, DJ);
@@ -173,23 +121,7 @@ public class MJ {
         return val;
     }
 
-    public StatusDonjon degatMonstre(Donjon DJ) {
-        int choix = 0;
-        StatusDonjon val;
-
-        System.out.println("\nChoisissez un monstre :");
-        for (Monstre mons : DJ.getListeMonstre()) {
-            System.out.println(choix++ + ". " + mons);
-        }
-
-        choix = sc.nextInt();
-
-        System.out.println("Combien de dé(s) pour infliger les dégats ?");
-        int nbDe = sc.nextInt();
-        System.out.println("Combien de faces pour les dés ?");
-        int nbFaceDe = sc.nextInt();
-
-        int dgt = new De(nbDe, nbFaceDe).roll();
+    public StatusDonjon degatMonstre(Donjon DJ, int choix, int dgt, StatusDonjon val) {
 
         System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix));
         val = DJ.getListeMonstre().get(choix).seFaitAttaquer(dgt, DJ);

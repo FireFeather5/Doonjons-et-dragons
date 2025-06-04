@@ -1,17 +1,19 @@
 package entite.equipement.armure;
 
+import Utils.TypeArmure;
+import Utils.TypeEquipement;
 import entite.equipement.Equipement;
 
 public abstract class Armure extends Equipement {
     private final int armorClass;
 
-    public Armure(String name, int armorClass) {
-        super(name);
+    public Armure(String name, TypeArmure typeArmur, int armorClass) {
+        super(name, TypeEquipement.ARMURE, null, typeArmur);
         this.armorClass = armorClass;
     }
 
-    public Armure(String name, int armorClass, int speedMalus) {
-        super(name, speedMalus);
+    public Armure(String name, TypeArmure typeArmur, int armorClass, int speedMalus) {
+        super(name, TypeEquipement.ARMURE, null, typeArmur, speedMalus);
         this.armorClass = armorClass;
     }
 

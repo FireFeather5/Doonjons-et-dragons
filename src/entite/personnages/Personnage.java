@@ -1,9 +1,6 @@
 package entite.personnages;
 
-import Utils.Couleurs;
-import Utils.Inputs;
-import Utils.StatusDonjon;
-import Utils.TypeVivant;
+import Utils.*;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
@@ -77,10 +74,10 @@ public class Personnage implements Vivant {
         _stock.addAll(_classe.getEquiBase());
 
 
-        if (classe instanceof Clerc) {
+        if (_classe.getCla().equals("Clerc")) {
             this._sorts.add(new Guerison());
         }
-        else if (classe instanceof Magicien) {
+        else if (_classe.getCla().equals("Magicien")) {
             this._sorts.add(new Guerison());
             this._sorts.add(new BoogieWoogie());
             this._sorts.add(new ArmeMagique());
@@ -139,11 +136,11 @@ public class Personnage implements Vivant {
     public void seDesequiper(Equipement equipement) {
         if (this._equipee.contains(equipement)) {
             this._equipee.remove(equipement);
-            if (equipement instanceof ArmeGuerre) {
+            if (equipement.getTypeArm().equals(TypeArme.GUERRE)) {
                 this._stats.vit(_stats.retVit() + equipement.getSpeedMalus());
                 this._stats.forc(_stats.retFor() - equipement.getForceBonus());
             }
-            else if (equipement instanceof ArmureLourde) {
+            else if (equipement.getTypeArmur().equals(TypeArmure.LOURDE)) {
                 this._stats.vit(_stats.retVit() + equipement.getSpeedMalus());
             }
             this._stock.add(equipement);
@@ -156,20 +153,20 @@ public class Personnage implements Vivant {
     public void sEquiper(Equipement equipement) {
         if (equipement != null) {
             if (this._stock.contains(equipement)) {
-                if (equipement instanceof ArmeGuerre) {
+                if (equipement.getTypeArm().equals(TypeArme.GUERRE)) {
                     this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     this._stats.forc(_stats.retFor() + equipement.getForceBonus());
-                } else if (equipement instanceof Armure) {
+                } else if (equipement.getTypeEquip().equals(TypeEquipement.ARMURE)) {
                     _stats.arm(((Armure) equipement).getArmorClass());
-                    if (equipement instanceof ArmureLourde) {
+                    if (equipement.getTypeArmur().equals(TypeArmure.LOURDE)) {
                         this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     }
                 }
                 for (Equipement equip : this._equipee) {
-                    if (equip instanceof Arme && equipement instanceof Arme) {
+                    if (equip.getTypeEquip().equals(TypeEquipement.ARME) && equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                         this.seDesequiper(equip);
                         break;
-                    } else if (equip instanceof Armure && equipement instanceof Armure) {
+                    } else if (equip.getTypeEquip().equals(TypeEquipement.ARMURE) && equipement.getTypeEquip().equals(TypeEquipement.ARMURE)) {
                         this.seDesequiper(equip);
                         break;
                     }
@@ -199,7 +196,7 @@ public class Personnage implements Vivant {
             int touche;
             int tou;
 
-            if (arme instanceof ArmeDistance) {
+            if (arme.getTypeArm().equals(TypeArme.DISTANCE)) {
                 tou = this._stats.retDex();
             } else {
                 tou = this._stats.retFor();
@@ -290,7 +287,7 @@ public class Personnage implements Vivant {
 
     public Arme getArmeEquipe() {
         for (Equipement equip : this._equipee) {
-            if (equip instanceof Arme) {
+            if (equip.getTypeEquip().equals(TypeEquipement.ARME)) {
                 return (Arme) equip;
             }
         }
@@ -299,7 +296,7 @@ public class Personnage implements Vivant {
 
     public Armure getArmureEquipe() {
         for (Equipement equip : this._equipee) {
-            if (equip instanceof Armure) {
+            if (equip.getTypeEquip().equals(TypeEquipement.ARMURE)) {
                 return (Armure) equip;
             }
         }

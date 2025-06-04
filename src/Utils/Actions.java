@@ -336,15 +336,15 @@ public class Actions {
             int choix = Integer.parseInt(sc.nextLine());
             switch (choix) {
                 case 1:
-                    mj.depViv(DJ);
+                    _input.depViv(DJ, mj);
                     break;
                 case 2:
                     System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
                     String infDgt = sc.nextLine();
                     if (infDgt.equals("j") || infDgt.equals("joueur")) {
-                        val = mj.degatJoueur(DJ);
+                        val = _input.degatPersonnage(DJ, mj);
                     } else if (infDgt.equals("m") || infDgt.equals("monstre")) {
-                        val = mj.degatMonstre(DJ);
+                        val = _input.degatMonstre(DJ, mj);
                     }
                     break;
                 case 3:

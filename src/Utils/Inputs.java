@@ -51,9 +51,9 @@ public class Inputs {
     {
         int[] tailleCote = new int[2];
 
-        System.out.println("\n\ntaille cote 1");
+        System.out.println("\n\ntaille côté ordonnée");
         String tc1s = sc.nextLine();
-        System.out.println("taille cote 2");
+        System.out.println("taille côté abscisse");
         String tc2s = sc.nextLine();
         try {
             tailleCote[0] = Integer.parseInt(tc1s);
@@ -166,7 +166,7 @@ public class Inputs {
 
     public int[] choixCase(String context)
     {
-        System.out.println("\n\nChoisir la case " + context + " [lettre][nombre]");
+        System.out.println("\n\nChoisir la case " + context + _cl.cyan() + "[lettre][nombre]" + _cl.reset());
         String pos = sc.nextLine();
 
         return positionCase(pos);
@@ -282,6 +282,100 @@ public class Inputs {
             }
         }
         return null;
+    }
+
+
+    public void depViv(Donjon dj, MJ mj)
+    {
+        int choix = 0;
+
+        System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
+        for (Personnage pers : dj.getListePerso()) {
+            System.out.println(choix++ + "- " + pers);
+        }
+        for (Monstre mons : dj.getListeMonstre()) {
+            System.out.println(choix++ + "- " + mons);
+        }
+
+        try {
+            int perso = Integer.parseInt(sc.nextLine());
+
+            int[] posD = dj.getListePerso().get(perso).getPos();
+
+            int[] posF = choixCase("où mettre l'entité");
+
+            mj.depViv(dj, posD, posF);
+        }
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            depViv(dj, mj);
+        }
+    }
+
+
+    public StatusDonjon degatPersonnage(Donjon dj, MJ mj)
+    {
+        int choix = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
+
+        System.out.println("\nChoisissez un joueur :");
+        for (Personnage pers : dj.getListePerso())
+        {
+            System.out.println(choix++ + "- " + pers);
+        }
+
+        choix = sc.nextInt();
+
+        try {
+            System.out.println("Combien de dé(s) pour infliger les dégats ?");
+            int nbDe = sc.nextInt();
+            System.out.println("Combien de faces pour les dés ?");
+            int nbFaceDe = sc.nextInt();
+
+            int dgt = new De(nbDe, nbFaceDe).roll();
+
+            val = mj.degatJoueur(dj, choix, dgt, val);
+        }
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            degatPersonnage(dj, mj);
+        }
+
+        return val;
+    }
+
+
+    public StatusDonjon degatMonstre(Donjon dj, MJ mj)
+    {
+        int choix = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
+
+        System.out.println("\nChoisissez un monstre :");
+        for (Monstre mons : dj.getListeMonstre()) {
+            System.out.println(choix++ + ". " + mons);
+        }
+
+        choix = sc.nextInt();
+
+        try {
+            System.out.println("Combien de dé(s) pour infliger les dégats ?");
+            int nbDe = sc.nextInt();
+            System.out.println("Combien de faces pour les dés ?");
+            int nbFaceDe = sc.nextInt();
+
+            int dgt = new De(nbDe, nbFaceDe).roll();
+
+            val = mj.degatMonstre(dj, choix, dgt, val);
+        }
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            degatMonstre(dj, mj);
+        }
+
+        return val;
     }
 
 }

@@ -149,10 +149,6 @@ public class Main {
             tr.tour();
         }
 
-        //faire classes pour l'affichage/interaction user
-        //pas faire une classe qui gère tout !
-        //les classes métier (donjon/personnage/...) ne doivent pas connaitre le user et doivent tourner sans input !
-
 
         //BIEN BLOQUER LES INPUTS A o OU n QUAND DEMANDE (A FAIRE A LA FIN PSQ C'EST LONG DE TT METTRE PR LES TESTS)
     }

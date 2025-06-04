@@ -1,5 +1,7 @@
 package entite.equipement.arme;
 
+import Utils.TypeArme;
+import Utils.TypeEquipement;
 import entite.equipement.Equipement;
 
 public abstract class Arme extends Equipement {
@@ -7,26 +9,28 @@ public abstract class Arme extends Equipement {
     private final int _nbDe;
     private final int _nbFacesDe;
     private final int _range;
+    private final TypeArme _typeArm;
 
     private int _bonusMagique = 0;
 
-    public Arme(String name, int nbDe, int nbFacesDe, int range) {
-        this(name, nbDe, nbFacesDe, range, 0, 0);
+    public Arme(String name, TypeArme typeArm, int nbDe, int nbFacesDe, int range) {
+        this(name, typeArm, nbDe, nbFacesDe, range, 0, 0);
     }
 
-    public Arme(String name, int nbDe, int nbFacesDe, int range, int speedMalus, int forceBonus) {
-        super(name, speedMalus, forceBonus);
+    public Arme(String name, TypeArme typeArm, int nbDe, int nbFacesDe, int range, int speedMalus, int forceBonus) {
+        super(name, TypeEquipement.ARME, typeArm, null, speedMalus, forceBonus);
         this._nbDe = nbDe;
         this._nbFacesDe = nbFacesDe;
         this._range = range;
-    }
-
-    public int[] getDegats() {
-        return new int[]{_nbDe, _nbFacesDe};
+        _typeArm = typeArm;
     }
 
     public void bonusMagique() {
         _bonusMagique++;
+    }
+
+    public int[] getDegats() {
+        return new int[]{_nbDe, _nbFacesDe};
     }
 
     public int getBonusMagique() {

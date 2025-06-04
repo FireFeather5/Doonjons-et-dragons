@@ -93,7 +93,7 @@ public class Tour {
 
                         if (val.equals(StatusDonjon.NORMAL)) {
                             _dj.afficherDJ();
-                            val = _mj.actionFT(_dj);
+                            val = _action.actionMjFinTour(_dj, _mj);
                             if (val == StatusDonjon.MONSTRE_MORT) {
                                 for (int n = 0; n < _nbViv; n++) {
                                     if (_vivTri.get(n).getPV() <= 0) {

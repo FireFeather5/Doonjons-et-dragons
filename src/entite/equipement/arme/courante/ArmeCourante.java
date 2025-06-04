@@ -1,9 +1,10 @@
 package entite.equipement.arme.courante;
 
+import Utils.TypeArme;
 import entite.equipement.arme.Arme;
 
 public abstract class ArmeCourante extends Arme {
     public ArmeCourante(String name, int nbDe, int nbFacesDe) {
-        super(name, nbDe, nbFacesDe, 1);
+        super(name, TypeArme.COURANTE, nbDe, nbFacesDe, 1);
     }
 }
