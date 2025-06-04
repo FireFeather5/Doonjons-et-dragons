@@ -1,16 +1,18 @@
 package donjon;
 
+import Utils.MJ;
 import Utils.Inputs;
 import de.De;
 import entite.Monstre;
 import entite.Obstacle;
 import entite.equipement.Equipement;
-import entite.equipement.arme.distance.Fronde;
-import entite.equipement.arme.guerre.EpeeLongue;
-import entite.equipement.arme.guerre.Rapiere;
-import entite.equipement.armure.legere.DemiPlate;
-import entite.equipement.armure.lourde.CotteMaille;
+import entite.equipement.arme.courante.*;
+import entite.equipement.arme.guerre.*;
+import entite.equipement.arme.distance.*;
+import entite.equipement.armure.legere.*;
+import entite.equipement.armure.lourde.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class CreationDonjonDefault {
@@ -119,5 +121,53 @@ public class CreationDonjonDefault {
         return DJ;
     }
 
-    // peut etre qu'un donjon completement aleatoire sera fait
+    public Donjon donjonRandom() {
+
+        ArrayList<Equipement> equipements = new ArrayList<>();
+
+        equipements.add(new Baton());
+        equipements.add(new MasseArme());
+        equipements.add(new ArbaleteLegere());
+        equipements.add(new ArcCourt());
+        equipements.add(new Fronde());
+        equipements.add(new EpeeDeuxMains());
+        equipements.add(new EpeeLongue());
+        equipements.add(new Rapiere());
+        equipements.add(new ArmureEcaille());
+        equipements.add(new DemiPlate());
+        equipements.add(new CotteMaille());
+        equipements.add(new Harnois());
+
+        MJ mj = new MJ();
+
+        Random rand = new Random();
+
+        int[] taille = {rand.nextInt(15, 26), rand.nextInt(15, 26)};
+
+        Donjon DJ = new Donjon(taille);
+
+        for (int i = 0; i < taille[0]; i++) {
+            for (int j = 0; j < taille[1]; j++) {
+                int element = rand.nextInt(0, 100);
+                if (element < 1) {
+                    Monstre mystique = mj.createM(
+                            "Monstre mystique",
+                            "</>",
+                            rand.nextInt(1, 4),
+                            new De(rand.nextInt(1, 4), rand.nextInt(4, 10)),
+                            new De(rand.nextInt(1, 4), rand.nextInt(4, 10))
+                    );
+                    DJ.positionMonstre(new int[]{i+1, j+1}, mystique);
+                }
+                else if (element < 6) {
+                    DJ.positionEquipement(new int[]{i+1, j+1}, equipements.get(rand.nextInt(0, equipements.size())));
+                }
+                else if (element < 16) {
+                    DJ.positionObstacle(new int[]{i+1, j+1}, new Obstacle());
+                }
+            }
+        }
+        DJ.afficherDJ();
+        return DJ;
+    }
 }

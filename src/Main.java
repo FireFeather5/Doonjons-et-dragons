@@ -82,7 +82,14 @@ public class Main {
             if (donjon == null)
             {
                 CreationDonjonDefault creaDj = new CreationDonjonDefault();
-                donjon = creaDj.createDefaultDJ();
+                System.out.println("\n\nVoulez-vous créer un donjon aléatoirement ? (o/n)");
+                String choix = sc.nextLine();
+                if (choix.equals("o")) {
+                    donjon = creaDj.donjonRandom();
+                }
+                else {
+                    donjon = creaDj.createDefaultDJ();
+                }
             }
             for (int i = 0; i < nbrPers; i++) {
                 mj.posJ(donjon, Pers.get(i));

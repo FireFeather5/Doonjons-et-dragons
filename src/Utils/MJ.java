@@ -27,7 +27,7 @@ public class MJ {
 
     public Donjon creationDonjon()
     {
-        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, un donjon par défaut sera utilisé)");
+        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)");
         if (sc.nextLine().equals("o"))
         {
             int[] tailleDj = _input.tailleDonjon();
