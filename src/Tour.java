@@ -82,13 +82,20 @@ public class Tour {
 
                         System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
                         String comm = sc.nextLine();
-                        if (comm.equals("o"))
+                        while (comm != "n")
                         {
-                            _input.persoCommenteAction((Personnage)_vivTri.get(j));
-                        }
-                        else if (comm.equals("mj"))
-                        {
-                            _input.mjCommenteAction(_mj);
+                            if (comm.equals("o"))
+                            {
+                                _input.persoCommenteAction((Personnage) _vivTri.get(j));
+                            }
+                            else if (comm.equals("mj"))
+                            {
+                                _input.mjCommenteAction(_mj);
+                            }
+                            else
+                            {
+                                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                            }
                         }
 
                         if (val.equals(StatusDonjon.NORMAL)) {

@@ -81,87 +81,111 @@ public class Inputs {
     public void ajoutObstacle(Donjon DJ, MJ mj)
     {
         System.out.println("\nVoulez-vous mettre des obstacles (o/n) ?");
-        boolean fini = !sc.nextLine().equals("o");
+        String choix = sc.nextLine();
 
-        while (!fini) {
-            int[] pos = choixCase("de l'obstacle");
-            mj.addObst(DJ, pos);
-            DJ.afficherDJ();
-            System.out.println("\n\nCréer un auter obstacle (o/n) ?");
-            if (!sc.nextLine().equals("o")) fini = true;
+        while (choix != "n") {
+            if (choix.equals("o")) {
+                int[] pos = choixCase("de l'obstacle");
+                mj.addObst(DJ, pos);
+                DJ.afficherDJ();
+                System.out.println("\n\nCréer un autre obstacle (o/n) ?");
+                choix = sc.nextLine();
+            }
+            else
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                ajoutObstacle(DJ, mj);
+            }
         }
     }
 
     public void ajoutMonstre(Donjon DJ, MJ mj)
     {
-        boolean fini = false;
+        String choix = "o";
 
-        while (!fini) {
-            Monstre mons = creationMonstre(mj);
-            DJ.afficherDJ();
-            int[] pos = choixCase("de " + mons);
-            mj.posM(DJ, mons, pos);
-            DJ.afficherDJ();
-            System.out.println("\n\nCréer un autre monstre (o/n) ?");
-            if (!sc.nextLine().equals("o")) fini = true;
+        while (choix != "n") {
+            if (choix.equals("o")) {
+                Monstre mons = creationMonstre(mj);
+                DJ.afficherDJ();
+                int[] pos = choixCase("de " + mons);
+                mj.posM(DJ, mons, pos);
+                DJ.afficherDJ();
+                System.out.println("\n\nCréer un autre monstre (o/n) ?");
+                choix = sc.nextLine();
+            }
+            else
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                ajoutMonstre(DJ, mj);
+            }
         }
     }
 
     public void ajoutEquipement(Donjon DJ, MJ mj)
     {
         System.out.println("\nVoulez-vous créer des Equipements (o/n) ?");
-        boolean fini = !sc.nextLine().equals("o");
-        while (!fini) {
-            Equipement equip = null;
-            boolean ok = true;
-            String texte = """
+        String choix = sc.nextLine();
+
+        while (choix != "n") {
+            if (choix.equals("o"))
+            {
+                Equipement equip = null;
+                boolean ok = true;
+                String texte = """
                         Sélectionnez l'équipement voulu :
                         Arme courante :
-                        \t1.  Baton
-                        \t2.  Masse d'arme
+                        \t1-  Baton
+                        \t2-  Masse d'arme
                         Arme de guerre (-2 vit / +4 for) :
-                        \t3.  Epée longue
-                        \t4.  Rapière
-                        \t5.  Epée à 2 mains
+                        \t3-  Epée longue
+                        \t4-  Rapière
+                        \t5-  Epée à 2 mains
                         Arme à distance :
-                        \t6.  Fronde
-                        \t7.  Arbelète légère
-                        \t8.  Arc court
+                        \t6-  Fronde
+                        \t7-  Arbelète légère
+                        \t8-  Arc court
                         Armure légère :
-                        \t9.  Armure d'écailles
-                        \t10. Demi plate
+                        \t9-  Armure d'écailles
+                        \t10- Demi plate
                         Armure lourde (-4 vit) :
-                        \t11. Cotte de maille
-                        \t12. Harnois
+                        \t11- Cotte de maille
+                        \t12- Harnois
                         """;
-            System.out.println(texte);
-            switch (sc.nextLine()) {
-                case "1" -> equip = new Baton();
-                case "2" -> equip = new MasseArme();
-                case "3" -> equip = new EpeeLongue();
-                case "4" -> equip = new Rapiere();
-                case "5" -> equip = new EpeeDeuxMains();
-                case "6" -> equip = new Fronde();
-                case "7" -> equip = new ArbaleteLegere();
-                case "8" -> equip = new ArcCourt();
-                case "9" -> equip = new ArmureEcaille();
-                case "10" -> equip = new DemiPlate();
-                case "11" -> equip = new CotteMaille();
-                case "12" -> equip = new Harnois();
-                case null, default -> ok = false;
+                System.out.println(texte);
+                switch (sc.nextLine()) {
+                    case "1" -> equip = new Baton();
+                    case "2" -> equip = new MasseArme();
+                    case "3" -> equip = new EpeeLongue();
+                    case "4" -> equip = new Rapiere();
+                    case "5" -> equip = new EpeeDeuxMains();
+                    case "6" -> equip = new Fronde();
+                    case "7" -> equip = new ArbaleteLegere();
+                    case "8" -> equip = new ArcCourt();
+                    case "9" -> equip = new ArmureEcaille();
+                    case "10" -> equip = new DemiPlate();
+                    case "11" -> equip = new CotteMaille();
+                    case "12" -> equip = new Harnois();
+                    case null, default -> ok = false;
+                }
+                if (!ok) {
+                    System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
+                } else {
+                    int[] pos = choixCase("de l'équipement : " + equip);
+                    DJ.afficherDJ();
+                    mj.posEquip(DJ, equip, pos);
+                    DJ.afficherDJ();
+                }
+                System.out.println("\n\nCréer un autre equipement (o/n)?");
+                choix = sc.nextLine();
             }
-            if (!ok) {
-                System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
-            } else {
-                int[] pos = choixCase("de l'équipement : " + equip);
-                DJ.afficherDJ();
-                mj.posEquip(DJ, equip, pos);
-                DJ.afficherDJ();
+            else
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                ajoutEquipement(DJ, mj);
             }
-            System.out.println("\n\nCréer un autre equipement (o/n)?");
-            if (!sc.nextLine().equals("o")) fini = true;
         }
     }
+
 
 
     public int[] choixCase(String context)

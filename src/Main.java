@@ -50,6 +50,7 @@ public class Main {
 
             System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = sc.nextLine();
+
             if (choix.equals("o"))
             {
                 Equipement equip = _input.equiperEquip(pers);
@@ -62,6 +63,18 @@ public class Main {
                     Equipement equipe = _input.equiperEquip(pers);
                     pers.sEquiper(equipe);
                 }
+                else if (!choixx.equals("n"))
+                {
+                    System.out.println(cl.rouge() + "Mauvaise valeur rentrée. hu" + cl.reset());
+                    System.out.println("Recommencez");
+                    choix = sc.nextLine();
+                }
+            }
+            else if (!choix.equals("n"))
+            {
+                System.out.println(cl.rouge() + "Mauvaise valeur rentrée. ho" + cl.reset());
+                System.out.println("Recommencez");
+                choix = sc.nextLine();
             }
             Pers.add(pers);
         }
@@ -151,5 +164,9 @@ public class Main {
 
 
         //BIEN BLOQUER LES INPUTS A o OU n QUAND DEMANDE (A FAIRE A LA FIN PSQ C'EST LONG DE TT METTRE PR LES TESTS)
+
+        // METTRE QUE DES EQUALS AVEC LES STRINGS !!!!!! CA BUEUGE SINON
+
+
     }
 }

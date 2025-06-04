@@ -348,13 +348,7 @@ public class Actions {
                     }
                     break;
                 case 3:
-                    String ch = "o";
-                    while (ch.equals("o")) {
-                        int[] pos = _input.choixCase("de l'obstacle");
-                        mj.addObst(DJ, pos);
-                        System.out.println("Voulez-vous ajouter un autre obstacle ? (o/n)");
-                        ch = sc.nextLine();
-                    }
+                    _input.ajoutObstacle(DJ, mj);
                     break;
                 default:
             }
