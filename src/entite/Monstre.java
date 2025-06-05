@@ -66,25 +66,21 @@ public class Monstre implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public void seDeplacer(Donjon DJ, int[] pos)
+    public boolean seDeplacer(Donjon DJ, int[] pos)
     {
         int distDep = _stats.retVit() / 3;
 
         int[] posOld = getPos();
 
         if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
-            boolean val = DJ.positionVivant(pos, this);
-            if (val) {
+            if (DJ.positionVivant(pos, this)) {
                 DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
                 System.out.println("Déplacement effectué");
-            } else {
-                System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                seDeplacer(DJ, pos);
+                return true;
             }
-        } else {
-            System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-            seDeplacer(DJ, pos);
         }
+        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+        return false;
     }
 
     public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
@@ -119,8 +115,8 @@ public class Monstre implements Vivant {
         }
         catch (ArrayIndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-            attaquer(DJ, posAtt);
+            System.out.println(_cl.rouge() + "\nAttaquer en dehors du donjon n'est pas la chose la plus utile..." + _cl.reset());
+            return StatusDonjon.ERREUR_CHOIX_CASE;
         }
         return val;
     }

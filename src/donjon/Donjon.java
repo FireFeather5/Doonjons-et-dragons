@@ -67,6 +67,7 @@ public class Donjon {
                     }
                     mons.position(pc[0], pc[1]);            //donne sa position au monstre
                     _donjon[pc[0] - 1][pc[1] - 1] = mons;
+                    return true;
                 }
             }
             else {
@@ -77,6 +78,7 @@ public class Donjon {
                     }
                     perso.position(pc[0], pc[1]);            //donne sa position au joueur
                     _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                    return true;
                 }
                 else {
                     for (Equipement var : _equip) {
@@ -84,11 +86,11 @@ public class Donjon {
                             perso.peutRamasser(var);
                             perso.position(pc[0], pc[1]);            //donne sa position au joueur
                             _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                            return true;
                         }
                     }
                 }
             }
-            return true;
         }
         return false;
     }
@@ -174,12 +176,13 @@ public class Donjon {
                 break;
             }
         }
-        for (Monstre mos : _mons)
-        {
-            if (mos.equals(_donjon[pcD[0]-1][pcD[1]-1]))
-            {
-                caseVal = true;
-                break;
+
+        if (!caseVal) {
+            for (Monstre mos : _mons) {
+                if (mos.equals(_donjon[pcD[0] - 1][pcD[1] - 1])) {
+                    caseVal = true;
+                    break;
+                }
             }
         }
 

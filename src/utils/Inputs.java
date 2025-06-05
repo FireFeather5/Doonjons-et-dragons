@@ -69,9 +69,10 @@ public class Inputs {
                 tailleDonjon();
             }
         }
-        catch (NumberFormatException erreur)
+        catch (InputMismatchException | NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
+            sc.nextLine();
             tailleDonjon();
         }
         tailleDonjon();
@@ -220,7 +221,7 @@ public class Inputs {
 
             if ((posi[0] == 0) || (posi[1] == 0))
             {
-                System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "[lettre majuscule][nombre]" + _cl.reset());
+                System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
                 return null;
             }
 
@@ -343,7 +344,14 @@ public class Inputs {
             int perso = sc.nextInt() - 1;
             sc.nextLine();
 
-            int[] posD = dj.getListePerso().get(perso).getPos();
+            int[] posD;
+
+            if (perso < dj.getListePerso().size()) {
+                posD = dj.getListePerso().get(perso).getPos();
+            }
+            else {
+                posD = dj.getListeMonstre().get(perso - dj.getListePerso().size()).getPos();
+            }
 
             int[] posF = choixCase("où mettre l'entité");
 
@@ -352,6 +360,7 @@ public class Inputs {
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            sc.nextLine();
             depViv(dj, mj);
         }
     }

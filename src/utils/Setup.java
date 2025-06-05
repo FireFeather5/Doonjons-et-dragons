@@ -110,8 +110,11 @@ public class Setup {
         }
 
         for (int i = 0; i < _nbPersonnages; i++) {
-            int[] pos = _inputs.choixCase("de " + personnages.get(i));
-            _mj.posJ(donjon, personnages.get(i), pos);
+            boolean ok = false;
+            while (!ok) {
+                int[] pos = _inputs.choixCase("de " + personnages.get(i));
+                ok = _mj.posJ(donjon, personnages.get(i), pos);
+            }
             donjon.afficherDJ();
             _etreVivants.add(personnages.get(i));
         }

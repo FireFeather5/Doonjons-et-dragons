@@ -61,15 +61,15 @@ public class MJ {
         return mons;
     }
 
-    public void posJ(Donjon DJ, Personnage perso, int[] pos)
+    public boolean posJ(Donjon DJ, Personnage perso, int[] pos)
     {
         boolean test = DJ.positionVivant(pos, perso);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            posJ(DJ, perso, pos);
         }
+        return test;
     }
 
     public void posM(Donjon DJ, Monstre mons, int[] pos)

@@ -29,7 +29,7 @@ public class Actions {
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("peur ram : " + perso.peutRam());
+        System.out.println("peu ram : " + perso.peutRam());
         if (perso.peutRam())
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
@@ -347,12 +347,18 @@ public class Actions {
 
             switch (choix) {
                 case 1:
-                    int[] pos = _input.choixCase("où se déplacer");
-                    mons.seDeplacer(DJ, pos);
+                    boolean ok = false;
+                    while (!ok) {
+                        int[] pos = _input.choixCase("où se déplacer");
+                        ok = mons.seDeplacer(DJ, pos);
+                    }
                     break;
                 case 2:
-                    int[] posAtt = _input.choixCase("à attaquer");
-                    val = mons.attaquer(DJ, posAtt);
+                    val = StatusDonjon.ERREUR_CHOIX_CASE;
+                    while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                        int[] posAtt = _input.choixCase("à attaquer");
+                        val = mons.attaquer(DJ, posAtt);
+                    }
                     break;
                 default:
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
@@ -382,6 +388,8 @@ public class Actions {
             int choix = sc.nextInt();
             sc.nextLine(); // askip ca permet de ne pas avoir de bug
             switch (choix) {
+                case 1:
+                    break;
                 case 2:
                     _input.depViv(DJ, mj);
                     break;
@@ -398,6 +406,8 @@ public class Actions {
                     _input.ajoutObstacle(DJ, mj);
                     break;
                 default:
+                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    val = actionMjFinTour(DJ, mj);
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {

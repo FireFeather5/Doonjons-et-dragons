@@ -114,6 +114,7 @@ public class Personnage implements Vivant {
                         System.out.println("Déplacement effectué");
                         _peutRamasser = false;
                         _peutRamEqu = null;
+                        return true;
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
                         return false;
@@ -127,7 +128,6 @@ public class Personnage implements Vivant {
         catch (NullPointerException erreur) {
             return false;
         }
-        return false;
     }
 
     public void seDesequiper(Equipement equipement) {
