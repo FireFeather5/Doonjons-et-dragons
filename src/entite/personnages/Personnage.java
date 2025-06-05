@@ -4,21 +4,16 @@ import Utils.*;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
-import entite.equipement.arme.distance.ArmeDistance;
 import entite.personnages.classes.*;
 import entite.personnages.genre.Genre;
 import entite.personnages.races.Races;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
-import entite.equipement.arme.guerre.ArmeGuerre;
 import entite.equipement.armure.Armure;
-import entite.equipement.armure.lourde.ArmureLourde;
 import de.*;
 import sort.*;
 import statistiques.Position;
 import statistiques.Stats;
-
-import java.util.Scanner;
 
 import java.util.ArrayList;
 
@@ -26,10 +21,10 @@ public class Personnage implements Vivant {
 
     private final Couleurs _cl = new Couleurs();
 
-    private String _nom;
-    private Races _race;
-    private Classe _classe;
-    private Genre _gre;
+    private final String _nom;
+    private final Races _race;
+    private final Classe _classe;
+    private final Genre _gre;
 
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
@@ -102,8 +97,8 @@ public class Personnage implements Vivant {
 
             if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
 
+                boolean val = DJ.positionPersonnage(pos, this);
                 if (!_peutRamasser) {
-                    boolean val = DJ.positionPersonnage(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         System.out.println("Déplacement effectué");
@@ -113,7 +108,6 @@ public class Personnage implements Vivant {
                         return false;
                     }
                 } else {
-                    boolean val = DJ.positionPersonnage(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case
@@ -139,11 +133,11 @@ public class Personnage implements Vivant {
     public void seDesequiper(Equipement equipement) {
         if (this._equipee.contains(equipement)) {
             this._equipee.remove(equipement);
-            if (equipement.getTypeArm().equals(TypeArme.GUERRE)) {
+            if (equipement.getTypeArm().isPresent() && equipement.getTypeArm().get().equals(TypeArme.GUERRE)) {
                 this._stats.vit(_stats.retVit() + equipement.getSpeedMalus());
                 this._stats.forc(_stats.retFor() - equipement.getForceBonus());
             }
-            else if (equipement.getTypeArmur().equals(TypeArmure.LOURDE)) {
+            else if (equipement.getTypeArmur().isPresent() && equipement.getTypeArmur().get().equals(TypeArmure.LOURDE)) {
                 this._stats.vit(_stats.retVit() + equipement.getSpeedMalus());
             }
             this._stock.add(equipement);
@@ -159,7 +153,7 @@ public class Personnage implements Vivant {
         {
             if (this._stock.contains(equipement))
             {
-                if (equipement.getTypeArm() != null && equipement.getTypeArm().equals(TypeArme.GUERRE))
+                if (equipement.getTypeArm().isPresent() && equipement.getTypeArm().get().equals(TypeArme.GUERRE))
                 {
                     this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     this._stats.forc(_stats.retFor() + equipement.getForceBonus());
@@ -167,7 +161,7 @@ public class Personnage implements Vivant {
                 else if (equipement.getTypeEquip().equals(TypeEquipement.ARMURE))
                 {
                     _stats.arm(((Armure) equipement).getArmorClass());
-                    if (equipement.getTypeArmur().equals(TypeArmure.LOURDE))
+                    if (equipement.getTypeArmur().isPresent() && equipement.getTypeArmur().get().equals(TypeArmure.LOURDE))
                     {
                         this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     }
@@ -207,7 +201,7 @@ public class Personnage implements Vivant {
             int touche;
             int tou;
 
-            if (arme.getTypeArm().equals(TypeArme.DISTANCE)) {
+            if (arme.getTypeArm().isPresent() && arme.getTypeArm().get().equals(TypeArme.DISTANCE)) {
                 tou = this._stats.retDex();
             } else {
                 tou = this._stats.retFor();

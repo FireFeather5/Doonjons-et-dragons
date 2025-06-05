@@ -145,14 +145,14 @@ public class CreationDonjonDefault {
         int[] taille = {rand.nextInt(15, 26), rand.nextInt(15, 26)};
 
         Donjon DJ = new Donjon(taille);
-
+        int numeroMonstre = 1;
         for (int i = 0; i < taille[0]; i++) {
             for (int j = 0; j < taille[1]; j++) {
                 int element = rand.nextInt(0, 100);
                 if (element < 1) {
                     Monstre mystique = mj.createM(
                             "Monstre mystique",
-                            "</>",
+                            "<" + numeroMonstre++ + ">",
                             rand.nextInt(1, 4),
                             new De(rand.nextInt(1, 4), rand.nextInt(4, 10)),
                             new De(rand.nextInt(1, 4), rand.nextInt(4, 10))

@@ -11,11 +11,12 @@ import entite.equipement.armure.legere.*;
 import entite.equipement.armure.lourde.*;
 import entite.personnages.Personnage;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Inputs {
 
-    private Couleurs _cl = new Couleurs();
+    private final Couleurs _cl = new Couleurs();
 
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -33,8 +34,7 @@ public class Inputs {
         if (choix.equals("o"))
         {
             int[] tailleDj = tailleDonjon();
-            Donjon dj = mj.creationDonjon(tailleDj);
-            return dj;
+            return mj.creationDonjon(tailleDj);
         }
         else if (choix.equals("n"))
         {
@@ -254,20 +254,20 @@ public class Inputs {
         }
         try {
             System.out.println("Portée de l'attaque ?");
-            int portee = Integer.parseInt(sc.nextLine());
+            int portee = sc.nextInt();
             System.out.println("Nombre de dés pour le calcul de l'attaque ?");
-            int nbrDeDeg = Integer.parseInt(sc.nextLine());
+            int nbrDeDeg = sc.nextInt();
             System.out.println("Nombre de face pour les dés pour le calcul de l'attaque ?");
-            int nbrFaceDeDeg = Integer.parseInt(sc.nextLine());
+            int nbrFaceDeDeg = sc.nextInt();
             System.out.println("Nombre de dés pour le calcul des charactéristiques ?");
-            int nbrDeCha = Integer.parseInt(sc.nextLine());
+            int nbrDeCha = sc.nextInt();
             System.out.println("Nombre de face pour les dés pour le calcul des charactéristiques ?");
-            int nbrFaceDeCha = Integer.parseInt(sc.nextLine());
+            int nbrFaceDeCha = sc.nextInt();
 
             return mj.createM(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
 
         }
-        catch (NumberFormatException erreur)
+        catch (InputMismatchException | NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nSeul l'espèce et le symbole du monstre peut contenir autre chose que des entier." + _cl.reset() + "\nRecomencez");
             creationMonstre(mj);
@@ -301,18 +301,17 @@ public class Inputs {
         if (!pers.getStock().isEmpty()) {
             System.out.println("Quel équipement équiper ?");
 
-            int i = 0;
+            int i = 1;
             for (Equipement eqi : pers.getStock()) {
                 System.out.println(i + "- " + eqi.getName());
                 i++;
             }
 
             try {
-                int equ = Integer.parseInt(sc.nextLine());
-                Equipement equip = pers.getStock().get(equ);
-                return equip;
+                int equ = sc.nextInt() - 1;
+                return pers.getStock().get(equ);
             }
-            catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+            catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
             {
                 System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
                 equiperEquip(pers);
@@ -324,7 +323,7 @@ public class Inputs {
 
     public void depViv(Donjon dj, MJ mj)
     {
-        int choix = 0;
+        int choix = 1;
 
         System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
         for (Personnage pers : dj.getListePerso()) {
@@ -335,7 +334,7 @@ public class Inputs {
         }
 
         try {
-            int perso = Integer.parseInt(sc.nextLine());
+            int perso = sc.nextInt() - 1;
 
             int[] posD = dj.getListePerso().get(perso).getPos();
 
@@ -343,7 +342,7 @@ public class Inputs {
 
             mj.depViv(dj, posD, posF);
         }
-        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
             depViv(dj, mj);
@@ -353,7 +352,7 @@ public class Inputs {
 
     public StatusDonjon degatPersonnage(Donjon dj, MJ mj)
     {
-        int choix = 0;
+        int choix = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\nChoisissez un joueur :");
@@ -362,7 +361,7 @@ public class Inputs {
             System.out.println(choix++ + "- " + pers);
         }
 
-        choix = sc.nextInt();
+        choix = sc.nextInt() - 1;
 
         try {
             System.out.println("Combien de dé(s) pour infliger les dégats ?");
@@ -374,7 +373,7 @@ public class Inputs {
 
             val = mj.degatJoueur(dj, choix, dgt, val);
         }
-        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
             degatPersonnage(dj, mj);
@@ -386,7 +385,7 @@ public class Inputs {
 
     public StatusDonjon degatMonstre(Donjon dj, MJ mj)
     {
-        int choix = 0;
+        int choix = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\nChoisissez un monstre :");
@@ -394,9 +393,9 @@ public class Inputs {
             System.out.println(choix++ + ". " + mons);
         }
 
-        choix = sc.nextInt();
-
         try {
+            choix = sc.nextInt() - 1;
+
             System.out.println("Combien de dé(s) pour infliger les dégats ?");
             int nbDe = sc.nextInt();
             System.out.println("Combien de faces pour les dés ?");
@@ -406,7 +405,7 @@ public class Inputs {
 
             val = mj.degatMonstre(dj, choix, dgt, val);
         }
-        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
             degatMonstre(dj, mj);

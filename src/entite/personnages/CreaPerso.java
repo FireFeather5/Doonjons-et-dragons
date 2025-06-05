@@ -8,6 +8,7 @@ import entite.personnages.genre.Genre;
 import entite.personnages.genre.Masculin;
 import entite.personnages.races.*;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreaPerso {
@@ -51,7 +52,7 @@ public class CreaPerso {
                 3- Humain
                 4- Nain""");
         try {
-            int race = Integer.parseInt(sc.nextLine());
+            int race = sc.nextInt();
             switch (race) {
                 case 1: {
                     _ra = new Elfes();
@@ -75,7 +76,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
             Race();
         }
@@ -90,7 +91,7 @@ public class CreaPerso {
                 3- Magicien
                 4- Roublard""");
         try {
-            int classe = Integer.parseInt(sc.nextLine());
+            int classe = sc.nextInt();
             switch (classe) {
                 case 1: {
                     _cla = new Clerc();
@@ -114,7 +115,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Classe();
         }
@@ -127,7 +128,7 @@ public class CreaPerso {
                 1- Homme
                 2- Femme""");
         try {
-            int gre = Integer.parseInt(sc.nextLine());
+            int gre = sc.nextInt();
             switch (gre) {
                 case 1: {
                     _gre = new Masculin();
@@ -143,7 +144,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Genre();
         }

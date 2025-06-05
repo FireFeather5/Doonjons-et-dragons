@@ -9,6 +9,7 @@ import sort.BoogieWoogie;
 import sort.Guerison;
 import sort.Sort;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Actions {
@@ -33,7 +34,7 @@ public class Actions {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
                 System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts\n5- Ramasser");
                 try {
-                    int choix = Integer.parseInt(sc.nextLine());
+                    int choix = sc.nextInt();
 
                     switch (choix) {
                         case 1:
@@ -65,7 +66,7 @@ public class Actions {
                             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                             actionPerso(DJ, perso);
                     }
-                } catch (NumberFormatException | NullPointerException erreur) {
+                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                     actionPerso(DJ, perso);
                 }
@@ -73,7 +74,7 @@ public class Actions {
             else {
                 System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Ramasser");
                 try {
-                    int choix = Integer.parseInt(sc.nextLine());
+                    int choix = sc.nextInt();
 
                     switch (choix) {
                         case 1:
@@ -102,7 +103,7 @@ public class Actions {
                             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                             actionPerso(DJ, perso);
                     }
-                } catch (NumberFormatException | NullPointerException erreur) {
+                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                     actionPerso(DJ, perso);
                 }
@@ -114,7 +115,7 @@ public class Actions {
                 System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts");
 
                 try {
-                    int choix = Integer.parseInt(sc.nextLine());
+                    int choix = sc.nextInt();
                     switch (choix) {
                         case 1:
                             boolean test = false;
@@ -142,7 +143,7 @@ public class Actions {
                             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                             actionPerso(DJ, perso);
                     }
-                } catch (NumberFormatException | NullPointerException erreur) {
+                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                     actionPerso(DJ, perso);
                 }
@@ -151,7 +152,7 @@ public class Actions {
                 System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper");
 
                 try {
-                    int choix = Integer.parseInt(sc.nextLine());
+                    int choix = sc.nextInt();
                     switch (choix) {
                         case 1:
                             boolean test = false;
@@ -176,7 +177,7 @@ public class Actions {
                             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                             actionPerso(DJ, perso);
                     }
-                } catch (NumberFormatException | NullPointerException erreur) {
+                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
                     actionPerso(DJ, perso);
                 }
@@ -325,7 +326,7 @@ public class Actions {
         StatusDonjon val = StatusDonjon.NORMAL;
         System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
         try {
-            int choix = Integer.parseInt(sc.nextLine());
+            int choix = sc.nextInt();
 
             switch (choix) {
                 case 1:
@@ -341,7 +342,7 @@ public class Actions {
                     actionMonstre(DJ, mons);
             }
         }
-        catch (NumberFormatException | NullPointerException erreur)
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur)
         {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
             actionMonstre(DJ, mons);
@@ -360,7 +361,7 @@ public class Actions {
         System.out.println("\n\n\nQue veut faire le Maitre du Jeu ?");
         System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire ds dégats à un joueur/monstre\n4- Ajouter des obstacles");
         try {
-            int choix = Integer.parseInt(sc.nextLine());
+            int choix = sc.nextInt();
             switch (choix) {
                 case 2:
                     _input.depViv(DJ, mj);
@@ -380,7 +381,7 @@ public class Actions {
                 default:
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
             actionMjFinTour(DJ, mj);
         }

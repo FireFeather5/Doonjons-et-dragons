@@ -7,6 +7,7 @@ import entite.equipement.Equipement;
 import entite.personnages.*;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Setup {
@@ -26,11 +27,11 @@ public class Setup {
         while (_nbPersonnages == 0) {
             System.out.println("\nCombien de personnages voulez-vous créer ?");
             try {
-                _nbPersonnages = Integer.parseInt(_scanner.nextLine());
+                _nbPersonnages = _scanner.nextInt();
                 if (_nbPersonnages == 0) {
                     System.out.println(_couleur.rouge() + "\nIl doit y avoir au moins un personnage !" + _couleur.reset());
                 }
-            } catch (NumberFormatException | NullPointerException erreur) {
+            } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                 System.out.println(_couleur.rouge() + "Mauvaise entrée clavier" + _couleur.reset());
             }
         }
@@ -50,22 +51,12 @@ public class Setup {
                     personnage.sEquiper(equip);
 
                     System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
-                    String choixx = _scanner.nextLine();
-                    while (!choixx.equals("n")) {
-                        if (choixx.equals("o")) {
-                            Equipement equipe = _inputs.equiperEquip(personnage);
-                            personnage.sEquiper(equipe);
-                        } else {
-                            System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. hu" + _couleur.reset());
-                            System.out.println("Recommencez");
-                            choix = _scanner.nextLine();
-                        }
-                    }
-                } else {
+                }
+                else {
                     System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. ho" + _couleur.reset());
                     System.out.println("Recommencez");
-                    choix = _scanner.nextLine();
                 }
+                choix = _scanner.nextLine();
             }
             personnages.add(personnage);
         }
