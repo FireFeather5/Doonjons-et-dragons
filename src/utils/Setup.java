@@ -35,6 +35,7 @@ public class Setup {
                 }
             } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                 System.out.println(_couleur.rouge() + "Mauvaise entrée clavier" + _couleur.reset());
+                _scanner.nextLine();
             }
         }
 

@@ -70,6 +70,7 @@ public class Actions {
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    sc.nextLine();
                     actionPerso(DJ, perso);
                 }
             }
@@ -108,6 +109,7 @@ public class Actions {
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    sc.nextLine();
                     actionPerso(DJ, perso);
                 }
             }
@@ -149,6 +151,7 @@ public class Actions {
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    sc.nextLine();
                     actionPerso(DJ, perso);
                 }
             }
@@ -184,6 +187,7 @@ public class Actions {
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    sc.nextLine();
                     actionPerso(DJ, perso);
                 }
             }
@@ -319,6 +323,7 @@ public class Actions {
             }
             catch (Exception e) {
                 System.out.println(_cl.rouge() + "Choix invalide : " + e + _cl.reset());
+                sc.nextLine();
                 lancerSort(DJ, person);
             }
 
@@ -357,6 +362,7 @@ public class Actions {
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur)
         {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            sc.nextLine();
             actionMonstre(DJ, mons);
         }
         return val;

@@ -75,14 +75,16 @@ public class Donjon {
                     if (!_pers.contains(perso)) {
                         _pers.add(perso);
                     }
+                    perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                    _donjon[pc[0] - 1][pc[1] - 1] = perso;
                 }
-                perso.position(pc[0], pc[1]);            //donne sa position au joueur
-                _donjon[pc[0] - 1][pc[1] - 1] = perso;
-                for (Equipement var : _equip) {
-                    if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
-                        perso.peutRamasser(var);
-                        perso.position(pc[0], pc[1]);            //donne sa position au joueur
-                        _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                else {
+                    for (Equipement var : _equip) {
+                        if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
+                            perso.peutRamasser(var);
+                            perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                            _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                        }
                     }
                 }
             }
