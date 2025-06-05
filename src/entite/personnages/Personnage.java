@@ -93,7 +93,7 @@ public class Personnage implements Vivant {
 
 
 
-    public void seDeplacer(Donjon DJ, int[] pos)
+    public boolean seDeplacer(Donjon DJ, int[] pos)
     {
         try {
             int distDep = _stats.retVit() / 3;
@@ -107,9 +107,10 @@ public class Personnage implements Vivant {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         System.out.println("Déplacement effectué");
+                        return true;
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        //seDeplacer(DJ, pos);
+                        return false;
                     }
                 } else {
                     boolean val = DJ.positionPersonnage(pos, this);
@@ -121,17 +122,18 @@ public class Personnage implements Vivant {
                         _peutRamEqu = null;
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        //seDeplacer(DJ, pos);
+                        return false;
                     }
                 }
             } else {
                 System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                //seDeplacer(DJ, pos);
+                return false;
             }
         }
         catch (NullPointerException erreur) {
-            //seDeplacer(DJ, pos);
+            return false;
         }
+        return false;
     }
 
     public void seDesequiper(Equipement equipement) {
@@ -238,7 +240,7 @@ public class Personnage implements Vivant {
             catch (ArrayIndexOutOfBoundsException erreur)
             {
                 System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                attaquer(DJ, posAtt);
+                return StatusDonjon.ERREUR_CHOIX_CASE;
             }
         } else {
             System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
