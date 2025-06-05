@@ -36,6 +36,7 @@ public class Actions {
                 System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts\n5- Ramasser");
                 try {
                     int choix = sc.nextInt();
+                    sc.nextLine();
 
                     switch (choix) {
                         case 1:
@@ -76,6 +77,7 @@ public class Actions {
                 System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Ramasser");
                 try {
                     int choix = sc.nextInt();
+                    sc.nextLine();
 
                     switch (choix) {
                         case 1:
@@ -117,6 +119,7 @@ public class Actions {
 
                 try {
                     int choix = sc.nextInt();
+                    sc.nextLine();
                     switch (choix) {
                         case 1:
                             boolean test = false;
@@ -154,6 +157,7 @@ public class Actions {
 
                 try {
                     int choix = sc.nextInt();
+                    sc.nextLine();
                     switch (choix) {
                         case 1:
                             boolean test = false;
@@ -198,6 +202,7 @@ public class Actions {
             System.out.println("Lequel voulez-vous lancer ?");
             try {
                 choix = sc.nextInt();
+                sc.nextLine();
                 if (person.getClasse().equals("Clerc")) {
                     if (choix == 1) {
                         int choixPerso = 1;
@@ -205,6 +210,7 @@ public class Actions {
                             System.out.println(choixPerso + ". " + perso.toString());
                         }
                         choixPerso = sc.nextInt();
+                        sc.nextLine();
                         ((Guerison) person.getSorts().getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
                     }
                     else {
@@ -221,6 +227,7 @@ public class Actions {
                             }
                             System.out.println("Choisissez un allie a soigner :");
                             choixPerso = sc.nextInt();
+                            sc.nextLine();
                             ((Guerison) person.getSorts().getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
                             break;
                         case 2:
@@ -238,8 +245,10 @@ public class Actions {
 
                             System.out.println("Choisissez la première entité à téléporter :");
                             choixEntite1 = sc.nextInt();
+                            sc.nextLine();
                             System.out.println("Choisissez la deuxième entité à téléporter :");
                             choixEntite2 = sc.nextInt();
+                            sc.nextLine();
 
                             if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 <= DJ.getListePerso().size()) {
                                 ((BoogieWoogie) person.getSorts().get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListePerso().get(choixEntite2-1), DJ);
@@ -271,6 +280,7 @@ public class Actions {
                             }
                             System.out.println("Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
                             choixArme = sc.nextInt();
+                            sc.nextLine();
                             boolean ok = false;
                             int idArme = 1;
                             for (Personnage perso : DJ.getListePerso()) {
@@ -328,6 +338,7 @@ public class Actions {
         System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
         try {
             int choix = sc.nextInt();
+            sc.nextLine();
 
             switch (choix) {
                 case 1:
@@ -363,6 +374,7 @@ public class Actions {
         System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire ds dégats à un joueur/monstre\n4- Ajouter des obstacles");
         try {
             int choix = sc.nextInt();
+            sc.nextLine(); // askip ca permet de ne pas avoir de bug
             switch (choix) {
                 case 2:
                     _input.depViv(DJ, mj);
@@ -384,6 +396,7 @@ public class Actions {
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            sc.nextLine(); // askip ca permet de ne pas avoir de bug
             actionMjFinTour(DJ, mj);
         }
         return val;

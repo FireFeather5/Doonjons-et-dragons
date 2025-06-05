@@ -59,32 +59,34 @@ public class Donjon {
 
     public boolean positionVivant(int[] pc, Vivant etreVivant) {
         if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
-            if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                if (etreVivant.getTypeVivant().equals(TypeVivant.MONSTRE)) {
-                    Monstre mons = (Monstre)etreVivant;
+            if (etreVivant.getTypeVivant().equals(TypeVivant.MONSTRE)) {
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                    Monstre mons = (Monstre) etreVivant;
                     if (!_mons.contains(mons)) {
                         _mons.add(mons);
                     }
                     mons.position(pc[0], pc[1]);            //donne sa position au monstre
                     _donjon[pc[0] - 1][pc[1] - 1] = mons;
                 }
-                else {
-                    Personnage perso = (Personnage) etreVivant;
+            }
+            else {
+                Personnage perso = (Personnage) etreVivant;
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
                     if (!_pers.contains(perso)) {
                         _pers.add(perso);
                     }
-                    perso.position(pc[0], pc[1]);            //donne sa position au joueur
-                    _donjon[pc[0] - 1][pc[1] - 1] = perso;
-                    for (Equipement var : _equip) {
-                        if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
-                            perso.peutRamasser(var);
-                            perso.position(pc[0], pc[1]);            //donne sa position au joueur
-                            _donjon[pc[0] - 1][pc[1] - 1] = perso;
-                        }
+                }
+                perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                for (Equipement var : _equip) {
+                    if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
+                        perso.peutRamasser(var);
+                        perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                        _donjon[pc[0] - 1][pc[1] - 1] = perso;
                     }
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }

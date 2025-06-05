@@ -123,7 +123,7 @@ public class Tour {
                                 }
                             }
                         }
-
+                        // /!\ CODE DUPLIQUE, je vois pas trop comment regler ca
                         if (val.equals(StatusDonjon.NORMAL)) {
                             _dj.afficherDJ();
                             val = _action.actionMjFinTour(_dj, _mj);

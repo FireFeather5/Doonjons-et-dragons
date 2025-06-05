@@ -68,6 +68,7 @@ public class MJ {
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            posJ(DJ, perso, pos);
         }
     }
 

@@ -29,6 +29,7 @@ public class Setup {
             System.out.println("\nCombien de personnages voulez-vous créer ?");
             try {
                 _nbPersonnages = _scanner.nextInt();
+                _scanner.nextLine();
                 if (_nbPersonnages == 0) {
                     System.out.println(_couleur.rouge() + "\nIl doit y avoir au moins un personnage !" + _couleur.reset());
                 }

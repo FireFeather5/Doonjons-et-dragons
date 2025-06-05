@@ -16,6 +16,8 @@ public interface Vivant extends Entite {
 
     TypeVivant getTypeVivant();
 
+    int[] getPos();
+
     @Override
     String toString();
 

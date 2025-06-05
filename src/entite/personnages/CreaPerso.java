@@ -51,6 +51,7 @@ public class CreaPerso {
                 4- Nain""");
         try {
             int race = sc.nextInt();
+            sc.nextLine();
             switch (race) {
                 case 1: {
                     _ra = new Elfes();
@@ -90,6 +91,7 @@ public class CreaPerso {
                 4- Roublard""");
         try {
             int classe = sc.nextInt();
+            sc.nextLine();
             switch (classe) {
                 case 1: {
                     _cla = new Clerc();
@@ -127,6 +129,7 @@ public class CreaPerso {
                 2- Femme""");
         try {
             int gre = sc.nextInt();
+            sc.nextLine();
             switch (gre) {
                 case 1: {
                     _gre = new Masculin();

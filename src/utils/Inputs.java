@@ -54,8 +54,10 @@ public class Inputs {
         try {
             System.out.println("\n\ntaille côté ordonnée");
             tailleCote[0] = sc.nextInt();
+            sc.nextLine();
             System.out.println("taille côté abscisse");
             tailleCote[1] = sc.nextInt();
+            sc.nextLine();
 
             if (((15 <= tailleCote[0]) && (tailleCote[0] <= 25)) && ((15 <= tailleCote[1]) && (tailleCote[1] <= 25)))
             {
@@ -253,14 +255,19 @@ public class Inputs {
         try {
             System.out.println("Portée de l'attaque ?");
             int portee = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de dés pour le calcul de l'attaque ?");
             int nbrDeDeg = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de face pour les dés pour le calcul de l'attaque ?");
             int nbrFaceDeDeg = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de dés pour le calcul des charactéristiques ?");
             int nbrDeCha = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de face pour les dés pour le calcul des charactéristiques ?");
             int nbrFaceDeCha = sc.nextInt();
+            sc.nextLine();
 
             return mj.createM(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
 
@@ -307,6 +314,7 @@ public class Inputs {
 
             try {
                 int equ = sc.nextInt() - 1;
+                sc.nextLine();
                 return pers.getStock().get(equ);
             }
             catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
@@ -333,6 +341,7 @@ public class Inputs {
 
         try {
             int perso = sc.nextInt() - 1;
+            sc.nextLine();
 
             int[] posD = dj.getListePerso().get(perso).getPos();
 
@@ -360,14 +369,10 @@ public class Inputs {
         }
 
         choix = sc.nextInt() - 1;
+        sc.nextLine();
 
         try {
-            System.out.println("Combien de dé(s) pour infliger les dégats ?");
-            int nbDe = sc.nextInt();
-            System.out.println("Combien de faces pour les dés ?");
-            int nbFaceDe = sc.nextInt();
-
-            int dgt = new De(nbDe, nbFaceDe).roll();
+            int dgt = infligerDegat();
 
             val = mj.degatJoueur(dj, choix, dgt);
         }
@@ -392,14 +397,7 @@ public class Inputs {
         }
 
         try {
-            choix = sc.nextInt() - 1;
-
-            System.out.println("Combien de dé(s) pour infliger les dégats ?");
-            int nbDe = sc.nextInt();
-            System.out.println("Combien de faces pour les dés ?");
-            int nbFaceDe = sc.nextInt();
-
-            int dgt = new De(nbDe, nbFaceDe).roll();
+            int dgt = infligerDegat();
 
             val = mj.degatMonstre(dj, choix, dgt);
         }
@@ -410,6 +408,17 @@ public class Inputs {
         }
 
         return val;
+    }
+
+    private int infligerDegat() {
+        System.out.println("Combien de dé(s) pour infliger les dégats ?");
+        int nbDe = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Combien de faces pour les dés ?");
+        int nbFaceDe = sc.nextInt();
+        sc.nextLine();
+
+        return new De(nbDe, nbFaceDe).roll();
     }
 
 }

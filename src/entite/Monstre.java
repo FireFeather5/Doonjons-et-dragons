@@ -161,10 +161,7 @@ public class Monstre implements Vivant {
 
     public int[] getPos()
     {
-        int[] pos = new int[2];
-        pos[0] = _pos.getAbscisse();
-        pos[1] = _pos.getOrdonnee();
-        return pos;
+        return _pos.getPosition();
     }
 
     public int getIni()
