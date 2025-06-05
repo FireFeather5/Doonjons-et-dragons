@@ -38,10 +38,12 @@ public class Actions {
 
                     switch (choix) {
                         case 0:
-                            perso.seDeplacer(DJ);
+                            int[] pos = _input.choixCase("où se déplacer");
+                            perso.seDeplacer(DJ, pos);
                             break;
                         case 1:
-                            val = perso.attaquer(DJ);
+                            int[] posAtt = _input.choixCase("à attaquer");
+                            val = perso.attaquer(DJ, posAtt);
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -69,10 +71,12 @@ public class Actions {
 
                     switch (choix) {
                         case 0:
-                            perso.seDeplacer(DJ);
+                            int[] pos = _input.choixCase("où se déplacer");
+                            perso.seDeplacer(DJ, pos);
                             break;
                         case 1:
-                            val = perso.attaquer(DJ);
+                            int[] posAtt = _input.choixCase("à attaquer");
+                            val = perso.attaquer(DJ, posAtt);
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -100,10 +104,12 @@ public class Actions {
                     int choix = Integer.parseInt(sc.nextLine());
                     switch (choix) {
                         case 0:
-                            perso.seDeplacer(DJ);
+                            int[] pos = _input.choixCase("où se déplacer");
+                            perso.seDeplacer(DJ, pos);
                             break;
                         case 1:
-                            val = perso.attaquer(DJ);
+                            int[] posAtt = _input.choixCase("à attaquer");
+                            val = perso.attaquer(DJ, posAtt);
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -128,10 +134,12 @@ public class Actions {
                     int choix = Integer.parseInt(sc.nextLine());
                     switch (choix) {
                         case 0:
-                            perso.seDeplacer(DJ);
+                            int[] pos = _input.choixCase("où se déplacer");
+                            perso.seDeplacer(DJ, pos);
                             break;
                         case 1:
-                            val = perso.attaquer(DJ);
+                            int[] posAtt = _input.choixCase("à attaquer");
+                            val = perso.attaquer(DJ, posAtt);
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -294,10 +302,12 @@ public class Actions {
 
             switch (choix) {
                 case 0:
-                    mons.seDeplacer(DJ);
+                    int[] pos = _input.choixCase("où se déplacer");
+                    mons.seDeplacer(DJ, pos);
                     break;
                 case 1:
-                    val = mons.attaquer(DJ);
+                    int[] posAtt = _input.choixCase("à attaquer");
+                    val = mons.attaquer(DJ, posAtt);
                     break;
                 default:
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
@@ -326,24 +336,19 @@ public class Actions {
             int choix = Integer.parseInt(sc.nextLine());
             switch (choix) {
                 case 1:
-                    mj.depViv(DJ);
+                    _input.depViv(DJ, mj);
                     break;
                 case 2:
                     System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
                     String infDgt = sc.nextLine();
                     if (infDgt.equals("j") || infDgt.equals("joueur")) {
-                        val = mj.degatJoueur(DJ);
+                        val = _input.degatPersonnage(DJ, mj);
                     } else if (infDgt.equals("m") || infDgt.equals("monstre")) {
-                        val = mj.degatMonstre(DJ);
+                        val = _input.degatMonstre(DJ, mj);
                     }
                     break;
                 case 3:
-                    String ch = "o";
-                    while (ch.equals("o")) {
-                        mj.addObst(DJ);
-                        System.out.println("Voulez-vous ajouter un autre obstacle ? (o/n)");
-                        ch = sc.nextLine();
-                    }
+                    _input.ajoutObstacle(DJ, mj);
                     break;
                 default:
             }

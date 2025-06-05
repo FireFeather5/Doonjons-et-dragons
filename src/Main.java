@@ -50,6 +50,7 @@ public class Main {
 
             System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = sc.nextLine();
+
             if (choix.equals("o"))
             {
                 Equipement equip = _input.equiperEquip(pers);
@@ -62,6 +63,18 @@ public class Main {
                     Equipement equipe = _input.equiperEquip(pers);
                     pers.sEquiper(equipe);
                 }
+                else if (!choixx.equals("n"))
+                {
+                    System.out.println(cl.rouge() + "Mauvaise valeur rentrée. hu" + cl.reset());
+                    System.out.println("Recommencez");
+                    choix = sc.nextLine();
+                }
+            }
+            else if (!choix.equals("n"))
+            {
+                System.out.println(cl.rouge() + "Mauvaise valeur rentrée. ho" + cl.reset());
+                System.out.println("Recommencez");
+                choix = sc.nextLine();
             }
             Pers.add(pers);
         }
@@ -74,15 +87,15 @@ public class Main {
 
             System.out.print("\n\n");
             System.out.println(cl.jaune() + "-------------------------------------------------------------------");
-            System.out.print("\n                    Donjon n°" + tour + "                       \n");
+            System.out.print("\n                        Donjon n°" + tour + "\n\n");
             System.out.println("-------------------------------------------------------------------\n" + cl.reset());
 
-            Donjon donjon  = mj.creationDonjon();
+            Donjon donjon  = _input.creationDonjon(mj);
 
             if (donjon == null)
             {
                 CreationDonjonDefault creaDj = new CreationDonjonDefault();
-                System.out.println("\n\nVoulez-vous créer un donjon aléatoirement ? (o/n)");
+                System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
                 String choix = sc.nextLine();
                 if (choix.equals("o")) {
                     donjon = creaDj.donjonRandom();
@@ -91,8 +104,17 @@ public class Main {
                     donjon = creaDj.createDefaultDJ();
                 }
             }
+            else
+            {
+                _input.ajoutObstacle(donjon, mj);
+                _input.ajoutMonstre(donjon, mj);
+                _input.ajoutEquipement(donjon, mj);
+            }
+
+
             for (int i = 0; i < nbrPers; i++) {
-                mj.posJ(donjon, Pers.get(i));
+                int[] pos = _input.choixCase("de " + Pers.get(i));
+                mj.posJ(donjon, Pers.get(i), pos);
                 donjon.afficherDJ();
                 Viv.add(Pers.get(i));
             }
@@ -147,11 +169,11 @@ public class Main {
             tr.tour();
         }
 
-        //faire classes pour l'affichage/interaction user
-        //pas faire une classe qui gère tout !
-        //les classes métier (donjon/personnage/...) ne doivent pas connaitre le user et doivent tourner sans input !
-
 
         //BIEN BLOQUER LES INPUTS A o OU n QUAND DEMANDE (A FAIRE A LA FIN PSQ C'EST LONG DE TT METTRE PR LES TESTS)
+
+        // METTRE QUE DES EQUALS AVEC LES STRINGS !!!!!! CA BUEUGE SINON
+
+
     }
 }

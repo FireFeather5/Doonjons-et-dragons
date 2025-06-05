@@ -45,95 +45,70 @@ public class Donjon {
 
     public boolean positionObstacle(int[] pc, Obstacle obst)
     {
-        try {
-            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
-                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                    obst.position(pc[0], pc[1]);            //donne sa position a l'obstacle
-                    _donjon[pc[0] - 1][pc[1] - 1] = obst;
-                    return true;
-                }
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                obst.position(pc[0], pc[1]);            //donne sa position a l'obstacle
+                _donjon[pc[0] - 1][pc[1] - 1] = obst;
+                return true;
             }
-            return false;
         }
-        catch (NullPointerException erreur)
-        {
-            return false;
-        }
+        return false;
     }
 
     public boolean positionPersonnage(int[] pc, Personnage perso)
     {
-        try {
-            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
-                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                if (!_pers.contains(perso)) {
+                    _pers.add(perso);
+                }
+                perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                _donjon[pc[0] - 1][pc[1] - 1] = perso;
+                return true;
+            }
+            for (Equipement var : _equip) {
+                if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
                     if (!_pers.contains(perso)) {
                         _pers.add(perso);
                     }
+                    perso.peutRamasser(var);
                     perso.position(pc[0], pc[1]);            //donne sa position au joueur
                     _donjon[pc[0] - 1][pc[1] - 1] = perso;
                     return true;
                 }
-                for (Equipement var : _equip) {
-                    if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
-                        if (!_pers.contains(perso)) {
-                            _pers.add(perso);
-                        }
-                        perso.peutRamasser(var);
-                        perso.position(pc[0], pc[1]);            //donne sa position au joueur
-                        _donjon[pc[0] - 1][pc[1] - 1] = perso;
-                        return true;
-                    }
-                }
             }
-            return false;
         }
-        catch (NullPointerException erreur)
-        {
-            return false;
-        }
-
+        return false;
     }
 
     public boolean positionMonstre(int[] pc, Monstre mons)
     {
-        try {
-            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
-                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                    if (!_mons.contains(mons)) {
-                        _mons.add(mons);
-                    }
-                    mons.position(pc[0], pc[1]);            //donne sa position au monstre
-                    _donjon[pc[0] - 1][pc[1] - 1] = mons;
-                    return true;
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                if (!_mons.contains(mons)) {
+                    _mons.add(mons);
                 }
+                mons.position(pc[0], pc[1]);            //donne sa position au monstre
+                _donjon[pc[0] - 1][pc[1] - 1] = mons;
+                return true;
             }
-            return false;
         }
-        catch (NullPointerException erreur)
-        {
-            return false;
-        }
+        return false;
     }
 
     public boolean positionEquipement(int[] pc, Equipement equip)
     {
-        try {
-            if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
-                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                    if (!_equip.contains(equip)) {
-                        _equip.add(equip);
-                    }
-                    equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
-                    _donjon[pc[0] - 1][pc[1] - 1] = equip;
-                    return true;
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+            if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
+                if (!_equip.contains(equip)) {
+                    _equip.add(equip);
                 }
+                equip.position(pc[0], pc[1]);            //donne sa position a l'equipement
+                _donjon[pc[0] - 1][pc[1] - 1] = equip;
+                return true;
             }
-            return false;
         }
-        catch (NullPointerException erreur)
-        {
-            return false;
-        }
+        return false;
     }
 
     public Monstre getMons(int[] pc)

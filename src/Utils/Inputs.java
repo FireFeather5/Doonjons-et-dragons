@@ -26,13 +26,34 @@ public class Inputs {
 
     }
 
+    public Donjon creationDonjon(MJ mj)
+    {
+        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)");
+        String choix = sc.nextLine();
+        if (choix.equals("o"))
+        {
+            int[] tailleDj = tailleDonjon();
+            Donjon dj = mj.creationDonjon(tailleDj);
+            return dj;
+        }
+        else if (choix.equals("n"))
+        {
+            return null;
+        }
+        else
+        {
+            creationDonjon(mj);
+        }
+        return null;
+    }
+
     public int[] tailleDonjon()
     {
         int[] tailleCote = new int[2];
 
-        System.out.println("\n\ntaille cote 1");
+        System.out.println("\n\ntaille côté ordonnée");
         String tc1s = sc.nextLine();
-        System.out.println("taille cote 2");
+        System.out.println("taille côté abscisse");
         String tc2s = sc.nextLine();
         try {
             tailleCote[0] = Integer.parseInt(tc1s);
@@ -60,89 +81,116 @@ public class Inputs {
     public void ajoutObstacle(Donjon DJ, MJ mj)
     {
         System.out.println("\nVoulez-vous mettre des obstacles (o/n) ?");
-        boolean fini = !sc.nextLine().equals("o");
+        String choix = sc.nextLine();
 
-        while (!fini) {
-            mj.addObst(DJ);
-            DJ.afficherDJ();
-            System.out.println("\n\nCréer un auter obstacle (o/n) ?");
-            if (!sc.nextLine().equals("o")) fini = true;
+        while (!choix.equals("n")) {
+            if (choix.equals("o")) {
+                int[] pos = choixCase("de l'obstacle");
+                mj.addObst(DJ, pos);
+                DJ.afficherDJ();
+                System.out.println("\n\nCréer un autre obstacle (o/n) ?");
+                choix = sc.nextLine();
+            }
+            else
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                ajoutObstacle(DJ, mj);
+            }
         }
     }
 
     public void ajoutMonstre(Donjon DJ, MJ mj)
     {
-        boolean fini = false;
+        String choix = "o";
 
-        while (!fini) {
-            Monstre mons = creationMonstre(mj);
-            DJ.afficherDJ();
-            mj.posM(DJ, mons);
-            DJ.afficherDJ();
-            System.out.println("\n\nCréer un autre monstre (o/n) ?");
-            if (!sc.nextLine().equals("o")) fini = true;
+        while (!choix.equals("n")) {
+            if (choix.equals("o")) {
+                Monstre mons = creationMonstre(mj);
+                DJ.afficherDJ();
+                int[] pos = choixCase("de " + mons);
+                mj.posM(DJ, mons, pos);
+                DJ.afficherDJ();
+                System.out.println("\n\nCréer un autre monstre (o/n) ?");
+                choix = sc.nextLine();
+            }
+            else
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                ajoutMonstre(DJ, mj);
+            }
         }
     }
 
     public void ajoutEquipement(Donjon DJ, MJ mj)
     {
         System.out.println("\nVoulez-vous créer des Equipements (o/n) ?");
-        boolean fini = !sc.nextLine().equals("o");
-        while (!fini) {
-            Equipement equip = null;
-            boolean ok = true;
-            String texte = """
+        String choix = sc.nextLine();
+
+        while (!choix.equals("n")) {
+            if (choix.equals("o"))
+            {
+                Equipement equip = null;
+                boolean ok = true;
+                String texte = """
                         Sélectionnez l'équipement voulu :
                         Arme courante :
-                        \t1.  Baton
-                        \t2.  Masse d'arme
+                        \t1-  Baton
+                        \t2-  Masse d'arme
                         Arme de guerre (-2 vit / +4 for) :
-                        \t3.  Epée longue
-                        \t4.  Rapière
-                        \t5.  Epée à 2 mains
+                        \t3-  Epée longue
+                        \t4-  Rapière
+                        \t5-  Epée à 2 mains
                         Arme à distance :
-                        \t6.  Fronde
-                        \t7.  Arbelète légère
-                        \t8.  Arc court
+                        \t6-  Fronde
+                        \t7-  Arbelète légère
+                        \t8-  Arc court
                         Armure légère :
-                        \t9.  Armure d'écailles
-                        \t10. Demi plate
+                        \t9-  Armure d'écailles
+                        \t10- Demi plate
                         Armure lourde (-4 vit) :
-                        \t11. Cotte de maille
-                        \t12. Harnois
+                        \t11- Cotte de maille
+                        \t12- Harnois
                         """;
-            System.out.println(texte);
-            switch (sc.nextLine()) {
-                case "1" -> equip = new Baton();
-                case "2" -> equip = new MasseArme();
-                case "3" -> equip = new EpeeLongue();
-                case "4" -> equip = new Rapiere();
-                case "5" -> equip = new EpeeDeuxMains();
-                case "6" -> equip = new Fronde();
-                case "7" -> equip = new ArbaleteLegere();
-                case "8" -> equip = new ArcCourt();
-                case "9" -> equip = new ArmureEcaille();
-                case "10" -> equip = new DemiPlate();
-                case "11" -> equip = new CotteMaille();
-                case "12" -> equip = new Harnois();
-                case null, default -> ok = false;
+                System.out.println(texte);
+                switch (sc.nextLine()) {
+                    case "1" -> equip = new Baton();
+                    case "2" -> equip = new MasseArme();
+                    case "3" -> equip = new EpeeLongue();
+                    case "4" -> equip = new Rapiere();
+                    case "5" -> equip = new EpeeDeuxMains();
+                    case "6" -> equip = new Fronde();
+                    case "7" -> equip = new ArbaleteLegere();
+                    case "8" -> equip = new ArcCourt();
+                    case "9" -> equip = new ArmureEcaille();
+                    case "10" -> equip = new DemiPlate();
+                    case "11" -> equip = new CotteMaille();
+                    case "12" -> equip = new Harnois();
+                    case null, default -> ok = false;
+                }
+                if (!ok) {
+                    System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
+                } else {
+                    int[] pos = choixCase("de l'équipement : " + equip);
+                    DJ.afficherDJ();
+                    mj.posEquip(DJ, equip, pos);
+                    DJ.afficherDJ();
+                }
+                System.out.println("\n\nCréer un autre equipement (o/n)?");
+                choix = sc.nextLine();
             }
-            if (!ok) {
-                System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
-            } else {
-                DJ.afficherDJ();
-                mj.posEquip(DJ, equip);
-                DJ.afficherDJ();
+            else
+            {
+                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                ajoutEquipement(DJ, mj);
             }
-            System.out.println("\n\nCréer un autre equipement (o/n)?");
-            if (!sc.nextLine().equals("o")) fini = true;
         }
     }
 
 
+
     public int[] choixCase(String context)
     {
-        System.out.println("\n\nChoisir la case " + context + " [lettre][nombre]");
+        System.out.println("\n\nChoisir la case " + context + _cl.cyan() + "[lettre][nombre]" + _cl.reset());
         String pos = sc.nextLine();
 
         return positionCase(pos);
@@ -221,16 +269,18 @@ public class Inputs {
         return sc.nextLine();
     }
 
-    public String mjCommenteAction()
+    public void mjCommenteAction(MJ mj)
     {
         System.out.println("Le MJ commente l'action effectuée");
-        return "MJ- " + sc.nextLine();
+        String comm = sc.nextLine();
+        mj.comAction(comm);
     }
 
-    public String persoCommenteAction()
+    public void persoCommenteAction(Personnage perso)
     {
         System.out.println("Le personnage commente l'action effectuée");
-        return "- " + sc.nextLine();
+        String comm = sc.nextLine();
+        perso.comAction(comm);
     }
 
     public Equipement equiperEquip(Personnage pers)
@@ -256,6 +306,100 @@ public class Inputs {
             }
         }
         return null;
+    }
+
+
+    public void depViv(Donjon dj, MJ mj)
+    {
+        int choix = 0;
+
+        System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
+        for (Personnage pers : dj.getListePerso()) {
+            System.out.println(choix++ + "- " + pers);
+        }
+        for (Monstre mons : dj.getListeMonstre()) {
+            System.out.println(choix++ + "- " + mons);
+        }
+
+        try {
+            int perso = Integer.parseInt(sc.nextLine());
+
+            int[] posD = dj.getListePerso().get(perso).getPos();
+
+            int[] posF = choixCase("où mettre l'entité");
+
+            mj.depViv(dj, posD, posF);
+        }
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            depViv(dj, mj);
+        }
+    }
+
+
+    public StatusDonjon degatPersonnage(Donjon dj, MJ mj)
+    {
+        int choix = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
+
+        System.out.println("\nChoisissez un joueur :");
+        for (Personnage pers : dj.getListePerso())
+        {
+            System.out.println(choix++ + "- " + pers);
+        }
+
+        choix = sc.nextInt();
+
+        try {
+            System.out.println("Combien de dé(s) pour infliger les dégats ?");
+            int nbDe = sc.nextInt();
+            System.out.println("Combien de faces pour les dés ?");
+            int nbFaceDe = sc.nextInt();
+
+            int dgt = new De(nbDe, nbFaceDe).roll();
+
+            val = mj.degatJoueur(dj, choix, dgt, val);
+        }
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            degatPersonnage(dj, mj);
+        }
+
+        return val;
+    }
+
+
+    public StatusDonjon degatMonstre(Donjon dj, MJ mj)
+    {
+        int choix = 0;
+        StatusDonjon val = StatusDonjon.NORMAL;
+
+        System.out.println("\nChoisissez un monstre :");
+        for (Monstre mons : dj.getListeMonstre()) {
+            System.out.println(choix++ + ". " + mons);
+        }
+
+        choix = sc.nextInt();
+
+        try {
+            System.out.println("Combien de dé(s) pour infliger les dégats ?");
+            int nbDe = sc.nextInt();
+            System.out.println("Combien de faces pour les dés ?");
+            int nbFaceDe = sc.nextInt();
+
+            int dgt = new De(nbDe, nbFaceDe).roll();
+
+            val = mj.degatMonstre(dj, choix, dgt, val);
+        }
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            degatMonstre(dj, mj);
+        }
+
+        return val;
     }
 
 }

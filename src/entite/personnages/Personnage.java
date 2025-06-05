@@ -1,9 +1,6 @@
 package entite.personnages;
 
-import Utils.Couleurs;
-import Utils.Inputs;
-import Utils.StatusDonjon;
-import Utils.TypeVivant;
+import Utils.*;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
@@ -28,7 +25,6 @@ import java.util.ArrayList;
 public class Personnage implements Vivant {
 
     private final Couleurs _cl = new Couleurs();
-    private final Inputs _input = new Inputs();
 
     private String _nom;
     private Races _race;
@@ -78,10 +74,10 @@ public class Personnage implements Vivant {
         _stock.addAll(_classe.getEquiBase());
 
 
-        if (classe instanceof Clerc) {
+        if (_classe.getCla().equals("Clerc")) {
             this._sorts.add(new Guerison());
         }
-        else if (classe instanceof Magicien) {
+        else if (_classe.getCla().equals("Magicien")) {
             this._sorts.add(new Guerison());
             this._sorts.add(new BoogieWoogie());
             this._sorts.add(new ArmeMagique());
@@ -95,15 +91,13 @@ public class Personnage implements Vivant {
 
 
 
-    public void seDeplacer(Donjon DJ)
+    public void seDeplacer(Donjon DJ, int[] pos)
     {
         /*System.out.println("\nChoisir une case où se déplacer [lettre][nombre]");
         String dep = sc.nextLine();*/
 
         try {
             int distDep = _stats.retVit() / 3;
-
-            int[] pos = _input.choixCase("où se déplacer");
 
             int[] posOld = getPos();
 
@@ -115,7 +109,7 @@ public class Personnage implements Vivant {
                         System.out.println("Déplacement effectué");
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        seDeplacer(DJ);
+                        seDeplacer(DJ, pos);
                     }
                 } else {
                     if (val) {
@@ -126,27 +120,27 @@ public class Personnage implements Vivant {
                         _peutRamEqu = null;
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        seDeplacer(DJ);
+                        seDeplacer(DJ, pos);
                     }
                 }
             } else {
                 System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                seDeplacer(DJ);
+                seDeplacer(DJ, pos);
             }
         }
         catch (NullPointerException erreur) {
-            seDeplacer(DJ);
+            seDeplacer(DJ, pos);
         }
     }
 
     public void seDesequiper(Equipement equipement) {
         if (this._equipee.contains(equipement)) {
             this._equipee.remove(equipement);
-            if (equipement instanceof ArmeGuerre) {
+            if (equipement.getTypeArm().equals(TypeArme.GUERRE)) {
                 this._stats.vit(_stats.retVit() + equipement.getSpeedMalus());
                 this._stats.forc(_stats.retFor() - equipement.getForceBonus());
             }
-            else if (equipement instanceof ArmureLourde) {
+            else if (equipement.getTypeArmur().equals(TypeArmure.LOURDE)) {
                 this._stats.vit(_stats.retVit() + equipement.getSpeedMalus());
             }
             this._stock.add(equipement);
@@ -159,20 +153,20 @@ public class Personnage implements Vivant {
     public void sEquiper(Equipement equipement) {
         if (equipement != null) {
             if (this._stock.contains(equipement)) {
-                if (equipement instanceof ArmeGuerre) {
+                if (equipement.getTypeArm().equals(TypeArme.GUERRE)) {
                     this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     this._stats.forc(_stats.retFor() + equipement.getForceBonus());
-                } else if (equipement instanceof Armure) {
+                } else if (equipement.getTypeEquip().equals(TypeEquipement.ARMURE)) {
                     _stats.arm(((Armure) equipement).getArmorClass());
-                    if (equipement instanceof ArmureLourde) {
+                    if (equipement.getTypeArmur().equals(TypeArmure.LOURDE)) {
                         this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     }
                 }
                 for (Equipement equip : this._equipee) {
-                    if (equip instanceof Arme && equipement instanceof Arme) {
+                    if (equip.getTypeEquip().equals(TypeEquipement.ARME) && equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                         this.seDesequiper(equip);
                         break;
-                    } else if (equip instanceof Armure && equipement instanceof Armure) {
+                    } else if (equip.getTypeEquip().equals(TypeEquipement.ARMURE) && equipement.getTypeEquip().equals(TypeEquipement.ARMURE)) {
                         this.seDesequiper(equip);
                         break;
                     }
@@ -190,7 +184,7 @@ public class Personnage implements Vivant {
         }
     }
 
-    public StatusDonjon attaquer(Donjon DJ)
+    public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
@@ -202,7 +196,7 @@ public class Personnage implements Vivant {
             int touche;
             int tou;
 
-            if (arme instanceof ArmeDistance) {
+            if (arme.getTypeArm().equals(TypeArme.DISTANCE)) {
                 tou = this._stats.retDex();
             } else {
                 tou = this._stats.retFor();
@@ -210,7 +204,6 @@ public class Personnage implements Vivant {
             touche = tou;
 
             try {
-                int[] posAtt = _input.choixCase("à attaquer");
                 int detou = this._deChar.roll() + arme.getBonusMagique();
                 touche += detou;
                 Monstre mons = DJ.getMons(posAtt);
@@ -236,7 +229,7 @@ public class Personnage implements Vivant {
             catch (ArrayIndexOutOfBoundsException erreur)
             {
                 System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                attaquer(DJ);
+                attaquer(DJ, posAtt);
             }
         } else {
             System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
@@ -280,9 +273,9 @@ public class Personnage implements Vivant {
         _peutRamEqu = null;
     }
 
-    public void comAction()
+    public void comAction(String comAct)
     {
-        System.out.println(this + _input.persoCommenteAction());
+        System.out.println(this + "- " + comAct);
     }
 
     public void regePV()
@@ -294,7 +287,7 @@ public class Personnage implements Vivant {
 
     public Arme getArmeEquipe() {
         for (Equipement equip : this._equipee) {
-            if (equip instanceof Arme) {
+            if (equip.getTypeEquip().equals(TypeEquipement.ARME)) {
                 return (Arme) equip;
             }
         }
@@ -303,7 +296,7 @@ public class Personnage implements Vivant {
 
     public Armure getArmureEquipe() {
         for (Equipement equip : this._equipee) {
-            if (equip instanceof Armure) {
+            if (equip.getTypeEquip().equals(TypeEquipement.ARMURE)) {
                 return (Armure) equip;
             }
         }

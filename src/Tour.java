@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Tour {
 
     private final Couleurs _cl = new Couleurs();
+    private Inputs _input = new Inputs();
 
     private final ArrayList<Vivant> _vivTri;
     private int _nbViv;
@@ -81,18 +82,25 @@ public class Tour {
 
                         System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
                         String comm = sc.nextLine();
-                        if (comm.equals("o"))
+                        while (comm != "n")
                         {
-                            _vivTri.get(j).comAction();
-                        }
-                        else if (comm.equals("mj"))
-                        {
-                            _mj.comAction();
+                            if (comm.equals("o"))
+                            {
+                                _input.persoCommenteAction((Personnage) _vivTri.get(j));
+                            }
+                            else if (comm.equals("mj"))
+                            {
+                                _input.mjCommenteAction(_mj);
+                            }
+                            else
+                            {
+                                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                            }
                         }
 
                         if (val.equals(StatusDonjon.NORMAL)) {
                             _dj.afficherDJ();
-                            val = _mj.actionFT(_dj);
+                            val = _action.actionMjFinTour(_dj, _mj);
                             if (val == StatusDonjon.MONSTRE_MORT) {
                                 for (int n = 0; n < _nbViv; n++) {
                                     if (_vivTri.get(n).getPV() <= 0) {

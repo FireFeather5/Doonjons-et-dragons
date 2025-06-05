@@ -12,13 +12,11 @@ public interface Vivant extends Entite {
 
     String getLilInfos();
 
-    //StatusDonjon action(Donjon DJ);
-
     int getIni();
 
     int getPV();
 
-    void comAction();
+    void comAction(String comAct);
 
     TypeVivant getTypeVivant();
 
