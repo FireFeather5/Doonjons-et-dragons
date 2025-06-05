@@ -1,12 +1,10 @@
 package Utils;
 
 import de.De;
-import donjon.CreationDonjonDefault;
-import donjon.Donjon;
+import donjon.*;
 import entite.Vivant;
 import entite.equipement.Equipement;
-import entite.personnages.CreaPerso;
-import entite.personnages.Personnage;
+import entite.personnages.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -21,10 +19,6 @@ public class Setup {
     private final Scanner _scanner = new Scanner(System.in);
 
     public Setup() {}
-
-    public int getNbPersonnages() {
-        return _nbPersonnages;
-    }
 
     public ArrayList<Personnage> setupPersonnages() {
         ArrayList<Personnage> personnages = new ArrayList<>();

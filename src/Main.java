@@ -1,13 +1,10 @@
 import Utils.Couleurs;
-import Utils.Inputs;
 import Utils.MJ;
 import donjon.Donjon;
 import entite.personnages.Personnage;
 import entite.Vivant;
 import Utils.Setup;
-
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
