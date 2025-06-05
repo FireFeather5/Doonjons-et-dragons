@@ -39,23 +39,23 @@ public class Setup {
 
         for (int i = 0; i < _nbPersonnages; i++) {
             System.out.println("\n\nCréation Personnage " + (i+1));
-            Personnage pers = createurPersonnage.CreaPers();
-            System.out.println(pers.getInfos());
+            Personnage personnage = createurPersonnage.CreaPers();
+            System.out.println(personnage.getInfos());
 
             System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = _scanner.nextLine();
 
             if (choix.equals("o"))
             {
-                Equipement equip = _inputs.equiperEquip(pers);
-                pers.sEquiper(equip);
+                Equipement equip = _inputs.equiperEquip(personnage);
+                personnage.sEquiper(equip);
 
                 System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
                 String choixx = _scanner.nextLine();
                 if (choixx.equals("o"))
                 {
-                    Equipement equipe = _inputs.equiperEquip(pers);
-                    pers.sEquiper(equipe);
+                    Equipement equipe = _inputs.equiperEquip(personnage);
+                    personnage.sEquiper(equipe);
                 }
                 else if (!choixx.equals("n"))
                 {
@@ -70,7 +70,7 @@ public class Setup {
                 System.out.println("Recommencez");
                 choix = _scanner.nextLine();
             }
-            personnages.add(pers);
+            personnages.add(personnage);
         }
         return personnages;
     }
@@ -78,22 +78,22 @@ public class Setup {
     public Donjon setupDonjon(ArrayList<Personnage> personnages, int tour) {
 
         System.out.print("\n\n");
-        System.out.println(_couleur.jaune() + "-------------------------------------------------------------------");
-        System.out.print("\n                        Donjon n°" + tour + "\n\n");
+        System.out.println(_couleur.jaune() + "-------------------------------------------------------------------\n");
+        System.out.print("                        Donjon n°" + tour + "\n\n");
         System.out.println("-------------------------------------------------------------------\n" + _couleur.reset());
 
         Donjon donjon  = _inputs.creationDonjon(_mj);
 
         if (donjon == null)
         {
-            CreationDonjonDefault creaDj = new CreationDonjonDefault();
+            CreationDonjonDefault createurDonjon = new CreationDonjonDefault();
             System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
             String choix = _scanner.nextLine();
             if (choix.equals("o")) {
-                donjon = creaDj.donjonRandom();
+                donjon = createurDonjon.donjonRandom();
             }
             else {
-                donjon = creaDj.createDefaultDJ();
+                donjon = createurDonjon.createDefaultDJ();
             }
         }
         else
@@ -123,38 +123,38 @@ public class Setup {
             System.out.println(_etreVivants.get(j).getStat());
         }
 
-        De deIni = new De(1, 20);
+        De deInitiative = new De(1, 20);
 
-        ArrayList<Integer> ArrIni = new ArrayList<>();
-        ArrayList<Vivant> VivTri = new ArrayList<>();
+        ArrayList<Integer> listeInitiatives = new ArrayList<>();
+        ArrayList<Vivant> vivantsTries = new ArrayList<>();
 
         System.out.println(_couleur.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + _couleur.reset());
 
         for (int j = 0; j < _nbEtreVivants; j++) {
             System.out.println("\n" + _etreVivants.get(j).toString() + " : ");
             int init = _etreVivants.get(j).getIni();
-            init += deIni.roll();
+            init += deInitiative.roll();
 
-            if (ArrIni.isEmpty()) {
-                ArrIni.add(init);
-                VivTri.add(_etreVivants.get(j));
+            if (listeInitiatives.isEmpty()) {
+                listeInitiatives.add(init);
+                vivantsTries.add(_etreVivants.get(j));
             } else {
                 boolean inVivTri = false;
-                for (int i = 0; i < ArrIni.size(); i++) {
+                for (int i = 0; i < listeInitiatives.size(); i++) {
                     if (!inVivTri) {
-                        if (init > ArrIni.get(i)) {
-                            ArrIni.add(i, init);
-                            VivTri.add(i, _etreVivants.get(j));
+                        if (init > listeInitiatives.get(i)) {
+                            listeInitiatives.add(i, init);
+                            vivantsTries.add(i, _etreVivants.get(j));
                             inVivTri = true;
                         }
                     }
                 }
                 if (!inVivTri) {
-                    ArrIni.add(init);
-                    VivTri.add(_etreVivants.get(j));
+                    listeInitiatives.add(init);
+                    vivantsTries.add(_etreVivants.get(j));
                 }
             }
         }
-        return VivTri;
+        return vivantsTries;
     }
 }
