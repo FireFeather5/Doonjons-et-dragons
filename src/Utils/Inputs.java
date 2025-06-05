@@ -83,7 +83,7 @@ public class Inputs {
         System.out.println("\nVoulez-vous mettre des obstacles (o/n) ?");
         String choix = sc.nextLine();
 
-        while (choix != "n") {
+        while (!choix.equals("n")) {
             if (choix.equals("o")) {
                 int[] pos = choixCase("de l'obstacle");
                 mj.addObst(DJ, pos);
@@ -103,7 +103,7 @@ public class Inputs {
     {
         String choix = "o";
 
-        while (choix != "n") {
+        while (!choix.equals("n")) {
             if (choix.equals("o")) {
                 Monstre mons = creationMonstre(mj);
                 DJ.afficherDJ();
@@ -126,7 +126,7 @@ public class Inputs {
         System.out.println("\nVoulez-vous créer des Equipements (o/n) ?");
         String choix = sc.nextLine();
 
-        while (choix != "n") {
+        while (!choix.equals("n")) {
             if (choix.equals("o"))
             {
                 Equipement equip = null;
