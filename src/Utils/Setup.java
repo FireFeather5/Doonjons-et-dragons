@@ -44,31 +44,28 @@ public class Setup {
 
             System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = _scanner.nextLine();
+            while (!choix.equals("n")) {
+                if (choix.equals("o")) {
+                    Equipement equip = _inputs.equiperEquip(personnage);
+                    personnage.sEquiper(equip);
 
-            if (choix.equals("o"))
-            {
-                Equipement equip = _inputs.equiperEquip(personnage);
-                personnage.sEquiper(equip);
-
-                System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
-                String choixx = _scanner.nextLine();
-                if (choixx.equals("o"))
-                {
-                    Equipement equipe = _inputs.equiperEquip(personnage);
-                    personnage.sEquiper(equipe);
-                }
-                else if (!choixx.equals("n"))
-                {
-                    System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. hu" + _couleur.reset());
+                    System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
+                    String choixx = _scanner.nextLine();
+                    while (!choixx.equals("n")) {
+                        if (choixx.equals("o")) {
+                            Equipement equipe = _inputs.equiperEquip(personnage);
+                            personnage.sEquiper(equipe);
+                        } else {
+                            System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. hu" + _couleur.reset());
+                            System.out.println("Recommencez");
+                            choix = _scanner.nextLine();
+                        }
+                    }
+                } else {
+                    System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. ho" + _couleur.reset());
                     System.out.println("Recommencez");
                     choix = _scanner.nextLine();
                 }
-            }
-            else if (!choix.equals("n"))
-            {
-                System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. ho" + _couleur.reset());
-                System.out.println("Recommencez");
-                choix = _scanner.nextLine();
             }
             personnages.add(personnage);
         }
