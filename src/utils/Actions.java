@@ -1,10 +1,11 @@
-package Utils;
+package utils;
 
 import donjon.Donjon;
 import entite.Monstre;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
 import entite.personnages.Personnage;
+import sort.ArmeMagique;
 import sort.BoogieWoogie;
 import sort.Guerison;
 import sort.Sort;
@@ -17,7 +18,7 @@ public class Actions {
     private final Couleurs _cl = new Couleurs();
     private final Inputs _input = new Inputs();
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public Actions()
     {
@@ -258,12 +259,12 @@ public class Actions {
                             for (Personnage perso : DJ.getListePerso()) {
                                 System.out.println("Personnage : " + perso.toString());
                                 for (Equipement equipement : perso.getStock()) {
-                                    if (equipement instanceof Arme) {
+                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                                         System.out.println("\t" + choixArme++ + "- " + equipement.getName());
                                     }
                                 }
                                 for (Equipement equipement : perso.getEquipees()) {
-                                    if (equipement instanceof Arme) {
+                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                                         System.out.println("\t" + choixArme++ + "- " + "(Equipée) " + equipement.getName());
                                     }
                                 }
@@ -274,9 +275,9 @@ public class Actions {
                             int idArme = 1;
                             for (Personnage perso : DJ.getListePerso()) {
                                 for (Equipement equipement : perso.getStock()) {
-                                    if (equipement instanceof Arme) {
+                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                                         if (choixArme == idArme) {
-                                            ((Arme) equipement).bonusMagique();
+                                            ((ArmeMagique)perso.getSorts().get(2)).lancer((Arme)equipement);
                                             ok = true;
                                             break;
                                         }
@@ -286,9 +287,9 @@ public class Actions {
                                     }
                                 }
                                 for (Equipement equipement : perso.getEquipees()) {
-                                    if (equipement instanceof Arme) {
+                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                                         if (choixArme == idArme) {
-                                            ((Arme) equipement).bonusMagique();
+                                            ((ArmeMagique)perso.getSorts().get(2)).lancer((Arme)equipement);
                                             ok = true;
                                             break;
                                         } else {

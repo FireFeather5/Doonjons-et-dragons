@@ -1,29 +1,26 @@
 package entite;
 
-import Utils.Inputs;
-import Utils.StatusDonjon;
-import Utils.Couleurs;
-import Utils.TypeVivant;
+import utils.StatusDonjon;
+import utils.Couleurs;
+import utils.TypeVivant;
 import de.De;
 import entite.personnages.*;
 import donjon.Donjon;
 import statistiques.Position;
 import statistiques.Stats;
 
-import java.util.Scanner;
-
 public class Monstre implements Vivant {
 
-    private Couleurs _cl = new Couleurs();
+    private final Couleurs _cl = new Couleurs();
 
-    private String _espece;
-    private String _symb;
+    private final String _espece;
+    private final String _symb;
     private int _numero = 1;
-    private int _portAtt;
-    private De _degAtt;
+    private final int _portAtt;
+    private final De _degAtt;
     private final Stats _stats;
     private final Position _pos;
-    private De _deChar;
+    private final De _deChar;
 
     public Monstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
@@ -76,7 +73,7 @@ public class Monstre implements Vivant {
         int[] posOld = getPos();
 
         if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
-            boolean val = DJ.positionMonstre(pos, this);
+            boolean val = DJ.positionVivant(pos, this);
             if (val) {
                 DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
                 System.out.println("Déplacement effectué");
@@ -143,12 +140,6 @@ public class Monstre implements Vivant {
         }
         return val;
     }
-
-    public void comAction(String comAct)
-    {
-        System.out.println(this + "- " + comAct);
-    }
-
 
 
     public int getArmorClass() {

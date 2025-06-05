@@ -1,6 +1,6 @@
 package entite.equipement.armure.legere;
 
-import Utils.TypeArmure;
+import utils.TypeArmure;
 import entite.equipement.armure.Armure;
 
 public abstract class ArmureLegere extends Armure {

@@ -1,8 +1,8 @@
 package entite.equipement;
 
-import Utils.TypeArme;
-import Utils.TypeArmure;
-import Utils.TypeEquipement;
+import utils.TypeArme;
+import utils.TypeArmure;
+import utils.TypeEquipement;
 import entite.Entite;
 import statistiques.Position;
 

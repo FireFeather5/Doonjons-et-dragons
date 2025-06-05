@@ -1,9 +1,9 @@
-import Utils.Couleurs;
-import Utils.MJ;
+import utils.Couleurs;
+import utils.MJ;
 import donjon.Donjon;
 import entite.personnages.Personnage;
 import entite.Vivant;
-import Utils.Setup;
+import utils.Setup;
 import java.util.ArrayList;
 
 public class Main {

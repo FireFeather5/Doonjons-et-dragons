@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import de.De;
 import donjon.*;
@@ -8,6 +8,7 @@ import entite.personnages.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Setup {
@@ -64,6 +65,21 @@ public class Setup {
     }
 
     public Donjon setupDonjon(ArrayList<Personnage> personnages, int tour) {
+        try {
+            String text = _inputs.contextDonjon();
+            if (text.isEmpty()) {
+                text = "Pas de contexte !";
+            }
+            _mj.presContext(text);
+        }
+        catch (NoSuchElementException erreur) {
+            System.out.println(_couleur.rouge() + "Erreur dans le contexte !" + _couleur.reset());
+            return setupDonjon(personnages, tour);
+        }
+
+        for (Personnage personnage : personnages) {
+            personnage.regePV();
+        }
 
         System.out.print("\n\n");
         System.out.println(_couleur.jaune() + "-------------------------------------------------------------------\n");

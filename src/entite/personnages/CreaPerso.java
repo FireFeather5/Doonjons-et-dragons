@@ -1,7 +1,6 @@
 package entite.personnages;
 
-import Utils.Couleurs;
-import entite.personnages.classes.Classe;
+import utils.Couleurs;
 import entite.personnages.classes.*;
 import entite.personnages.genre.Feminin;
 import entite.personnages.genre.Genre;
@@ -13,13 +12,13 @@ import java.util.Scanner;
 
 public class CreaPerso {
 
-    private Couleurs _cl = new Couleurs();
+    private final Couleurs _cl = new Couleurs();
 
     private Races _ra;
     private Classe _cla;
     private Genre _gre;
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public CreaPerso()
     {
@@ -39,8 +38,7 @@ public class CreaPerso {
         Race();
         Classe();
         Genre();
-        Personnage pers = new Personnage(_nom, _ra, _cla, _gre);
-        return pers;
+        return new Personnage(_nom, _ra, _cla, _gre);
     }
 
     public void Race()

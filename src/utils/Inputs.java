@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import de.De;
 import donjon.Donjon;
@@ -20,7 +20,7 @@ public class Inputs {
 
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public Inputs()
     {
@@ -51,13 +51,11 @@ public class Inputs {
     {
         int[] tailleCote = new int[2];
 
-        System.out.println("\n\ntaille côté ordonnée");
-        String tc1s = sc.nextLine();
-        System.out.println("taille côté abscisse");
-        String tc2s = sc.nextLine();
         try {
-            tailleCote[0] = Integer.parseInt(tc1s);
-            tailleCote[1] = Integer.parseInt(tc2s);
+            System.out.println("\n\ntaille côté ordonnée");
+            tailleCote[0] = sc.nextInt();
+            System.out.println("taille côté abscisse");
+            tailleCote[1] = sc.nextInt();
 
             if (((15 <= tailleCote[0]) && (tailleCote[0] <= 25)) && ((15 <= tailleCote[1]) && (tailleCote[1] <= 25)))
             {
@@ -371,7 +369,7 @@ public class Inputs {
 
             int dgt = new De(nbDe, nbFaceDe).roll();
 
-            val = mj.degatJoueur(dj, choix, dgt, val);
+            val = mj.degatJoueur(dj, choix, dgt);
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
@@ -403,7 +401,7 @@ public class Inputs {
 
             int dgt = new De(nbDe, nbFaceDe).roll();
 
-            val = mj.degatMonstre(dj, choix, dgt, val);
+            val = mj.degatMonstre(dj, choix, dgt);
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {

@@ -1,6 +1,6 @@
 package entite.personnages;
 
-import Utils.*;
+import utils.*;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
@@ -97,7 +97,7 @@ public class Personnage implements Vivant {
 
             if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
 
-                boolean val = DJ.positionPersonnage(pos, this);
+                boolean val = DJ.positionVivant(pos, this);
                 if (!_peutRamasser) {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
@@ -281,7 +281,7 @@ public class Personnage implements Vivant {
 
     public void comAction(String comAct)
     {
-        System.out.println(this + "- " + comAct);
+        System.out.println(this + " - " + comAct);
     }
 
     public void regePV()
