@@ -23,6 +23,7 @@ public class MJ {
 
     public Donjon creationDonjon(int[] tailleDj)
     {
+        //System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)")
         Donjon DJ = new Donjon(tailleDj);
         System.out.println("Aperçu du donjon :");
         DJ.afficherDJ();

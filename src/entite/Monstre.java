@@ -28,7 +28,7 @@ public class Monstre implements Vivant {
     public Monstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
         _deChar = charac;
-        _espece = espece + " " + this._numero;
+        _espece = espece;
         _symb = symb;
         _portAtt = portAtt;
         _degAtt = degAtt;
@@ -36,7 +36,7 @@ public class Monstre implements Vivant {
         _pos = new Position();
         _stats = new Stats();
 
-        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + this + " =====" + _cl.reset());
+        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + _espece + " =====" + _cl.reset());
         System.out.println("\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
         System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
@@ -62,12 +62,6 @@ public class Monstre implements Vivant {
 
     public void multiMonstre() {
         this._numero ++;
-        String[] nom = this._espece.split(" ");
-        nom[nom.length-1] = String.valueOf(this._numero);
-        this._espece = "";
-        for (String s : nom) {
-            this._espece += s + " ";
-        }
     }
 
     public void position(int pos1, int pos2)
@@ -217,6 +211,6 @@ public class Monstre implements Vivant {
 
     @Override
     public String toString() {
-        return this._espece;
+        return this._espece + " " + this._numero;
     }
 }
