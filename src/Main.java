@@ -95,7 +95,7 @@ public class Main {
             if (donjon == null)
             {
                 CreationDonjonDefault creaDj = new CreationDonjonDefault();
-                System.out.println("\n\nVoulez-vous créer un donjon aléatoirement ? (o/n)");
+                System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
                 String choix = sc.nextLine();
                 if (choix.equals("o")) {
                     donjon = creaDj.donjonRandom();

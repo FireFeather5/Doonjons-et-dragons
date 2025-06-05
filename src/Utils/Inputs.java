@@ -28,7 +28,7 @@ public class Inputs {
 
     public Donjon creationDonjon(MJ mj)
     {
-        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, le donjon par défaut sera utilisé)");
+        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)");
         String choix = sc.nextLine();
         if (choix.equals("o"))
         {
