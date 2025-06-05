@@ -28,7 +28,8 @@ public class Actions {
     public StatusDonjon actionPerso(Donjon DJ, Personnage perso)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
-        //doit pouvoir etre amélioré mais fonctionne pour le moment
+
+        System.out.println("peur ram : " + perso.peutRam());
         if (perso.peutRam())
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
@@ -38,12 +39,19 @@ public class Actions {
 
                     switch (choix) {
                         case 0:
-                            int[] pos = _input.choixCase("où se déplacer");
-                            perso.seDeplacer(DJ, pos);
+                            boolean test = false;
+                            while(!test) {
+                                int[] pos = _input.choixCase("où se déplacer");
+                                test = perso.seDeplacer(DJ, pos);
+                            }
                             break;
                         case 1:
-                            int[] posAtt = _input.choixCase("à attaquer");
-                            val = perso.attaquer(DJ, posAtt);
+                            val = StatusDonjon.ERREUR_CHOIX_CASE;
+                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                            {
+                                int[] posAtt = _input.choixCase("à attaquer");
+                                val = perso.attaquer(DJ, posAtt);
+                            }
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -71,12 +79,19 @@ public class Actions {
 
                     switch (choix) {
                         case 0:
-                            int[] pos = _input.choixCase("où se déplacer");
-                            perso.seDeplacer(DJ, pos);
+                            boolean test = false;
+                            while(!test) {
+                                int[] pos = _input.choixCase("où se déplacer");
+                                test = perso.seDeplacer(DJ, pos);
+                            }
                             break;
                         case 1:
-                            int[] posAtt = _input.choixCase("à attaquer");
-                            val = perso.attaquer(DJ, posAtt);
+                            val = StatusDonjon.ERREUR_CHOIX_CASE;
+                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                            {
+                                int[] posAtt = _input.choixCase("à attaquer");
+                                val = perso.attaquer(DJ, posAtt);
+                            }
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -104,12 +119,19 @@ public class Actions {
                     int choix = Integer.parseInt(sc.nextLine());
                     switch (choix) {
                         case 0:
-                            int[] pos = _input.choixCase("où se déplacer");
-                            perso.seDeplacer(DJ, pos);
+                            boolean test = false;
+                            while(!test) {
+                                int[] pos = _input.choixCase("où se déplacer");
+                                test = perso.seDeplacer(DJ, pos);
+                            }
                             break;
                         case 1:
-                            int[] posAtt = _input.choixCase("à attaquer");
-                            val = perso.attaquer(DJ, posAtt);
+                            val = StatusDonjon.ERREUR_CHOIX_CASE;
+                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                            {
+                                int[] posAtt = _input.choixCase("à attaquer");
+                                val = perso.attaquer(DJ, posAtt);
+                            }
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);
@@ -134,12 +156,19 @@ public class Actions {
                     int choix = Integer.parseInt(sc.nextLine());
                     switch (choix) {
                         case 0:
-                            int[] pos = _input.choixCase("où se déplacer");
-                            perso.seDeplacer(DJ, pos);
+                            boolean test = false;
+                            while(!test) {
+                                int[] pos = _input.choixCase("où se déplacer");
+                                test = perso.seDeplacer(DJ, pos);
+                            }
                             break;
                         case 1:
-                            int[] posAtt = _input.choixCase("à attaquer");
-                            val = perso.attaquer(DJ, posAtt);
+                            val = StatusDonjon.ERREUR_CHOIX_CASE;
+                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                            {
+                                int[] posAtt = _input.choixCase("à attaquer");
+                                val = perso.attaquer(DJ, posAtt);
+                            }
                             break;
                         case 2:
                             Equipement equip = _input.equiperEquip(perso);

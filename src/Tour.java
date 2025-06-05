@@ -79,22 +79,48 @@ public class Tour {
                             val = StatusDonjon.NORMAL;
                         }
 
+                        if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
+                            String comm = "o";
 
-                        System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
-                        String comm = sc.nextLine();
-                        while (comm != "n")
+                            while (!comm.equals("n"))
+                            {
+                                System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
+                                comm = sc.nextLine();
+
+                                if (comm.equals("o"))
+                                {
+                                    _input.persoCommenteAction((Personnage) _vivTri.get(j));
+                                    comm = "n";
+                                }
+                                else if (comm.equals("mj"))
+                                {
+                                    _input.mjCommenteAction(_mj);
+                                    comm = "n";
+                                }
+                                else if (!comm.equals("n"))
+                                {
+                                    System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                                }
+                            }
+                        }
+                        else
                         {
-                            if (comm.equals("o"))
+                            String comm = "o";
+
+                            while (!comm.equals("n"))
                             {
-                                _input.persoCommenteAction((Personnage) _vivTri.get(j));
-                            }
-                            else if (comm.equals("mj"))
-                            {
-                                _input.mjCommenteAction(_mj);
-                            }
-                            else
-                            {
-                                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                                System.out.println("\nVoulez-vous commenter l'action précédente ?\n(mj/n)");
+                                comm = sc.nextLine();
+
+                                if (comm.equals("mj"))
+                                {
+                                    _input.mjCommenteAction(_mj);
+                                    comm = "n";
+                                }
+                                else if (!comm.equals("n"))
+                                {
+                                    System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                                }
                             }
                         }
 

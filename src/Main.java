@@ -51,31 +51,41 @@ public class Main {
             System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = sc.nextLine();
 
-            if (choix.equals("o"))
+            while (!choix.equals("n"))
             {
-                Equipement equip = _input.equiperEquip(pers);
-                pers.sEquiper(equip);
+                if (choix.equals("o"))
+                {
+                    Equipement equip = _input.equiperEquip(pers);
+                    pers.sEquiper(equip);
 
-                System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
-                String choixx = sc.nextLine();
-                if (choixx.equals("o"))
-                {
-                    Equipement equipe = _input.equiperEquip(pers);
-                    pers.sEquiper(equipe);
+                    System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
+                    String choixx = sc.nextLine();
+
+                    while (!choixx.equals("n"))
+                    {
+                        if (choixx.equals("o"))
+                        {
+                            Equipement equipe = _input.equiperEquip(pers);
+                            pers.sEquiper(equipe);
+                            choixx = "n";
+                        }
+                        else
+                        {
+                            System.out.println(cl.rouge() + "Mauvaise valeur rentrée." + cl.reset());
+                            System.out.println("Recommencez");
+                            choixx = sc.nextLine();
+                        }
+                    }
+                    choix = "n";
                 }
-                else if (!choixx.equals("n"))
+                else
                 {
-                    System.out.println(cl.rouge() + "Mauvaise valeur rentrée. hu" + cl.reset());
+                    System.out.println(cl.rouge() + "Mauvaise valeur rentrée." + cl.reset());
                     System.out.println("Recommencez");
                     choix = sc.nextLine();
                 }
             }
-            else if (!choix.equals("n"))
-            {
-                System.out.println(cl.rouge() + "Mauvaise valeur rentrée. ho" + cl.reset());
-                System.out.println("Recommencez");
-                choix = sc.nextLine();
-            }
+
             Pers.add(pers);
         }
 
