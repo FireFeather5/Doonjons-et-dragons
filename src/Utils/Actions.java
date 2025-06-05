@@ -5,8 +5,6 @@ import entite.Monstre;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
 import entite.personnages.Personnage;
-import entite.personnages.classes.Clerc;
-import entite.personnages.classes.Magicien;
 import sort.BoogieWoogie;
 import sort.Guerison;
 import sort.Sort;
@@ -32,27 +30,27 @@ public class Actions {
         if (perso.peutRam())
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
-                System.out.println("\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3\nRamasser : 4");
+                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts\n5- Ramasser");
                 try {
                     int choix = Integer.parseInt(sc.nextLine());
 
                     switch (choix) {
-                        case 0:
+                        case 1:
                             int[] pos = _input.choixCase("où se déplacer");
                             perso.seDeplacer(DJ, pos);
                             break;
-                        case 1:
+                        case 2:
                             int[] posAtt = _input.choixCase("à attaquer");
                             val = perso.attaquer(DJ, posAtt);
                             break;
-                        case 2:
+                        case 3:
                             Equipement equip = _input.equiperEquip(perso);
                             perso.sEquiper(equip);
                             break;
-                        case 3:
+                        case 4:
                             lancerSort(DJ, perso);
                             break;
-                        case 4:
+                        case 5:
                             perso.ramasser(DJ);
                             break;
                         default:
@@ -65,24 +63,24 @@ public class Actions {
                 }
             }
             else {
-                System.out.println("\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nRamasser : 3");
+                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Ramasser");
                 try {
                     int choix = Integer.parseInt(sc.nextLine());
 
                     switch (choix) {
-                        case 0:
+                        case 1:
                             int[] pos = _input.choixCase("où se déplacer");
                             perso.seDeplacer(DJ, pos);
                             break;
-                        case 1:
+                        case 2:
                             int[] posAtt = _input.choixCase("à attaquer");
                             val = perso.attaquer(DJ, posAtt);
                             break;
-                        case 2:
+                        case 3:
                             Equipement equip = _input.equiperEquip(perso);
                             perso.sEquiper(equip);
                             break;
-                        case 3:
+                        case 4:
                             perso.ramasser(DJ);
                             break;
                         default:
@@ -98,24 +96,24 @@ public class Actions {
         else
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
-                System.out.println("\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3");
+                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts");
 
                 try {
                     int choix = Integer.parseInt(sc.nextLine());
                     switch (choix) {
-                        case 0:
+                        case 1:
                             int[] pos = _input.choixCase("où se déplacer");
                             perso.seDeplacer(DJ, pos);
                             break;
-                        case 1:
+                        case 2:
                             int[] posAtt = _input.choixCase("à attaquer");
                             val = perso.attaquer(DJ, posAtt);
                             break;
-                        case 2:
+                        case 3:
                             Equipement equip = _input.equiperEquip(perso);
                             perso.sEquiper(equip);
                             break;
-                        case 3:
+                        case 4:
                             lancerSort(DJ, perso);
                             break;
                         default:
@@ -128,20 +126,20 @@ public class Actions {
                 }
             }
             else {
-                System.out.println("\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2");
+                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper");
 
                 try {
                     int choix = Integer.parseInt(sc.nextLine());
                     switch (choix) {
-                        case 0:
+                        case 1:
                             int[] pos = _input.choixCase("où se déplacer");
                             perso.seDeplacer(DJ, pos);
                             break;
-                        case 1:
+                        case 2:
                             int[] posAtt = _input.choixCase("à attaquer");
                             val = perso.attaquer(DJ, posAtt);
                             break;
-                        case 2:
+                        case 3:
                             Equipement equip = _input.equiperEquip(perso);
                             perso.sEquiper(equip);
                             break;
@@ -164,7 +162,7 @@ public class Actions {
             int choix = 1;
             System.out.println("Liste des sorts :");
             for (Sort sort : person.getSorts()) {
-                System.out.println(choix++ + ". " + sort.getNom() + " : " + sort.getDescription());
+                System.out.println(choix++ + "- " + sort.getNom() + " : " + sort.getDescription());
             }
             System.out.println("Lequel voulez-vous lancer ?");
             try {
@@ -231,12 +229,12 @@ public class Actions {
                                 System.out.println("Personnage : " + perso.toString());
                                 for (Equipement equipement : perso.getStock()) {
                                     if (equipement instanceof Arme) {
-                                        System.out.println("\t" + choixArme++ + ". " + equipement.getName());
+                                        System.out.println("\t" + choixArme++ + "- " + equipement.getName());
                                     }
                                 }
                                 for (Equipement equipement : perso.getEquipees()) {
                                     if (equipement instanceof Arme) {
-                                        System.out.println("\t" + choixArme++ + ". " + "(Equipée) " + equipement.getName());
+                                        System.out.println("\t" + choixArme++ + "- " + "(Equipée) " + equipement.getName());
                                     }
                                 }
                             }
@@ -296,16 +294,16 @@ public class Actions {
     public StatusDonjon actionMonstre(Donjon DJ, Monstre mons)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
-        System.out.println("\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1");
+        System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
         try {
             int choix = Integer.parseInt(sc.nextLine());
 
             switch (choix) {
-                case 0:
+                case 1:
                     int[] pos = _input.choixCase("où se déplacer");
                     mons.seDeplacer(DJ, pos);
                     break;
-                case 1:
+                case 2:
                     int[] posAtt = _input.choixCase("à attaquer");
                     val = mons.attaquer(DJ, posAtt);
                     break;
@@ -331,14 +329,14 @@ public class Actions {
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\n\n\nQue veut faire le Maitre du Jeu ?");
-        System.out.println("0- Ne rien faire\n1- Déplacer un joueur/monstre\n2- Faire ds dégats à un joueur/monstre\n3- Ajouter des obstacles");
+        System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire ds dégats à un joueur/monstre\n4- Ajouter des obstacles");
         try {
             int choix = Integer.parseInt(sc.nextLine());
             switch (choix) {
-                case 1:
+                case 2:
                     _input.depViv(DJ, mj);
                     break;
-                case 2:
+                case 3:
                     System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
                     String infDgt = sc.nextLine();
                     if (infDgt.equals("j") || infDgt.equals("joueur")) {
@@ -347,7 +345,7 @@ public class Actions {
                         val = _input.degatMonstre(DJ, mj);
                     }
                     break;
-                case 3:
+                case 4:
                     _input.ajoutObstacle(DJ, mj);
                     break;
                 default:

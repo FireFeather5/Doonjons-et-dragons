@@ -190,7 +190,7 @@ public class Inputs {
 
     public int[] choixCase(String context)
     {
-        System.out.println("\n\nChoisir la case " + context + _cl.cyan() + "[lettre][nombre]" + _cl.reset());
+        System.out.println("\n\nChoisir la case " + context + _cl.cyan() + " [lettre][nombre]" + _cl.reset());
         String pos = sc.nextLine();
 
         return positionCase(pos);
@@ -215,7 +215,7 @@ public class Inputs {
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "[lettre][nombre]" + _cl.reset());
+            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + " [lettre][nombre]" + _cl.reset());
             return null;
         }
     }
