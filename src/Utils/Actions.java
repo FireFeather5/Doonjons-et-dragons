@@ -28,7 +28,8 @@ public class Actions {
     public StatusDonjon actionPerso(Donjon DJ, Personnage perso)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
-        //doit pouvoir etre amélioré mais fonctionne pour le moment
+
+        System.out.println("peur ram : " + perso.peutRam());
         if (perso.peutRam())
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {

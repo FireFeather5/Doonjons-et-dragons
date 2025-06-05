@@ -36,7 +36,7 @@ public class Personnage implements Vivant {
     private final Position _pos;
 
     private Equipement _peutRamEqu = null;
-    private boolean _peutRamasser = false;
+    private boolean _peutRamasser;
 
     private final ArrayList<Equipement> _stock;
     private final ArrayList<Equipement> _equipee;
@@ -73,6 +73,8 @@ public class Personnage implements Vivant {
 
         _stock.addAll(_classe.getEquiBase());
 
+        _peutRamasser = false;
+
 
         if (_classe.getCla().equals("Clerc")) {
             this._sorts.add(new Guerison());
@@ -93,25 +95,24 @@ public class Personnage implements Vivant {
 
     public void seDeplacer(Donjon DJ, int[] pos)
     {
-        /*System.out.println("\nChoisir une case où se déplacer [lettre][nombre]");
-        String dep = sc.nextLine();*/
-
         try {
             int distDep = _stats.retVit() / 3;
 
             int[] posOld = getPos();
 
             if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
-                boolean val = DJ.positionPersonnage(pos, this);
+
                 if (!_peutRamasser) {
+                    boolean val = DJ.positionPersonnage(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         System.out.println("Déplacement effectué");
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        seDeplacer(DJ, pos);
+                        //seDeplacer(DJ, pos);
                     }
                 } else {
+                    boolean val = DJ.positionPersonnage(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case
@@ -120,16 +121,16 @@ public class Personnage implements Vivant {
                         _peutRamEqu = null;
                     } else {
                         System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        seDeplacer(DJ, pos);
+                        //seDeplacer(DJ, pos);
                     }
                 }
             } else {
                 System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                seDeplacer(DJ, pos);
+                //seDeplacer(DJ, pos);
             }
         }
         catch (NullPointerException erreur) {
-            seDeplacer(DJ, pos);
+            //seDeplacer(DJ, pos);
         }
     }
 
@@ -150,19 +151,27 @@ public class Personnage implements Vivant {
         }
     }
 
-    public void sEquiper(Equipement equipement) {
-        if (equipement != null) {
-            if (this._stock.contains(equipement)) {
-                if (equipement.getTypeArm().equals(TypeArme.GUERRE)) {
+    public void sEquiper(Equipement equipement)
+    {
+        if (equipement != null)
+        {
+            if (this._stock.contains(equipement))
+            {
+                if (equipement.getTypeArm() != null && equipement.getTypeArm().equals(TypeArme.GUERRE))
+                {
                     this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     this._stats.forc(_stats.retFor() + equipement.getForceBonus());
-                } else if (equipement.getTypeEquip().equals(TypeEquipement.ARMURE)) {
+                }
+                else if (equipement.getTypeEquip().equals(TypeEquipement.ARMURE))
+                {
                     _stats.arm(((Armure) equipement).getArmorClass());
-                    if (equipement.getTypeArmur().equals(TypeArmure.LOURDE)) {
+                    if (equipement.getTypeArmur().equals(TypeArmure.LOURDE))
+                    {
                         this._stats.vit(_stats.retVit() - equipement.getSpeedMalus());
                     }
                 }
-                for (Equipement equip : this._equipee) {
+                for (Equipement equip : this._equipee)
+                {
                     if (equip.getTypeEquip().equals(TypeEquipement.ARME) && equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
                         this.seDesequiper(equip);
                         break;
@@ -260,6 +269,7 @@ public class Personnage implements Vivant {
 
     public void peutRamasser(Equipement equip)
     {
+        System.out.println("Je peux ramasser un objet!");
         _peutRamEqu = equip;
         _peutRamasser = true;
     }
