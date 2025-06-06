@@ -36,13 +36,19 @@ public class Actions {
                 System.out.println("\nChoisir une action :\nSe déplacer : 0\nAttaquer : 1\nS'équiper : 2\nSorts : 3\nRamasser : 4");
                 try {
                     int choix = Integer.parseInt(sc.nextLine());
+                    boolean test = false;
 
                     switch (choix) {
                         case 0:
-                            boolean test = false;
                             while(!test) {
                                 int[] pos = _input.choixCase("où se déplacer");
                                 test = perso.seDeplacer(DJ, pos);
+                                if (test) {
+                                    System.out.println("Déplacement effectué");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                                }
                             }
                             break;
                         case 1:
@@ -54,8 +60,16 @@ public class Actions {
                             }
                             break;
                         case 2:
-                            Equipement equip = _input.equiperEquip(perso);
-                            perso.sEquiper(equip);
+                            while(!test) {
+                                Equipement equip = _input.equiperEquip(perso);
+                                test = perso.sEquiper(equip);
+                                if (test) {
+                                    System.out.println(equip.getName() + " à bien été équipé");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                                }
+                            }
                             break;
                         case 3:
                             lancerSort(DJ, perso);

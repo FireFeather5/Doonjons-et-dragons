@@ -644,14 +644,14 @@ ArmureLegere -up-|> Armure
 ArmureLourde -up-|> Armure
 
 'bug
-'Donjon "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'CreaPerso "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Personnage "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Monstre "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Tour "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Actions "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Inputs "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
-'MJ "*" *--> "1\n_cl" Couleurs : couleurs de l'affichage >
+'Donjon "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'CreaPerso "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'Personnage "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'Monstre "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'Tour "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'Actions "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'Inputs "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
+'MJ "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
 
 CreationDonjonDefault "*" *--> "1\n_input" Inputs : entrées utilisateur >
 Personnage "*" *--> "1\n_input" Inputs : entrées utilisateur >

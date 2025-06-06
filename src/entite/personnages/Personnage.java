@@ -106,10 +106,8 @@ public class Personnage implements Vivant {
                     boolean val = DJ.positionPersonnage(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        System.out.println("Déplacement effectué");
                         return true;
                     } else {
-                        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
                         return false;
                     }
                 } else {
@@ -117,16 +115,14 @@ public class Personnage implements Vivant {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case
-                        System.out.println("Déplacement effectué");
+
                         _peutRamasser = false;
                         _peutRamEqu = null;
                     } else {
-                        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
                         return false;
                     }
                 }
             } else {
-                System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
                 return false;
             }
         }
@@ -153,7 +149,7 @@ public class Personnage implements Vivant {
         }
     }
 
-    public void sEquiper(Equipement equipement)
+    public boolean sEquiper(Equipement equipement)
     {
         if (equipement != null)
         {
@@ -184,14 +180,14 @@ public class Personnage implements Vivant {
                 }
                 this._equipee.add(equipement);
                 this._stock.remove(equipement);
-                System.out.println(equipement.getName() + " à bien été équipé");
+                return true;
             } else {
-                System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                return false;
             }
         }
         else
         {
-            System.out.println(_cl.rouge() + "\nIl n'y a pas d'équipement à equiper." + _cl.reset());
+            return false;
         }
     }
 
@@ -202,7 +198,6 @@ public class Personnage implements Vivant {
         Arme arme = getArmeEquipe();
 
         if (arme != null) {
-            System.out.print("\n");
             this._deChar.changeDe(1, 20);
             int touche;
             int tou;
@@ -218,7 +213,8 @@ public class Personnage implements Vivant {
                 int detou = this._deChar.roll() + arme.getBonusMagique();
                 touche += detou;
                 Monstre mons = DJ.getMons(posAtt);
-                if (mons != null) {
+                if (mons != null)
+                {
                     if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange())))) {
                         if (touche > mons.getArmorClass()) {
                             System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
