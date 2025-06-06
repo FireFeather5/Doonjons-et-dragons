@@ -1,8 +1,6 @@
 package entite;
 
-import utils.StatusDonjon;
-import utils.Couleurs;
-import utils.TypeVivant;
+import utils.*;
 import de.De;
 import entite.personnages.*;
 import donjon.Donjon;
@@ -22,6 +20,8 @@ public class Monstre implements Vivant {
     private final Position _pos;
     private final De _deChar;
 
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
+
     public Monstre(String espece, String symb, int portAtt, De degAtt, De charac)
     {
         _deChar = charac;
@@ -33,26 +33,26 @@ public class Monstre implements Vivant {
         _pos = new Position();
         _stats = new Stats();
 
-        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + _espece + " =====" + _cl.reset());
-        System.out.println("\nLancement d'un dé pour les points de vie.");
+        _affichage.afficherJaune(true, "\n\n===== initialisation monstre " + _espece + " =====");
+        _affichage.afficher(true, "\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
-        System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique de vitesse.");
         _stats.vit(_deChar.roll());
-        System.out.println("\nLancement d'un dé pour la caractéristique d'initiative.");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique d'initiative.");
         _stats.ini(_deChar.roll());
-        System.out.println("\nLancement d'un dé pour la caractéristique d'armure.");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique d'armure.");
         _stats.arm(_deChar.roll());
 
         if (_portAtt == 1)
         {
             _stats.dex(0);
-            System.out.println("\nLancement d'un dé pour la caractéristique de force.");
+            _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique de force.");
             _stats.forc(_deChar.roll());
         }
         else
         {
             _stats.forc(0);
-            System.out.println("\nLancement d'un dé pour la caractéristique de dextérité.");
+            _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique de dextérité.");
             _stats.dex(_deChar.roll());
         }
     }
@@ -75,11 +75,11 @@ public class Monstre implements Vivant {
         if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
             if (DJ.positionVivant(pos, this)) {
                 DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
-                System.out.println("Déplacement effectué");
+                _affichage.afficher(true, "Déplacement effectué");
                 return true;
             }
         }
-        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+        _affichage.afficherRouge(true, "Problème dans le choix de la case");
         return false;
     }
 
@@ -87,7 +87,7 @@ public class Monstre implements Vivant {
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.print("\n");
+        _affichage.afficher(true);
         this._deChar.changeDe(1, 20);
 
         try {
@@ -98,24 +98,24 @@ public class Monstre implements Vivant {
                     // (évite un if else)
                     int detou = this._deChar.roll();
                     int touche = detou + _stats.retFor() + _stats.retDex();
-                    System.out.println(this + " perce l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ").");
+                    _affichage.afficher(true, this, " perce l'armure de ", pers, " (jet de touche : ", (_stats.retFor() + _stats.retDex()), " + ", detou, " = ", touche + ").");
                     if (touche > pers.getArmorClass()) {
                         int atk = this._degAtt.roll();
-                        System.out.println(this + " fait " + atk + " dégats à " + pers + " !");
+                        _affichage.afficher(true, this, " fait ", atk, " dégats à ", pers, " !");
                         val = pers.seFaitAttaquer(atk, DJ);
                     } else {
-                        System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ")");
+                        _affichage.afficher(true, this, " ne perce pas l'armure de ", pers, " (jet de touche : ", (_stats.retFor() + _stats.retDex()), " + ", detou, " = ", touche, ")");
                     }
                 } else {
-                    System.out.println(this + " n'a pas une portée suffisante");
+                    _affichage.afficher(true, this, " n'a pas une portée suffisante");
                 }
             } else {
-                System.out.println(_cl.rouge() + "Il n'y a pas de personnage à attaquer sur cette case." + _cl.reset());
+                _affichage.afficherRouge(true, "Il n'y a pas de personnage à attaquer sur cette case.");
             }
         }
         catch (ArrayIndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nAttaquer en dehors du donjon n'est pas la chose la plus utile..." + _cl.reset());
+            _affichage.afficherRouge(true, "\nAttaquer en dehors du donjon n'est pas la chose la plus utile...");
             return StatusDonjon.ERREUR_CHOIX_CASE;
         }
         return val;
@@ -127,12 +127,12 @@ public class Monstre implements Vivant {
         _stats.pv(pv);
         if (pv <= 0)
         {
-            System.out.println(_cl.rouge() + "\n" + this + " à été achevé." + _cl.reset());
+            _affichage.afficherRouge(true, "\n", this, " à été achevé.");
             val = DJ.tuerMonstre(this);
         }
         else
         {
-            System.out.println("\n" + this + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
+            _affichage.afficher(true, "\n", this, " n'a plus que ", _stats.retPv(), "/", _stats.retPvT(), " PV.");
         }
         return val;
     }
@@ -143,11 +143,11 @@ public class Monstre implements Vivant {
     }
 
     public String getStat() {
-        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _cl.jaune("\n\n===== " + this + " =====\n") + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos() {
-        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _cl.jaune("\n\n===== " + this + " =====\n") + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getLilInfos()

@@ -15,10 +15,10 @@ import java.util.Scanner;
 
 public class Actions {
 
-    private final Couleurs _cl = new Couleurs();
     private final Inputs _input = new Inputs();
 
     private final Scanner sc = new Scanner(System.in);
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public Actions()
     {
@@ -29,11 +29,11 @@ public class Actions {
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("peu ram : " + perso.peutRam());
+        _affichage.afficher(true, "peu ram : ", perso.peutRam());
         if (perso.peutRam())
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts\n5- Ramasser");
+                _affichage.afficher(true, "\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts\n5- Ramasser");
                 try {
                     int choix = sc.nextInt();
                     sc.nextLine();
@@ -65,17 +65,17 @@ public class Actions {
                             perso.ramasser(DJ);
                             break;
                         default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                            _affichage.afficherRouge(true, "Mauvais choix d'action");
                             actionPerso(DJ, perso);
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais choix d'action");
                     sc.nextLine();
                     actionPerso(DJ, perso);
                 }
             }
             else {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Ramasser");
+                _affichage.afficher(true, "\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Ramasser");
                 try {
                     int choix = sc.nextInt();
                     sc.nextLine();
@@ -104,11 +104,11 @@ public class Actions {
                             perso.ramasser(DJ);
                             break;
                         default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                            _affichage.afficherRouge(true, "Mauvais choix d'action");
                             actionPerso(DJ, perso);
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais choix d'action");
                     sc.nextLine();
                     actionPerso(DJ, perso);
                 }
@@ -117,7 +117,7 @@ public class Actions {
         else
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts");
+                _affichage.afficher(true, "\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts");
 
                 try {
                     int choix = sc.nextInt();
@@ -146,17 +146,17 @@ public class Actions {
                             lancerSort(DJ, perso);
                             break;
                         default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                            _affichage.afficherRouge(true, "Mauvais choix d'action");
                             actionPerso(DJ, perso);
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais choix d'action");
                     sc.nextLine();
                     actionPerso(DJ, perso);
                 }
             }
             else {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper");
+                _affichage.afficher(true, "\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper");
 
                 try {
                     int choix = sc.nextInt();
@@ -182,11 +182,11 @@ public class Actions {
                             perso.sEquiper(equip);
                             break;
                         default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                            _affichage.afficherRouge(true, "Mauvais choix d'action");
                             actionPerso(DJ, perso);
                     }
                 } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais choix d'action");
                     sc.nextLine();
                     actionPerso(DJ, perso);
                 }
@@ -199,11 +199,11 @@ public class Actions {
     public void lancerSort(Donjon DJ, Personnage person) {
         if (!person.getSorts().isEmpty()) {
             int choix = 1;
-            System.out.println("Liste des sorts :");
+            _affichage.afficher(true, "Liste des sorts :");
             for (Sort sort : person.getSorts()) {
-                System.out.println(choix++ + "- " + sort.getNom() + " : " + sort.getDescription());
+                _affichage.afficher(true, choix++, "- ", sort.getNom(), " : ", sort.getDescription());
             }
-            System.out.println("Lequel voulez-vous lancer ?");
+            _affichage.afficher(true, "Lequel voulez-vous lancer ?");
             try {
                 choix = sc.nextInt();
                 sc.nextLine();
@@ -211,7 +211,7 @@ public class Actions {
                     if (choix == 1) {
                         int choixPerso = 1;
                         for (Personnage perso : DJ.getListePerso()) {
-                            System.out.println(choixPerso + ". " + perso.toString());
+                            _affichage.afficher(true, choixPerso, ". ", perso.toString());
                         }
                         choixPerso = sc.nextInt();
                         sc.nextLine();
@@ -226,10 +226,10 @@ public class Actions {
                         case 1:
                             int choixPerso = 1;
                             for (Personnage perso : DJ.getListePerso()) {
-                                System.out.println("\t" + choixPerso + ". " + perso.toString());
+                                _affichage.afficher(true, "\t", choixPerso, ". ", perso.toString());
                                 choixPerso++;
                             }
-                            System.out.println("Choisissez un allie a soigner :");
+                            _affichage.afficher(true, "Choisissez un allie a soigner :");
                             choixPerso = sc.nextInt();
                             sc.nextLine();
                             ((Guerison) person.getSorts().getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
@@ -238,19 +238,19 @@ public class Actions {
                             int choixEntite1 = 1;
 
                             for (Personnage perso : DJ.getListePerso()) {
-                                System.out.println("\t" + choixEntite1 + "- " + perso.toString());
+                                _affichage.afficher(true, "\t", choixEntite1, "- ", perso.toString());
                                 choixEntite1++;
                             }
                             int choixEntite2 = choixEntite1;
                             for (Monstre mons : DJ.getListeMonstre()) {
-                                System.out.println("\t" + choixEntite2 + "- " + mons.getNom());
+                                _affichage.afficher(true, "\t", choixEntite2, "- ", mons.getNom());
                                 choixEntite2++;
                             }
 
-                            System.out.println("Choisissez la première entité à téléporter :");
+                            _affichage.afficher(true, "Choisissez la première entité à téléporter :");
                             choixEntite1 = sc.nextInt();
                             sc.nextLine();
-                            System.out.println("Choisissez la deuxième entité à téléporter :");
+                            _affichage.afficher(true, "Choisissez la deuxième entité à téléporter :");
                             choixEntite2 = sc.nextInt();
                             sc.nextLine();
 
@@ -270,19 +270,19 @@ public class Actions {
                         case 3:
                             int choixArme = 1;
                             for (Personnage perso : DJ.getListePerso()) {
-                                System.out.println("Personnage : " + perso.toString());
+                                _affichage.afficher(true, "Personnage : ", perso);
                                 for (Equipement equipement : perso.getStock()) {
                                     if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
-                                        System.out.println("\t" + choixArme++ + "- " + equipement.getName());
+                                        _affichage.afficher(true, "\t", choixArme++, "- ", equipement.getName());
                                     }
                                 }
                                 for (Equipement equipement : perso.getEquipees()) {
                                     if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
-                                        System.out.println("\t" + choixArme++ + "- " + "(Equipée) " + equipement.getName());
+                                        _affichage.afficher(true, "\t", choixArme++, "- ", "(Equipée) ", equipement.getName());
                                     }
                                 }
                             }
-                            System.out.println("Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
+                            _affichage.afficher(true, "Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
                             choixArme = sc.nextInt();
                             sc.nextLine();
                             boolean ok = false;
@@ -322,14 +322,14 @@ public class Actions {
                 }
             }
             catch (Exception e) {
-                System.out.println(_cl.rouge() + "Choix invalide : " + e + _cl.reset());
+                _affichage.afficherRouge(true, "Choix invalide : ", e);
                 sc.nextLine();
                 lancerSort(DJ, person);
             }
 
         }
         else {
-            System.out.println(_cl.rouge() + "Vous n'avez pas de sort..." + _cl.reset());
+            _affichage.afficherRouge(true, "Vous n'avez pas de sort...");
         }
     }
 
@@ -340,7 +340,7 @@ public class Actions {
     public StatusDonjon actionMonstre(Donjon DJ, Monstre mons)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
-        System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
+        _affichage.afficher(true, "\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
         try {
             int choix = sc.nextInt();
             sc.nextLine();
@@ -361,13 +361,13 @@ public class Actions {
                     }
                     break;
                 default:
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais choix d'action");
                     actionMonstre(DJ, mons);
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur)
         {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            _affichage.afficherRouge(true, "Mauvais choix d'action");
             sc.nextLine();
             actionMonstre(DJ, mons);
         }
@@ -382,8 +382,8 @@ public class Actions {
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("\n\n\nQue veut faire le Maitre du Jeu ?");
-        System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire ds dégats à un joueur/monstre\n4- Ajouter des obstacles");
+        _affichage.afficher(true, "\n\n\nQue veut faire le Maitre du Jeu ?");
+        _affichage.afficher(true, "1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire ds dégats à un joueur/monstre\n4- Ajouter des obstacles");
         try {
             int choix = sc.nextInt();
             sc.nextLine(); // askip ca permet de ne pas avoir de bug
@@ -394,7 +394,7 @@ public class Actions {
                     _input.depViv(DJ, mj);
                     break;
                 case 3:
-                    System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
+                    _affichage.afficher(true, "A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
                     String infDgt = sc.nextLine();
                     if (infDgt.equals("j") || infDgt.equals("joueur")) {
                         val = _input.degatPersonnage(DJ, mj);
@@ -406,12 +406,12 @@ public class Actions {
                     _input.ajoutObstacle(DJ, mj);
                     break;
                 default:
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais choix d'action");
                     val = actionMjFinTour(DJ, mj);
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            _affichage.afficherRouge(true, "Mauvais choix d'action");
             sc.nextLine(); // askip ca permet de ne pas avoir de bug
             actionMjFinTour(DJ, mj);
         }

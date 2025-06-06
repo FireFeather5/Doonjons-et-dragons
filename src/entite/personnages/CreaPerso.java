@@ -1,24 +1,24 @@
 package entite.personnages;
 
-import utils.Couleurs;
+import utils.Affichage;
 import entite.personnages.classes.*;
 import entite.personnages.genre.Feminin;
 import entite.personnages.genre.Genre;
 import entite.personnages.genre.Masculin;
 import entite.personnages.races.*;
+import utils.SortieAffichage;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreaPerso {
 
-    private final Couleurs _cl = new Couleurs();
-
     private Races _ra;
     private Classe _cla;
     private Genre _gre;
 
     private final Scanner sc = new Scanner(System.in);
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public CreaPerso()
     {
@@ -26,12 +26,12 @@ public class CreaPerso {
 
     public Personnage CreaPers() {
 
-        System.out.println("\nnom ?");
+        _affichage.afficher(true, "\nnom ?");
         String _nom = sc.nextLine();
         while (_nom.isEmpty())
         {
-            System.out.println(_cl.rouge() + "Le nom ne peut pas être vide!" + _cl.reset());
-            System.out.println("\nnom ?");
+            _affichage.afficherRouge(true, "Le nom ne peut pas être vide!");
+            _affichage.afficher(true, "\nnom ?");
             _nom = sc.nextLine();
         }
 
@@ -43,7 +43,7 @@ public class CreaPerso {
 
     public void Race()
     {
-        System.out.println("""
+        _affichage.afficher(true, """
                \nRace ?
                 1- Elfe
                 2- Halfelin
@@ -70,20 +70,20 @@ public class CreaPerso {
                     break;
                 }
                 default: {
-                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais chiffre choisit.");
                     Race();
                 }
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
+            _affichage.afficherRouge(true, "Mauvais choix de race");
             Race();
         }
     }
 
     public void Classe()
     {
-        System.out.println("""
+        _affichage.afficher(true, """
                 \nClasse ?
                 1- Clerc
                 2- Guerrier
@@ -110,20 +110,20 @@ public class CreaPerso {
                     break;
                 }
                 default: {
-                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais chiffre choisit.");
                     Classe();
                 }
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
+            _affichage.afficherRouge(true, "Mauvais choix de classe");
             Classe();
         }
     }
 
     public void Genre()
     {
-        System.out.println("""
+        _affichage.afficher(true, """
                 \nGenre ?
                 1- Homme
                 2- Femme""");
@@ -140,13 +140,13 @@ public class CreaPerso {
                     break;
                 }
                 default: {
-                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    _affichage.afficherRouge(true, "Mauvais chiffre choisit.");
                     Genre();
                 }
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
+            _affichage.afficherRouge(true, "Mauvais choix de classe");
             Genre();
         }
     }

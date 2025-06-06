@@ -11,9 +11,9 @@ import java.util.ArrayList;
 
 public class MJ {
 
-    private final Couleurs _cl = new Couleurs();
-
     private final ArrayList<String> _monstresCrees = new ArrayList<>();
+
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public MJ()
     {
@@ -23,10 +23,10 @@ public class MJ {
     public Donjon creationDonjon(int[] tailleDj)
     {
         Donjon DJ = new Donjon(tailleDj);
-        System.out.println("Aperçu du donjon :");
+        _affichage.afficher(true, "Aperçu du donjon :");
         DJ.afficherDJ();
 
-        /*System.out.println("\n\nLa taille vous convient-il (o/n) ?");
+        /*_affichage.afficher(true, "\n\nLa taille vous convient-il (o/n) ?");
         if (sc.nextLine().equals("n"))
         {
             _input.creationDonjon(this);
@@ -42,7 +42,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            _affichage.afficherRouge(true, "Erreur dans la selection de la position");
             addObst(DJ, pos);
         }
     }
@@ -67,7 +67,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            _affichage.afficherRouge(true, "Erreur dans la selection de la position");
         }
         return test;
     }
@@ -78,7 +78,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            _affichage.afficherRouge(true, "Erreur dans la selection de la position");
             this.posM(DJ, mons, pos);
         }
     }
@@ -89,19 +89,19 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            _affichage.afficherRouge(true, "Erreur dans la selection de la position");
             this.posEquip(DJ, equip, pos);
         }
     }
 
     public void presContext(String context)
     {
-        System.out.println("MJ - " + context);
+        _affichage.afficher(true, "MJ - ", context);
     }
 
     public void comAction(String commentaire)
     {
-        System.out.println("MJ - " + commentaire);
+        _affichage.afficher(true, "MJ - ", commentaire);
     }
 
 
@@ -114,14 +114,14 @@ public class MJ {
 
     public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt) {
 
-        System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix));
+        _affichage.afficher(true, "Le Utils.MJ inflige ", dgt, " a ", DJ.getListePerso().get(choix));
 
         return DJ.getListePerso().get(choix).seFaitAttaquer(dgt, DJ);
     }
 
     public StatusDonjon degatMonstre(Donjon DJ, int choix, int dgt) {
 
-        System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix));
+        _affichage.afficher(true, "Le Utils.MJ inflige ", dgt, " a ", DJ.getListeMonstre().get(choix));
 
         return DJ.getListeMonstre().get(choix).seFaitAttaquer(dgt, DJ);
     }

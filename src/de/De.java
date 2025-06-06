@@ -1,5 +1,8 @@
 package de;
 
+import utils.Affichage;
+import utils.SortieAffichage;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -10,6 +13,7 @@ public class De {
     private int _faces;
 
     private final Scanner _scanner = new Scanner(System.in);
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public De() {
         _name = "1d6";
@@ -35,9 +39,9 @@ public class De {
         for (int i = 0; i < this._number; i++) {
             total += rand.nextInt(1, this._faces + 1);
         }
-        System.out.println("\nappuyez sur entrée pour lancer " + _name);
+        _affichage.afficher(false, "\nappuyez sur entrée pour lancer " + _name);
         _scanner.nextLine();
-        System.out.println("Vous avez fait " + total);
+        _affichage.afficher(false, "Vous avez fait " + total);
 
         return total;
     }

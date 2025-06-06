@@ -1,19 +1,19 @@
-import utils.Couleurs;
-import utils.MJ;
+import utils.*;
 import donjon.Donjon;
 import entite.personnages.Personnage;
 import entite.Vivant;
-import utils.Setup;
+
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args){
 
+        Affichage aff = new Affichage(SortieAffichage.CONSOLE);
+
         Setup setup = new Setup();
-        Couleurs cl = new Couleurs();
         MJ mj = new MJ();
 
-        System.out.println(cl.rouge() + "Bienvenue dans DOOnjon et Dragons" + cl.reset());
+        aff.afficherRouge(true, "Bienvenue dans DOOnjon et Dragons");
 
         //                     Crea persos
         ArrayList<Personnage> Pers = new ArrayList<>(setup.setupPersonnages());

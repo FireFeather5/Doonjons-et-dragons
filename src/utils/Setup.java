@@ -16,9 +16,9 @@ public class Setup {
     private int _nbEtreVivants;
     private final ArrayList<Vivant> _etreVivants = new ArrayList<>();
     private final Inputs _inputs = new Inputs();
-    private final Couleurs _couleur = new Couleurs();
     private final MJ _mj = new MJ();
     private final Scanner _scanner = new Scanner(System.in);
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public Setup() {}
 
@@ -26,15 +26,15 @@ public class Setup {
         ArrayList<Personnage> personnages = new ArrayList<>();
         this._nbPersonnages = 0;
         while (_nbPersonnages == 0) {
-            System.out.println("\nCombien de personnages voulez-vous créer ?");
+            _affichage.afficher(true, "\nCombien de personnages voulez-vous créer ?");
             try {
                 _nbPersonnages = _scanner.nextInt();
                 _scanner.nextLine();
                 if (_nbPersonnages == 0) {
-                    System.out.println(_couleur.rouge() + "\nIl doit y avoir au moins un personnage !" + _couleur.reset());
+                    _affichage.afficherRouge(true, "\nIl doit y avoir au moins un personnage !");
                 }
             } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                System.out.println(_couleur.rouge() + "Mauvaise entrée clavier" + _couleur.reset());
+                _affichage.afficherRouge(true, "Mauvaise entrée clavier");
                 _scanner.nextLine();
             }
         }
@@ -42,22 +42,22 @@ public class Setup {
         CreaPerso createurPersonnage = new CreaPerso();
 
         for (int i = 0; i < _nbPersonnages; i++) {
-            System.out.println("\n\nCréation Personnage " + (i+1));
+            _affichage.afficher(true, "\n\nCréation Personnage ", i+1);
             Personnage personnage = createurPersonnage.CreaPers();
-            System.out.println(personnage.getInfos());
+            _affichage.afficher(true, personnage.getInfos());
 
-            System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
+            _affichage.afficher(true, "\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = _scanner.nextLine();
             while (!choix.equals("n")) {
                 if (choix.equals("o")) {
                     Equipement equip = _inputs.equiperEquip(personnage);
                     personnage.sEquiper(equip);
 
-                    System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
+                    _affichage.afficher(true, "\nVoulez-vous équiper un autre equipement ? (o/n)");
                 }
                 else {
-                    System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. ho" + _couleur.reset());
-                    System.out.println("Recommencez");
+                    _affichage.afficherRouge(true, "Mauvaise valeur rentrée");
+                    _affichage.afficher(true, "Recommencez");
                 }
                 choix = _scanner.nextLine();
             }
@@ -75,7 +75,7 @@ public class Setup {
             _mj.presContext(text);
         }
         catch (NoSuchElementException erreur) {
-            System.out.println(_couleur.rouge() + "Erreur dans le contexte !" + _couleur.reset());
+            _affichage.afficherRouge(true, "Erreur dans le contexte !");
             return setupDonjon(personnages, tour);
         }
 
@@ -83,17 +83,17 @@ public class Setup {
             personnage.regePV();
         }
 
-        System.out.print("\n\n");
-        System.out.println(_couleur.jaune() + "-------------------------------------------------------------------\n");
-        System.out.print("                        Donjon n°" + tour + "\n\n");
-        System.out.println("-------------------------------------------------------------------\n" + _couleur.reset());
+        _affichage.afficher(true, "\n\n");
+        _affichage.afficherJaune(true, "-------------------------------------------------------------------\n");
+        _affichage.afficherJaune(false, "                        Donjon n°", tour, "\n\n");
+        _affichage.afficherJaune(true, "-------------------------------------------------------------------\n");
 
         Donjon donjon  = _inputs.creationDonjon(_mj);
 
         if (donjon == null)
         {
             CreationDonjonDefault createurDonjon = new CreationDonjonDefault();
-            System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
+            _affichage.afficher(true, "\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
             String choix = _scanner.nextLine();
             if (choix.equals("o")) {
                 donjon = createurDonjon.donjonRandom();
@@ -129,7 +129,7 @@ public class Setup {
 
     public ArrayList<Vivant> setupInitiative() {
         for (int j = 0; j < _nbEtreVivants; j++) {
-            System.out.println(_etreVivants.get(j).getStat());
+            _affichage.afficher(true, _etreVivants.get(j).getStat());
         }
 
         De deInitiative = new De(1, 20);
@@ -137,10 +137,10 @@ public class Setup {
         ArrayList<Integer> listeInitiatives = new ArrayList<>();
         ArrayList<Vivant> vivantsTries = new ArrayList<>();
 
-        System.out.println(_couleur.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + _couleur.reset());
+        _affichage.afficherJaune(true, "\n\n===== Choix de l'ordre de jeu =====");
 
         for (int j = 0; j < _nbEtreVivants; j++) {
-            System.out.println("\n" + _etreVivants.get(j).toString() + " : ");
+            _affichage.afficher(true, "\n" + _etreVivants.get(j).toString() + " : ");
             int init = _etreVivants.get(j).getIni();
             init += deInitiative.roll();
 
