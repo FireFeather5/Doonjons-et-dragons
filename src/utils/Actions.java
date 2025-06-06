@@ -28,238 +28,105 @@ public class Actions {
     public StatusDonjon actionPerso(Donjon DJ, Personnage perso)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
+        boolean sort = false;
+        boolean ramasser = false;
 
-        if (perso.peutRam())
+        System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper");
+
+        if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien"))
         {
-            if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts\n5- Ramasser");
-                try {
-                    int choix = sc.nextInt();
-                    sc.nextLine();
-                    boolean ok = false;
-
-                    switch (choix) {
-                        case 1:
-                            while(!ok) {
-                                int[] pos = _input.choixCase("où se déplacer");
-                                ok = perso.seDeplacer(DJ, pos);
-                                if (ok) {
-                                    System.out.println("Déplacement effectué");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 2:
-                            val = StatusDonjon.ERREUR_CHOIX_CASE;
-                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
-                            {
-                                int[] posAtt = _input.choixCase("à attaquer");
-                                val = perso.attaquer(DJ, posAtt);
-                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
-                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 3:
-                            while(!ok) {
-                                Equipement equip = _input.equiperEquip(perso);
-                                ok = perso.sEquiper(equip);
-                                if (ok) {
-                                    System.out.println(equip.getName() + " à bien été équipé");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 4:
-                            lancerSort(DJ, perso);
-                            break;
-                        case 5:
-                            perso.ramasser(DJ);
-                            break;
-                        default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                            actionPerso(DJ, perso);
-                    }
-                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    sc.nextLine();
-                    actionPerso(DJ, perso);
-                }
-            }
-            else {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Ramasser");
-                try {
-                    int choix = sc.nextInt();
-                    sc.nextLine();
-                    boolean ok = false;
-
-                    switch (choix) {
-                        case 1:
-                            while(!ok) {
-                                int[] pos = _input.choixCase("où se déplacer");
-                                ok = perso.seDeplacer(DJ, pos);
-                                if (ok) {
-                                    System.out.println("Déplacement effectué");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 2:
-                            val = StatusDonjon.ERREUR_CHOIX_CASE;
-                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
-                            {
-                                int[] posAtt = _input.choixCase("à attaquer");
-                                val = perso.attaquer(DJ, posAtt);
-                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
-                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 3:
-                            while(!ok) {
-                                Equipement equip = _input.equiperEquip(perso);
-                                ok = perso.sEquiper(equip);
-                                if (ok) {
-                                    System.out.println(equip.getName() + " à bien été équipé");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 4:
-                            perso.ramasser(DJ);
-                            break;
-                        default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                            actionPerso(DJ, perso);
-                    }
-                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    sc.nextLine();
-                    actionPerso(DJ, perso);
-                }
-            }
+            System.out.println("4- Sorts");
+            sort = true;
         }
         else
         {
-            if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper\n4- Sorts");
-
-                try {
-                    int choix = sc.nextInt();
-                    sc.nextLine();
-                    boolean ok = false;
-
-                    switch (choix) {
-                        case 1:
-                            while(!ok) {
-                                int[] pos = _input.choixCase("où se déplacer");
-                                ok = perso.seDeplacer(DJ, pos);
-                                if (ok) {
-                                    System.out.println("Déplacement effectué");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                                }
-                            }
-                        case 2:
-                            val = StatusDonjon.ERREUR_CHOIX_CASE;
-                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
-                            {
-                                int[] posAtt = _input.choixCase("à attaquer");
-                                val = perso.attaquer(DJ, posAtt);
-                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
-                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 3:
-                            while(!ok) {
-                                Equipement equip = _input.equiperEquip(perso);
-                                ok = perso.sEquiper(equip);
-                                if (ok) {
-                                    System.out.println(equip.getName() + " à bien été équipé");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 4:
-                            lancerSort(DJ, perso);
-                            break;
-                        default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                            actionPerso(DJ, perso);
-                    }
-                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    sc.nextLine();
-                    actionPerso(DJ, perso);
-                }
-            }
-            else {
-                System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer\n3- S'équiper");
-
-                try {
-                    int choix = sc.nextInt();
-                    sc.nextLine();
-                    boolean ok = false;
-
-                    switch (choix) {
-                        case 1:
-                            while(!ok) {
-                                int[] pos = _input.choixCase("où se déplacer");
-                                ok = perso.seDeplacer(DJ, pos);
-                                if (ok) {
-                                    System.out.println("Déplacement effectué");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 2:
-                            val = StatusDonjon.ERREUR_CHOIX_CASE;
-                            while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
-                            {
-                                int[] posAtt = _input.choixCase("à attaquer");
-                                val = perso.attaquer(DJ, posAtt);
-                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
-                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
-                                }
-                            }
-                            break;
-                        case 3:
-                            while(!ok) {
-                                Equipement equip = _input.equiperEquip(perso);
-                                ok = perso.sEquiper(equip);
-                                if (ok) {
-                                    System.out.println(equip.getName() + " à bien été équipé");
-                                }
-                                else {
-                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
-                                }
-                            }
-                            break;
-                        default:
-                            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                            actionPerso(DJ, perso);
-                    }
-                } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    sc.nextLine();
-                    actionPerso(DJ, perso);
-                }
-            }
+            System.out.println(_cl.blanc() + "4- Sorts" + _cl.reset());
         }
+
+        if (perso.peutRam())
+        {
+            System.out.println("5- Ramasser");
+            ramasser = true;
+        }
+        else
+        {
+            System.out.println(_cl.blanc() + "5- Ramasser" + _cl.reset());
+        }
+
+        try
+        {
+            int choix = sc.nextInt();
+            sc.nextLine();
+            boolean ok = false;
+
+            switch (choix) {
+                case 1:
+                    while(!ok) {
+                        int[] pos = _input.choixCase("où se déplacer");
+                        ok = perso.seDeplacer(DJ, pos);
+                        if (ok) {
+                            System.out.println("Déplacement effectué");
+                        }
+                        else {
+                            System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                        }
+                    }
+                    break;
+                case 2:
+                    val = StatusDonjon.ERREUR_CHOIX_CASE;
+                    while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                    {
+                        int[] posAtt = _input.choixCase("à attaquer");
+                        val = perso.attaquer(DJ, posAtt);
+                        if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                            System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                        }
+                    }
+                    break;
+                case 3:
+                    while(!ok) {
+                        Equipement equip = _input.equiperEquip(perso);
+                        ok = perso.sEquiper(equip);
+                        if (ok) {
+                            System.out.println(equip.getName() + " à bien été équipé");
+                        }
+                        else {
+                            System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                        }
+                    }
+                    break;
+                case 4:
+                    if (sort)
+                    {
+                        lancerSort(DJ, perso);
+                    }
+                    else
+                    {
+                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                        actionPerso(DJ, perso);
+                    }
+                    break;
+                case 5:
+                    if (ramasser)
+                    {
+                        perso.ramasser(DJ);
+                    }
+                    else
+                    {
+                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                        actionPerso(DJ, perso);
+                    }
+                    break;
+                default:
+                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    actionPerso(DJ, perso);
+            }
+        } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
+            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            sc.nextLine();
+            actionPerso(DJ, perso);
+        }
+
         return val;
     }
 

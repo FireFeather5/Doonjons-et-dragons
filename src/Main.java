@@ -28,12 +28,5 @@ public class Main {
             Tour tr = new Tour(etreVivantsTrie, mj, donjon);
             tr.tour();
         }
-
-
-        //BIEN BLOQUER LES INPUTS A o OU n QUAND DEMANDE (A FAIRE A LA FIN PSQ C'EST LONG DE TT METTRE PR LES TESTS)
-
-        // METTRE QUE DES EQUALS AVEC LES STRINGS !!!!!! CA BUEUGE SINON
-
-
     }
 }

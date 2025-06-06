@@ -386,16 +386,16 @@ public class Inputs {
         }
 
         try {
-            choix = sc.nextInt() - 1;
+            choix = sc.nextInt();
             sc.nextLine();
 
             int dgt = infligerDegats();
 
             if (choix <= choixM) {
-                val = mj.degatMonstre(dj, choix, dgt);
+                val = mj.degatMonstre(dj, choix-1, dgt);
             }
             else {
-                val = mj.degatJoueur(dj, choix, dgt);
+                val = mj.degatJoueur(dj, choix-1, dgt);
             }
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
