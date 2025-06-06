@@ -72,14 +72,15 @@ public class Monstre implements Vivant {
 
         int[] posOld = getPos();
 
-        if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
-            if (DJ.positionVivant(pos, this)) {
+        if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep)))
+        {
+            if (DJ.positionVivant(pos, this))
+            {
                 DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
-                System.out.println("Déplacement effectué");
+
                 return true;
             }
         }
-        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
         return false;
     }
 

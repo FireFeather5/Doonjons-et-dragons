@@ -284,7 +284,7 @@ public class Inputs {
 
     public String contextDonjon()
     {
-        System.out.println("Quel est le context ?");
+        System.out.println("\n\nQuel est le context ?");
         return sc.nextLine();
     }
 
@@ -366,60 +366,49 @@ public class Inputs {
     }
 
 
-    public StatusDonjon degatPersonnage(Donjon dj, MJ mj)
+    public StatusDonjon degatVivant(Donjon dj, MJ mj)
     {
         int choix = 1;
+        int choixM = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("\nChoisissez un joueur :");
+        System.out.println("\nChoisissez un monstre ou un personnage :");
+
         for (Personnage pers : dj.getListePerso())
         {
             System.out.println(choix++ + "- " + pers);
         }
 
-        choix = sc.nextInt() - 1;
-        sc.nextLine();
-
-        try {
-            int dgt = infligerDegat();
-
-            val = mj.degatJoueur(dj, choix, dgt);
-        }
-        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        for (Monstre mons : dj.getListeMonstre())
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            degatPersonnage(dj, mj);
-        }
-
-        return val;
-    }
-
-
-    public StatusDonjon degatMonstre(Donjon dj, MJ mj)
-    {
-        int choix = 1;
-        StatusDonjon val = StatusDonjon.NORMAL;
-
-        System.out.println("\nChoisissez un monstre :");
-        for (Monstre mons : dj.getListeMonstre()) {
             System.out.println(choix++ + ". " + mons);
+            choixM++;
         }
 
         try {
-            int dgt = infligerDegat();
+            choix = sc.nextInt() - 1;
+            sc.nextLine();
 
-            val = mj.degatMonstre(dj, choix, dgt);
+            int dgt = infligerDegats();
+
+            if (choix <= choixM) {
+                val = mj.degatMonstre(dj, choix, dgt);
+            }
+            else {
+                val = mj.degatJoueur(dj, choix, dgt);
+            }
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            degatMonstre(dj, mj);
+            degatVivant(dj, mj);
         }
 
         return val;
     }
 
-    private int infligerDegat() {
+
+    private int infligerDegats() {
         System.out.println("Combien de dé(s) pour infliger les dégats ?");
         int nbDe = sc.nextInt();
         sc.nextLine();

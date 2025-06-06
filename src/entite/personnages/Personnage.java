@@ -139,9 +139,6 @@ public class Personnage implements Vivant {
             }
             this._stock.add(equipement);
         }
-        else {
-            System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas équipée" + _cl.reset());
-        }
     }
 
     public boolean sEquiper(Equipement equipement)
@@ -230,7 +227,6 @@ public class Personnage implements Vivant {
             }
             catch (ArrayIndexOutOfBoundsException erreur)
             {
-                System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
                 return StatusDonjon.ERREUR_CHOIX_CASE;
             }
         } else {
@@ -238,6 +234,7 @@ public class Personnage implements Vivant {
         }
         return val;
     }
+
     public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
         StatusDonjon val = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
@@ -262,7 +259,6 @@ public class Personnage implements Vivant {
 
     public void peutRamasser(Equipement equip)
     {
-        System.out.println("Je peux ramasser un objet!");
         _peutRamEqu = equip;
         _peutRamasser = true;
     }

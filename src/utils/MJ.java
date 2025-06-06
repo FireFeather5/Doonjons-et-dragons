@@ -101,11 +101,10 @@ public class MJ {
 
     public void comAction(String commentaire)
     {
-        System.out.println("MJ - " + commentaire);
+        System.out.println("\nMJ - " + commentaire);
     }
 
 
-    //      A VOIR PLUS TARD
 
     public void depViv(Donjon DJ, int[] posD, int[] posF)
     {
@@ -114,14 +113,14 @@ public class MJ {
 
     public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt) {
 
-        System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix));
+        System.out.println("Le MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix));
 
         return DJ.getListePerso().get(choix).seFaitAttaquer(dgt, DJ);
     }
 
     public StatusDonjon degatMonstre(Donjon DJ, int choix, int dgt) {
 
-        System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix));
+        System.out.println("Le MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix));
 
         return DJ.getListeMonstre().get(choix).seFaitAttaquer(dgt, DJ);
     }

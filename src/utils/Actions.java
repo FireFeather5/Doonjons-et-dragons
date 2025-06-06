@@ -29,7 +29,6 @@ public class Actions {
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("peu ram : " + perso.peutRam());
         if (perso.peutRam())
         {
             if (perso.getClasse().equals("Clerc") || perso.getClasse().equals("Magicien")) {
@@ -37,14 +36,14 @@ public class Actions {
                 try {
                     int choix = sc.nextInt();
                     sc.nextLine();
-                    boolean test = false;
+                    boolean ok = false;
 
                     switch (choix) {
                         case 1:
-                            while(!test) {
+                            while(!ok) {
                                 int[] pos = _input.choixCase("où se déplacer");
-                                test = perso.seDeplacer(DJ, pos);
-                                if (test) {
+                                ok = perso.seDeplacer(DJ, pos);
+                                if (ok) {
                                     System.out.println("Déplacement effectué");
                                 }
                                 else {
@@ -58,13 +57,16 @@ public class Actions {
                             {
                                 int[] posAtt = _input.choixCase("à attaquer");
                                 val = perso.attaquer(DJ, posAtt);
+                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                                }
                             }
                             break;
                         case 3:
-                            while(!test) {
+                            while(!ok) {
                                 Equipement equip = _input.equiperEquip(perso);
-                                test = perso.sEquiper(equip);
-                                if (test) {
+                                ok = perso.sEquiper(equip);
+                                if (ok) {
                                     System.out.println(equip.getName() + " à bien été équipé");
                                 }
                                 else {
@@ -93,13 +95,19 @@ public class Actions {
                 try {
                     int choix = sc.nextInt();
                     sc.nextLine();
+                    boolean ok = false;
 
                     switch (choix) {
                         case 1:
-                            boolean test = false;
-                            while(!test) {
+                            while(!ok) {
                                 int[] pos = _input.choixCase("où se déplacer");
-                                test = perso.seDeplacer(DJ, pos);
+                                ok = perso.seDeplacer(DJ, pos);
+                                if (ok) {
+                                    System.out.println("Déplacement effectué");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                                }
                             }
                             break;
                         case 2:
@@ -108,11 +116,22 @@ public class Actions {
                             {
                                 int[] posAtt = _input.choixCase("à attaquer");
                                 val = perso.attaquer(DJ, posAtt);
+                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                                }
                             }
                             break;
                         case 3:
-                            Equipement equip = _input.equiperEquip(perso);
-                            perso.sEquiper(equip);
+                            while(!ok) {
+                                Equipement equip = _input.equiperEquip(perso);
+                                ok = perso.sEquiper(equip);
+                                if (ok) {
+                                    System.out.println(equip.getName() + " à bien été équipé");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                                }
+                            }
                             break;
                         case 4:
                             perso.ramasser(DJ);
@@ -136,25 +155,42 @@ public class Actions {
                 try {
                     int choix = sc.nextInt();
                     sc.nextLine();
+                    boolean ok = false;
+
                     switch (choix) {
                         case 1:
-                            boolean test = false;
-                            while(!test) {
+                            while(!ok) {
                                 int[] pos = _input.choixCase("où se déplacer");
-                                test = perso.seDeplacer(DJ, pos);
+                                ok = perso.seDeplacer(DJ, pos);
+                                if (ok) {
+                                    System.out.println("Déplacement effectué");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                                }
                             }
-                            break;
                         case 2:
                             val = StatusDonjon.ERREUR_CHOIX_CASE;
                             while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
                             {
                                 int[] posAtt = _input.choixCase("à attaquer");
                                 val = perso.attaquer(DJ, posAtt);
+                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                                }
                             }
                             break;
                         case 3:
-                            Equipement equip = _input.equiperEquip(perso);
-                            perso.sEquiper(equip);
+                            while(!ok) {
+                                Equipement equip = _input.equiperEquip(perso);
+                                ok = perso.sEquiper(equip);
+                                if (ok) {
+                                    System.out.println(equip.getName() + " à bien été équipé");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                                }
+                            }
                             break;
                         case 4:
                             lancerSort(DJ, perso);
@@ -175,12 +211,19 @@ public class Actions {
                 try {
                     int choix = sc.nextInt();
                     sc.nextLine();
+                    boolean ok = false;
+
                     switch (choix) {
                         case 1:
-                            boolean test = false;
-                            while(!test) {
+                            while(!ok) {
                                 int[] pos = _input.choixCase("où se déplacer");
-                                test = perso.seDeplacer(DJ, pos);
+                                ok = perso.seDeplacer(DJ, pos);
+                                if (ok) {
+                                    System.out.println("Déplacement effectué");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                                }
                             }
                             break;
                         case 2:
@@ -189,11 +232,22 @@ public class Actions {
                             {
                                 int[] posAtt = _input.choixCase("à attaquer");
                                 val = perso.attaquer(DJ, posAtt);
+                                if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                                    System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                                }
                             }
                             break;
                         case 3:
-                            Equipement equip = _input.equiperEquip(perso);
-                            perso.sEquiper(equip);
+                            while(!ok) {
+                                Equipement equip = _input.equiperEquip(perso);
+                                ok = perso.sEquiper(equip);
+                                if (ok) {
+                                    System.out.println(equip.getName() + " à bien été équipé");
+                                }
+                                else {
+                                    System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                                }
+                            }
                             break;
                         default:
                             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
@@ -358,20 +412,30 @@ public class Actions {
         try {
             int choix = sc.nextInt();
             sc.nextLine();
+            boolean ok = false;
 
             switch (choix) {
                 case 1:
-                    boolean ok = false;
-                    while (!ok) {
+                    while(!ok) {
                         int[] pos = _input.choixCase("où se déplacer");
                         ok = mons.seDeplacer(DJ, pos);
+                        if (ok) {
+                            System.out.println("Déplacement effectué");
+                        }
+                        else {
+                            System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                        }
                     }
                     break;
                 case 2:
                     val = StatusDonjon.ERREUR_CHOIX_CASE;
-                    while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                    while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                    {
                         int[] posAtt = _input.choixCase("à attaquer");
                         val = mons.attaquer(DJ, posAtt);
+                        if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                            System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                        }
                     }
                     break;
                 default:
@@ -397,10 +461,10 @@ public class Actions {
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\n\n\nQue veut faire le Maitre du Jeu ?");
-        System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire ds dégats à un joueur/monstre\n4- Ajouter des obstacles");
+        System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire des dégats à un joueur/monstre\n4- Ajouter des obstacles");
         try {
             int choix = sc.nextInt();
-            sc.nextLine(); // askip ca permet de ne pas avoir de bug
+            sc.nextLine();
             switch (choix) {
                 case 1:
                     break;
@@ -408,13 +472,7 @@ public class Actions {
                     _input.depViv(DJ, mj);
                     break;
                 case 3:
-                    System.out.println("A qui voulez-vous infliger des dégats ?\n(j[oueur] / m[onstre])");
-                    String infDgt = sc.nextLine();
-                    if (infDgt.equals("j") || infDgt.equals("joueur")) {
-                        val = _input.degatPersonnage(DJ, mj);
-                    } else if (infDgt.equals("m") || infDgt.equals("monstre")) {
-                        val = _input.degatMonstre(DJ, mj);
-                    }
+                    val = _input.degatVivant(DJ, mj);
                     break;
                 case 4:
                     _input.ajoutObstacle(DJ, mj);
@@ -426,7 +484,7 @@ public class Actions {
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            sc.nextLine(); // askip ca permet de ne pas avoir de bug
+            sc.nextLine();
             actionMjFinTour(DJ, mj);
         }
         return val;

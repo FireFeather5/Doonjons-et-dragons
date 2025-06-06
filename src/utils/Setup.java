@@ -48,38 +48,52 @@ public class Setup {
 
             System.out.println("\nVoulez-vous équiper un equipement ? (o/n)");
             String choix = _scanner.nextLine();
-            while (!choix.equals("n")) {
-                if (choix.equals("o")) {
+
+            while (!choix.equals("n"))
+            {
+                if (choix.equals("o"))
+                {
                     Equipement equip = _inputs.equiperEquip(personnage);
                     personnage.sEquiper(equip);
 
                     System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
+                    String choixx = _scanner.nextLine();
+
+                    while (!choixx.equals("n"))
+                    {
+                        if (choixx.equals("o"))
+                        {
+                            Equipement equipe = _inputs.equiperEquip(personnage);
+                            personnage.sEquiper(equipe);
+                            choixx = "n";
+                        }
+                        else
+                        {
+                            System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
+                            System.out.println("Recommencez");
+                            choixx = _scanner.nextLine();
+                        }
+                    }
+                    choix = "n";
                 }
-                else {
-                    System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée. ho" + _couleur.reset());
+                else
+                {
+                    System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
                     System.out.println("Recommencez");
+                    choix = _scanner.nextLine();
                 }
-                choix = _scanner.nextLine();
             }
+
             personnages.add(personnage);
         }
         return personnages;
     }
 
-    public Donjon setupDonjon(ArrayList<Personnage> personnages, int tour) {
-        try {
-            String text = _inputs.contextDonjon();
-            if (text.isEmpty()) {
-                text = "Pas de contexte !";
-            }
-            _mj.presContext(text);
-        }
-        catch (NoSuchElementException erreur) {
-            System.out.println(_couleur.rouge() + "Erreur dans le contexte !" + _couleur.reset());
-            return setupDonjon(personnages, tour);
-        }
+    public Donjon setupDonjon(ArrayList<Personnage> personnages, int tour)
+    {
 
-        for (Personnage personnage : personnages) {
+        for (Personnage personnage : personnages)
+        {
             personnage.regePV();
         }
 
@@ -93,14 +107,16 @@ public class Setup {
         if (donjon == null)
         {
             CreationDonjonDefault createurDonjon = new CreationDonjonDefault();
-            System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
+            /*System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
             String choix = _scanner.nextLine();
-            if (choix.equals("o")) {
+            if (choix.equals("o"))
+            {
                 donjon = createurDonjon.donjonRandom();
             }
-            else {
+            else
+            {*/
                 donjon = createurDonjon.createDefaultDJ();
-            }
+            //}
         }
         else
         {
@@ -109,9 +125,11 @@ public class Setup {
             _inputs.ajoutEquipement(donjon, _mj);
         }
 
-        for (int i = 0; i < _nbPersonnages; i++) {
+        for (int i = 0; i < _nbPersonnages; i++)
+        {
             boolean ok = false;
-            while (!ok) {
+            while (!ok)
+            {
                 int[] pos = _inputs.choixCase("de " + personnages.get(i));
                 ok = _mj.posJ(donjon, personnages.get(i), pos);
             }
@@ -121,14 +139,23 @@ public class Setup {
 
         _etreVivants.addAll(donjon.getListeMonstre());
 
-
         this._nbEtreVivants = _nbPersonnages + donjon.getListeMonstre().size();
+
+
+        String text = _inputs.contextDonjon();
+        if (text.isEmpty()) {
+            text = "Pas de contexte !";
+        }
+        _mj.presContext(text);
+
 
         return donjon;
     }
 
-    public ArrayList<Vivant> setupInitiative() {
-        for (int j = 0; j < _nbEtreVivants; j++) {
+    public ArrayList<Vivant> setupInitiative()
+    {
+        for (int j = 0; j < _nbEtreVivants; j++)
+        {
             System.out.println(_etreVivants.get(j).getStat());
         }
 
@@ -139,26 +166,34 @@ public class Setup {
 
         System.out.println(_couleur.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + _couleur.reset());
 
-        for (int j = 0; j < _nbEtreVivants; j++) {
+        for (int j = 0; j < _nbEtreVivants; j++)
+        {
             System.out.println("\n" + _etreVivants.get(j).toString() + " : ");
             int init = _etreVivants.get(j).getIni();
             init += deInitiative.roll();
 
-            if (listeInitiatives.isEmpty()) {
+            if (listeInitiatives.isEmpty())
+            {
                 listeInitiatives.add(init);
                 vivantsTries.add(_etreVivants.get(j));
-            } else {
+            }
+            else
+            {
                 boolean inVivTri = false;
-                for (int i = 0; i < listeInitiatives.size(); i++) {
-                    if (!inVivTri) {
-                        if (init > listeInitiatives.get(i)) {
+                for (int i = 0; i < listeInitiatives.size(); i++)
+                {
+                    if (!inVivTri)
+                    {
+                        if (init > listeInitiatives.get(i))
+                        {
                             listeInitiatives.add(i, init);
                             vivantsTries.add(i, _etreVivants.get(j));
                             inVivTri = true;
                         }
                     }
                 }
-                if (!inVivTri) {
+                if (!inVivTri)
+                {
                     listeInitiatives.add(init);
                     vivantsTries.add(_etreVivants.get(j));
                 }
