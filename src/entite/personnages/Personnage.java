@@ -36,6 +36,7 @@ public class Personnage implements Vivant {
     private final ArrayList<Equipement> _stock;
     private final ArrayList<Equipement> _equipee;
     private final ArrayList<Sort> _sorts;
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
 
     public Personnage(String nom, Races race, Classe classe, Genre gre)
@@ -56,14 +57,14 @@ public class Personnage implements Vivant {
         _stats.pvt(_classe.pv());
         _stats.add(_race.stat());
 
-        System.out.println(_cl.jaune() + "\n===== caractéristiques perso =====" + _cl.reset());
-        System.out.println("\nLancement d'un dé pour la caractéristique de force.");
+        _affichage.afficher(true, "\n===== caractéristiques perso =====");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique de force.");
         _stats.forc(_deChar.roll() + 3);
-        System.out.println("\nLancement d'un dé pour la caractéristique de dextérité.");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique de dextérité.");
         _stats.dex(_deChar.roll() + 3);
-        System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique de vitesse.");
         _stats.vit(_deChar.roll() + 3);
-        System.out.println("\nLancement d'un dé pour la caractéristique d'initiative.");
+        _affichage.afficher(true, "\nLancement d'un dé pour la caractéristique d'initiative.");
         _stats.ini(_deChar.roll() + 3);
 
         _stock.addAll(_classe.getEquiBase());
@@ -101,27 +102,27 @@ public class Personnage implements Vivant {
                 if (!_peutRamasser) {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        System.out.println("Déplacement effectué");
+                        _affichage.afficher(true, "Déplacement effectué");
                         return true;
                     } else {
-                        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                        _affichage.afficherRouge(true, "Problème dans le choix de la case");
                         return false;
                     }
                 } else {
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
                         DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case
-                        System.out.println("Déplacement effectué");
+                        _affichage.afficher(true, "Déplacement effectué");
                         _peutRamasser = false;
                         _peutRamEqu = null;
                         return true;
                     } else {
-                        System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                        _affichage.afficherRouge(true, "Problème dans le choix de la case");
                         return false;
                     }
                 }
             } else {
-                System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                _affichage.afficherRouge(true, "Problème dans le choix de la case");
                 return false;
             }
         }
@@ -143,7 +144,7 @@ public class Personnage implements Vivant {
             this._stock.add(equipement);
         }
         else {
-            System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas équipée" + _cl.reset());
+            _affichage.afficherRouge(true, "ERREUR : l'equipement n'est pas équipée");
         }
     }
 
@@ -178,14 +179,14 @@ public class Personnage implements Vivant {
                 }
                 this._equipee.add(equipement);
                 this._stock.remove(equipement);
-                System.out.println(equipement.getName() + " à bien été équipé");
+                _affichage.afficher(true, equipement.getName(), " à bien été équipé");
             } else {
-                System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
+                _affichage.afficherRouge(true, "ERREUR : l'equipement n'est pas dans l'inventaire");
             }
         }
         else
         {
-            System.out.println(_cl.rouge() + "\nIl n'y a pas d'équipement à equiper." + _cl.reset());
+            _affichage.afficherRouge(true, "\nIl n'y a pas d'équipement à equiper.");
         }
     }
 
@@ -196,8 +197,8 @@ public class Personnage implements Vivant {
         Arme arme = getArmeEquipe();
 
         if (arme != null) {
-            System.out.print("\n");
-            this._deChar.changeDe(1, 20);
+            _affichage.afficher(true);
+                    this._deChar.changeDe(1, 20);
             int touche;
             int tou;
 
@@ -215,29 +216,29 @@ public class Personnage implements Vivant {
                 if (mons != null) {
                     if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange())))) {
                         if (touche > mons.getArmorClass()) {
-                            System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+                            _affichage.afficher(true, this._nom, " perce l'armure de ", mons, " (jet de touche : ", tou, " + ", detou, " = ", touche, ").");
                             this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
                             int atk = this._deChar.roll() + arme.getBonusMagique();
                             int bonus = arme.getBonusMagique();
-                            System.out.println(this._nom + " fait " + (atk - bonus) + " + " + bonus + " = " + atk + " dégats à " + mons + " !");
+                            _affichage.afficher(true, this._nom, " fait ", (atk - bonus), " + ", bonus, " = ", atk, " dégats à ", mons, " !");
                             val = mons.seFaitAttaquer(atk, DJ);
                         } else {
-                            System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+                            _affichage.afficher(true, this._nom, " ne perce pas l'armure de ", mons, " (jet de touche : ", tou, " + ", detou, " = ", touche, ").");
                         }
                     } else {
-                        System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
+                        _affichage.afficher(true, this._nom, " n'a pas une arme à la portée suffisante.");
                     }
                 } else {
-                    System.out.println(_cl.rouge() + "Il n'y a pas de monstre à attaquer sur cette case." + _cl.reset());
+                    _affichage.afficherRouge(true, "Il n'y a pas de monstre à attaquer sur cette case.");
                 }
             }
             catch (ArrayIndexOutOfBoundsException erreur)
             {
-                System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                _affichage.afficherRouge(true, "\nLes cases sont dans le format suivant : [lettre][nombre]");
                 return StatusDonjon.ERREUR_CHOIX_CASE;
             }
         } else {
-            System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
+            _affichage.afficherRouge(true, this._nom, " n'a pas d'arme équipée.");
         }
         return val;
     }
@@ -247,12 +248,12 @@ public class Personnage implements Vivant {
         _stats.pv(pv);
         if (pv <= 0)
         {
-            System.out.println(_cl.rouge() + "\n" + this + " à été achevé." + _cl.reset());
+            _affichage.afficherRouge(true, "\n", this, " à été achevé.");
             val = DJ.tuerPerso(this);
         }
         else
         {
-            System.out.println("\n" + this + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
+            _affichage.afficher(true, "\n" + this + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
         return val;
     }
@@ -265,7 +266,7 @@ public class Personnage implements Vivant {
 
     public void peutRamasser(Equipement equip)
     {
-        System.out.println("Je peux ramasser un objet!");
+        _affichage.afficher(true, "Je peux ramasser un objet!");
         _peutRamEqu = equip;
         _peutRamasser = true;
     }
@@ -274,14 +275,14 @@ public class Personnage implements Vivant {
     {
         _stock.add(_peutRamEqu);
         DJ.ramasserEquipement(_peutRamEqu);
-        System.out.println(_peutRamEqu.getName() + " à été ramassé");
+        _affichage.afficher(true, _peutRamEqu.getName(), " à été ramassé");
         _peutRamasser = false;
         _peutRamEqu = null;
     }
 
     public void comAction(String comAct)
     {
-        System.out.println(this + " - " + comAct);
+        _affichage.afficher(true, this, " - ", comAct);
     }
 
     public void regePV()
@@ -348,7 +349,7 @@ public class Personnage implements Vivant {
     }
 
     public String getStat() {
-        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _cl.jaune("\n\n===== " + this + " =====\n") + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos()

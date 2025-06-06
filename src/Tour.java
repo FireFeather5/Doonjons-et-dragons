@@ -20,6 +20,8 @@ public class Tour {
 
     private final Scanner sc = new Scanner(System.in);
 
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
+
     public Tour(ArrayList<Vivant> vivTri, MJ mj, Donjon dj)
     {
         _vivTri = new ArrayList<>();
@@ -39,24 +41,24 @@ public class Tour {
             for (int j = 0; j < _nbViv; j++) {
                 for (int i = 0; i < 3; i++) {
                     if (val == StatusDonjon.NORMAL) {
-                        System.out.print("\n\n");
-                        System.out.println(_cl.jaune() + "-------------------------------------------------------------------");
-                        System.out.print("\n           Tour de " + _vivTri.get(j).getLilInfos() + "\n Tour N°" + compTour + "\n");
-                        System.out.println("-------------------------------------------------------------------\n" + _cl.reset());
+                        _affichage.afficher(false, "\n\n");
+                        _affichage.afficherJaune(true, "-------------------------------------------------------------------");
+                        _affichage.afficherJaune(false, "\n           Tour de ", _vivTri.get(j).getLilInfos(), "\n Tour N°", compTour, "\n");
+                        _affichage.afficherJaune(true, "-------------------------------------------------------------------\n");
                         for (int k = 0; k < _nbViv; k++) {
                             if (k != j) {
-                                System.out.print("           ");
-                                System.out.print(_vivTri.get(k).getLilInfos());
+                                _affichage.afficher(false, "           ");
+                                _affichage.afficher(false, _vivTri.get(k).getLilInfos());
                             } else {
-                                System.out.print(_cl.bleu() + "       --> ");
-                                System.out.print(_vivTri.get(k).getLilInfos() + _cl.reset());
+                                _affichage.afficherBleu(false, "       --> ");
+                                _affichage.afficherBleu(false, _vivTri.get(k).getLilInfos());
                             }
                         }
 
 
                         _dj.afficherDJ();
-                        System.out.println(_vivTri.get(j).getInfos());
-                        System.out.println("\nIl vous reste " + _cl.cyan() + (3 - i) + _cl.reset() + " actions.");
+                        _affichage.afficher(true, _vivTri.get(j).getInfos());
+                        _affichage.afficher(true, "\nIl vous reste ", _cl.cyan(3 - i), " actions.");
 
                         if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
                             val = _action.actionPerso(_dj, (Personnage) _vivTri.get(j));
@@ -84,7 +86,7 @@ public class Tour {
 
                             while (!comm.equals("n"))
                             {
-                                System.out.println("\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
+                                _affichage.afficher(true, "\nVoulez-vous commenter l'action précédente ?\n(o/n/mj)");
                                 comm = sc.nextLine();
 
                                 if (comm.equals("o"))
@@ -99,7 +101,7 @@ public class Tour {
                                 }
                                 else if (!comm.equals("n"))
                                 {
-                                    System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                                    _affichage.afficherRouge(true, "Mauvaise valeur rentrée.");
                                 }
                             }
                         }
@@ -109,7 +111,7 @@ public class Tour {
 
                             while (!comm.equals("n"))
                             {
-                                System.out.println("\nVoulez-vous commenter l'action précédente ?\n(mj/n)");
+                                _affichage.afficher(true, "\nVoulez-vous commenter l'action précédente ?\n(mj/n)");
                                 comm = sc.nextLine();
 
                                 if (comm.equals("mj"))
@@ -119,7 +121,7 @@ public class Tour {
                                 }
                                 else if (!comm.equals("n"))
                                 {
-                                    System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                                    _affichage.afficherRouge(true, "Mauvaise valeur rentrée.");
                                 }
                             }
                         }
@@ -150,7 +152,7 @@ public class Tour {
 
 
         if (val == StatusDonjon.JOUEUR_MORT) {
-            System.out.println(_cl.rouge() + "\nLes joueurs ont perdu" + _cl.reset());
+            _affichage.afficherRouge(true, "\nLes joueurs ont perdu");
             for (Vivant vi : _vivTri)
             {
                 if (vi.getTypeVivant().equals(TypeVivant.MONSTRE))
@@ -163,7 +165,7 @@ public class Tour {
                 }
             }
         } else {
-            System.out.println(_cl.vert() + "\nLes joueurs ont fini le donjon" + _cl.reset());
+            _affichage.afficherVert(true, "\nLes joueurs ont fini le donjon");
             for (Vivant vi : _vivTri)
             {
                 vi.getPV();

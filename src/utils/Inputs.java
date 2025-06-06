@@ -21,6 +21,7 @@ public class Inputs {
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
     private final Scanner sc = new Scanner(System.in);
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public Inputs()
     {
@@ -29,7 +30,7 @@ public class Inputs {
 
     public Donjon creationDonjon(MJ mj)
     {
-        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)");
+        _affichage.afficher(true, "\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)");
         String choix = sc.nextLine();
         if (choix.equals("o"))
         {
@@ -52,10 +53,10 @@ public class Inputs {
         int[] tailleCote = new int[2];
 
         try {
-            System.out.println("\n\ntaille côté ordonnée");
+            _affichage.afficher(true, "\n\ntaille côté ordonnée");
             tailleCote[0] = sc.nextInt();
             sc.nextLine();
-            System.out.println("taille côté abscisse");
+            _affichage.afficher(true, "taille côté abscisse");
             tailleCote[1] = sc.nextInt();
             sc.nextLine();
 
@@ -65,13 +66,13 @@ public class Inputs {
             }
             else
             {
-                System.out.println(_cl.rouge() + "Erreur dans la taille du donjon" + _cl.reset());
+                _affichage.afficherRouge(true, "Erreur dans la taille du donjon");
                 tailleDonjon();
             }
         }
         catch (InputMismatchException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
+            _affichage.afficherRouge(true, "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres");
             sc.nextLine();
             tailleDonjon();
         }
@@ -81,7 +82,7 @@ public class Inputs {
 
     public void ajoutObstacle(Donjon DJ, MJ mj)
     {
-        System.out.println("\nVoulez-vous mettre des obstacles (o/n) ?");
+        _affichage.afficher(true, "\nVoulez-vous mettre des obstacles (o/n) ?");
         String choix = sc.nextLine();
 
         while (!choix.equals("n")) {
@@ -89,12 +90,12 @@ public class Inputs {
                 int[] pos = choixCase("de l'obstacle");
                 mj.addObst(DJ, pos);
                 DJ.afficherDJ();
-                System.out.println("\n\nCréer un autre obstacle (o/n) ?");
+                _affichage.afficher(true, "\n\nCréer un autre obstacle (o/n) ?");
                 choix = sc.nextLine();
             }
             else
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                _affichage.afficherRouge(true, "Mauvaise valeur rentrée.");
                 ajoutObstacle(DJ, mj);
             }
         }
@@ -111,12 +112,12 @@ public class Inputs {
                 int[] pos = choixCase("de " + mons);
                 mj.posM(DJ, mons, pos);
                 DJ.afficherDJ();
-                System.out.println("\n\nCréer un autre monstre (o/n) ?");
+                _affichage.afficher(true, "\n\nCréer un autre monstre (o/n) ?");
                 choix = sc.nextLine();
             }
             else
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                _affichage.afficherRouge(true, "Mauvaise valeur rentrée.");
                 ajoutMonstre(DJ, mj);
             }
         }
@@ -124,7 +125,7 @@ public class Inputs {
 
     public void ajoutEquipement(Donjon DJ, MJ mj)
     {
-        System.out.println("\nVoulez-vous créer des Equipements (o/n) ?");
+        _affichage.afficher(true, "\nVoulez-vous créer des Equipements (o/n) ?");
         String choix = sc.nextLine();
 
         while (!choix.equals("n")) {
@@ -152,7 +153,7 @@ public class Inputs {
                         \t11- Cotte de maille
                         \t12- Harnois
                         """;
-                System.out.println(texte);
+                _affichage.afficher(true, texte);
                 switch (sc.nextLine()) {
                     case "1" -> equip = new Baton();
                     case "2" -> equip = new MasseArme();
@@ -169,19 +170,19 @@ public class Inputs {
                     case null, default -> ok = false;
                 }
                 if (!ok) {
-                    System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
+                    _affichage.afficherRouge(true, "/!\\ ATTENTION : Equipement non crée");
                 } else {
                     int[] pos = choixCase("de l'équipement : " + equip);
                     DJ.afficherDJ();
                     mj.posEquip(DJ, equip, pos);
                     DJ.afficherDJ();
                 }
-                System.out.println("\n\nCréer un autre equipement (o/n)?");
+                _affichage.afficher(true, "\n\nCréer un autre equipement (o/n)?");
                 choix = sc.nextLine();
             }
             else
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                _affichage.afficherRouge(true, "Mauvaise valeur rentrée.");
                 ajoutEquipement(DJ, mj);
             }
         }
@@ -191,7 +192,7 @@ public class Inputs {
 
     public int[] choixCase(String context)
     {
-        System.out.println("\n\nChoisir la case " + context + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
+        _affichage.afficher(true, "\n\nChoisir la case ", context, _cl.cyan("   [lettre majuscule][nombre]"));
         String pos = sc.nextLine();
 
         int[] posi = positionCase(pos);
@@ -221,7 +222,7 @@ public class Inputs {
 
             if ((posi[0] == 0) || (posi[1] == 0))
             {
-                System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
+                _affichage.afficherRouge(true, "Les cases sont dans le format suivant : ", _cl.cyan("   [lettre majuscule][nombre]"));
                 return null;
             }
 
@@ -229,44 +230,44 @@ public class Inputs {
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
+            _affichage.afficherRouge(true, "Les cases sont dans le format suivant : ", _cl.cyan("   [lettre majuscule][nombre]"));
             return null;
         }
     }
 
     public Monstre creationMonstre(MJ mj)
     {
-        System.out.println("\n\n===== Nouveau Monstre =====");
-        System.out.println("Espèce ?");
+        _affichage.afficher(true, "\n\n===== Nouveau Monstre =====");
+        _affichage.afficher(true, "Espèce ?");
         String espece = sc.nextLine();
         while (espece.isEmpty())
         {
-            System.out.println(_cl.rouge() + "L'espèce ne peut pas être vide!" + _cl.reset());
-            System.out.println("Espèce ?");
+            _affichage.afficherRouge(true, "L'espèce ne peut pas être vide!");
+            _affichage.afficher(true, "Espèce ?");
             espece = sc.nextLine();
         }
-        System.out.println("Symbole d'affichage ?   (3 charactères max)");
+        _affichage.afficher(true, "Symbole d'affichage ?   (3 charactères max)");
         String symb = sc.nextLine();
         while ((symb.isEmpty()) || (symb.length() > 3))
         {
-            System.out.println(_cl.rouge() + "Le symbole doit être entre 1 et 3 caractères!" + _cl.reset());
-            System.out.println("Symbole d'affichage ?   (3 charactères max) ?");
+            _affichage.afficherRouge(true, "Le symbole doit être entre 1 et 3 caractères!");
+            _affichage.afficher(true, "Symbole d'affichage ?   (3 charactères max) ?");
             symb = sc.nextLine();
         }
         try {
-            System.out.println("Portée de l'attaque ?");
+            _affichage.afficher(true, "Portée de l'attaque ?");
             int portee = sc.nextInt();
             sc.nextLine();
-            System.out.println("Nombre de dés pour le calcul de l'attaque ?");
+            _affichage.afficher(true, "Nombre de dés pour le calcul de l'attaque ?");
             int nbrDeDeg = sc.nextInt();
             sc.nextLine();
-            System.out.println("Nombre de face pour les dés pour le calcul de l'attaque ?");
+            _affichage.afficher(true, "Nombre de face pour les dés pour le calcul de l'attaque ?");
             int nbrFaceDeDeg = sc.nextInt();
             sc.nextLine();
-            System.out.println("Nombre de dés pour le calcul des charactéristiques ?");
+            _affichage.afficher(true, "Nombre de dés pour le calcul des charactéristiques ?");
             int nbrDeCha = sc.nextInt();
             sc.nextLine();
-            System.out.println("Nombre de face pour les dés pour le calcul des charactéristiques ?");
+            _affichage.afficher(true, "Nombre de face pour les dés pour le calcul des charactéristiques ?");
             int nbrFaceDeCha = sc.nextInt();
             sc.nextLine();
 
@@ -275,7 +276,7 @@ public class Inputs {
         }
         catch (InputMismatchException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "\nSeul l'espèce et le symbole du monstre peut contenir autre chose que des entier." + _cl.reset() + "\nRecomencez");
+            _affichage.afficher(true, _cl.rouge("\nSeul l'espèce et le symbole du monstre peut contenir autre chose que des entier."), "\nRecomencez");
             creationMonstre(mj);
         }
         creationMonstre(mj);
@@ -284,20 +285,20 @@ public class Inputs {
 
     public String contextDonjon()
     {
-        System.out.println("Quel est le context ?");
+        _affichage.afficher(true, "Quel est le context ?");
         return sc.nextLine();
     }
 
     public void mjCommenteAction(MJ mj)
     {
-        System.out.println("Le MJ commente l'action effectuée");
+        _affichage.afficher(true, "Le MJ commente l'action effectuée");
         String comm = sc.nextLine();
         mj.comAction(comm);
     }
 
     public void persoCommenteAction(Personnage perso)
     {
-        System.out.println("Le personnage commente l'action effectuée");
+        _affichage.afficher(true, "Le personnage commente l'action effectuée");
         String comm = sc.nextLine();
         perso.comAction(comm);
     }
@@ -305,11 +306,11 @@ public class Inputs {
     public Equipement equiperEquip(Personnage pers)
     {
         if (!pers.getStock().isEmpty()) {
-            System.out.println("Quel équipement équiper ?");
+            _affichage.afficher(true, "Quel équipement équiper ?");
 
             int i = 1;
             for (Equipement eqi : pers.getStock()) {
-                System.out.println(i + "- " + eqi.getName());
+                _affichage.afficher(true, i, "- ", eqi.getName());
                 i++;
             }
 
@@ -320,7 +321,7 @@ public class Inputs {
             }
             catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                _affichage.afficherRouge(true, "Mauvaise valeur rentrée.");
                 equiperEquip(pers);
             }
         }
@@ -332,12 +333,12 @@ public class Inputs {
     {
         int choix = 1;
 
-        System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
+        _affichage.afficher(true, "\nChoisissez un joueur ou un monstre à déplacer :");
         for (Personnage pers : dj.getListePerso()) {
-            System.out.println(choix++ + "- " + pers);
+            _affichage.afficher(true, choix++, "- ", pers);
         }
         for (Monstre mons : dj.getListeMonstre()) {
-            System.out.println(choix++ + "- " + mons);
+            _affichage.afficher(true, choix++, "- ", mons);
         }
 
         try {
@@ -359,7 +360,7 @@ public class Inputs {
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            _affichage.afficher(true, _cl.rouge("\nErreur dans la saisie.") + "\nRecomencez");
             sc.nextLine();
             depViv(dj, mj);
         }
@@ -371,10 +372,10 @@ public class Inputs {
         int choix = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("\nChoisissez un joueur :");
+        _affichage.afficher(true, "\nChoisissez un joueur :");
         for (Personnage pers : dj.getListePerso())
         {
-            System.out.println(choix++ + "- " + pers);
+            _affichage.afficher(true, choix++, "- ", pers);
         }
 
         choix = sc.nextInt() - 1;
@@ -387,7 +388,7 @@ public class Inputs {
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            _affichage.afficher(true, _cl.rouge("\nErreur dans la saisie.") + "\nRecomencez");
             degatPersonnage(dj, mj);
         }
 
@@ -398,11 +399,11 @@ public class Inputs {
     public StatusDonjon degatMonstre(Donjon dj, MJ mj)
     {
         int choix = 1;
-        StatusDonjon val = StatusDonjon.NORMAL;
+        StatusDonjon val;
 
-        System.out.println("\nChoisissez un monstre :");
+        _affichage.afficher(true, "\nChoisissez un monstre :");
         for (Monstre mons : dj.getListeMonstre()) {
-            System.out.println(choix++ + ". " + mons);
+            _affichage.afficher(true, choix++, "- ", mons);
         }
 
         try {
@@ -412,18 +413,18 @@ public class Inputs {
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            degatMonstre(dj, mj);
+            _affichage.afficher(true, _cl.rouge("\nErreur dans la saisie.") + "\nRecomencez");
+            val = degatMonstre(dj, mj);
         }
 
         return val;
     }
 
     private int infligerDegat() {
-        System.out.println("Combien de dé(s) pour infliger les dégats ?");
+        _affichage.afficher(true, "Combien de dé(s) pour infliger les dégats ?");
         int nbDe = sc.nextInt();
         sc.nextLine();
-        System.out.println("Combien de faces pour les dés ?");
+        _affichage.afficher(true, "Combien de faces pour les dés ?");
         int nbFaceDe = sc.nextInt();
         sc.nextLine();
 

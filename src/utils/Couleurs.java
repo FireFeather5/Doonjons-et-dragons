@@ -7,44 +7,38 @@ public class Couleurs {
 
     }
 
-    public String jaune()
+    public String jaune(Object texte)
     {
-        return "\u001B[33m";
+        return "\u001B[33m" + texte + "\u001B[0m";
     }
 
-    public String rouge()
+    public String rouge(Object texte)
     {
-        return "\u001B[31m";
+        return "\u001B[31m" + texte + "\u001B[0m";
     }
 
-    public String vert()
+    public String vert(Object texte)
     {
-        return "\u001B[32m";
+        return "\u001B[32m" + texte + "\u001B[0m";
     }
 
-    public String bleu()
+    public String bleu(Object texte)
     {
-        return "\u001B[34m";
+        return "\u001B[34m" + texte + "\u001B[0m";
     }
 
-    public String cyan()
+    public String cyan(Object texte)
     {
-        return "\u001B[36m";
+        return "\u001B[36m" + texte + "\u001B[0m";
     }
 
-    public String blanc()
+    public String blanc(Object texte)
     {
-        return "\u001B[37m";
+        return "\u001B[37m" + texte + "\u001B[0m";
     }
 
-    public String noir()
+    public String noir(Object texte)
     {
-        return "\u001B[30m";
+        return "\u001B[30m" + texte + "\u001B[0m";
     }
-
-    public String reset()
-    {
-        return "\u001B[0m";
-    }
-
 }

@@ -1,5 +1,9 @@
 package de;
 
+import utils.Affichage;
+import utils.Couleurs;
+import utils.SortieAffichage;
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -10,6 +14,8 @@ public class De {
     private int _faces;
 
     private final Scanner _scanner = new Scanner(System.in);
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
+    private final Couleurs _couleur = new Couleurs();
 
     public De() {
         _name = "1d6";
@@ -35,9 +41,20 @@ public class De {
         for (int i = 0; i < this._number; i++) {
             total += rand.nextInt(1, this._faces + 1);
         }
-        System.out.println("\nappuyez sur entrée pour lancer " + _name);
+        _affichage.afficher(false, "\nappuyez sur entrée pour lancer " + _name);
         _scanner.nextLine();
-        System.out.println("Vous avez fait " + total);
+        if (total < (_number * _faces) / 4) {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.rouge(total));
+        }
+        else if (total < (_number * _faces) / 2) {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.jaune(total));
+        }
+        else if (total < (3 * _number * _faces) / 4) {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.vert(total));
+        }
+        else {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.cyan(total));
+        }
 
         return total;
     }

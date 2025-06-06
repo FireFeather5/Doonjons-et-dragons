@@ -1,20 +1,16 @@
 package donjon;
 
 import entite.Vivant;
-import utils.Couleurs;
-import utils.StatusDonjon;
+import utils.*;
 import entite.Entite;
 import entite.Obstacle;
 import entite.Monstre;
 import entite.equipement.Equipement;
 import entite.personnages.Personnage;
-import utils.TypeVivant;
 
 import java.util.ArrayList;
 
 public class Donjon {
-
-    private final Couleurs _cl = new Couleurs();
 
     private final int _tc1;
     private final int _tc2;
@@ -24,6 +20,8 @@ public class Donjon {
     private final ArrayList<Equipement> _equip;
     private final ArrayList<Personnage> _pers;
     private final ArrayList<Monstre> _mons;
+
+    private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
 
     public Donjon(int[] tailleCote)
     {
@@ -191,17 +189,17 @@ public class Donjon {
             if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
             {
                 _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
-                System.out.println("Le déplacement à fonctionné");
+                _affichage.afficher(true, "Le déplacement à fonctionné");
                 emptyCase(pcD);
             }
             else
             {
-                System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
+                _affichage.afficherRouge(true, "La case d'arrivée n'est pas vide");
             }
         }
         else
         {
-            System.out.println(_cl.rouge() + "Il n'y a ni personnage ni monstre sur la case départ" + _cl.reset());
+            _affichage.afficherRouge(true, "Il n'y a ni personnage ni monstre sur la case départ");
         }
     }
 
