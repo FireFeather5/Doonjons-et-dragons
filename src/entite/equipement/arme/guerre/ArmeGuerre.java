@@ -1,6 +1,6 @@
 package entite.equipement.arme.guerre;
 
-import Utils.TypeArme;
+import utils.TypeArme;
 import entite.equipement.arme.Arme;
 
 public abstract class ArmeGuerre extends Arme {

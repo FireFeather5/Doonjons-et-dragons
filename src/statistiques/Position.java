@@ -1,7 +1,5 @@
 package statistiques;
 
-import Utils.Inputs;
-
 public class Position {
 
     private int _abscisse;

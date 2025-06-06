@@ -1,24 +1,24 @@
 package entite.personnages;
 
-import Utils.Couleurs;
-import entite.personnages.classes.Classe;
+import utils.Couleurs;
 import entite.personnages.classes.*;
 import entite.personnages.genre.Feminin;
 import entite.personnages.genre.Genre;
 import entite.personnages.genre.Masculin;
 import entite.personnages.races.*;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreaPerso {
 
-    private Couleurs _cl = new Couleurs();
+    private final Couleurs _cl = new Couleurs();
 
     private Races _ra;
     private Classe _cla;
     private Genre _gre;
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public CreaPerso()
     {
@@ -38,8 +38,7 @@ public class CreaPerso {
         Race();
         Classe();
         Genre();
-        Personnage pers = new Personnage(_nom, _ra, _cla, _gre);
-        return pers;
+        return new Personnage(_nom, _ra, _cla, _gre);
     }
 
     public void Race()
@@ -51,7 +50,8 @@ public class CreaPerso {
                 3- Humain
                 4- Nain""");
         try {
-            int race = Integer.parseInt(sc.nextLine());
+            int race = sc.nextInt();
+            sc.nextLine();
             switch (race) {
                 case 1: {
                     _ra = new Elfes();
@@ -75,7 +75,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
             Race();
         }
@@ -90,7 +90,8 @@ public class CreaPerso {
                 3- Magicien
                 4- Roublard""");
         try {
-            int classe = Integer.parseInt(sc.nextLine());
+            int classe = sc.nextInt();
+            sc.nextLine();
             switch (classe) {
                 case 1: {
                     _cla = new Clerc();
@@ -114,7 +115,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Classe();
         }
@@ -127,7 +128,8 @@ public class CreaPerso {
                 1- Homme
                 2- Femme""");
         try {
-            int gre = Integer.parseInt(sc.nextLine());
+            int gre = sc.nextInt();
+            sc.nextLine();
             switch (gre) {
                 case 1: {
                     _gre = new Masculin();
@@ -143,7 +145,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (NumberFormatException | NullPointerException erreur) {
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Genre();
         }

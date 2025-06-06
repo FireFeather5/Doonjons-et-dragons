@@ -1,6 +1,6 @@
 package donjon;
 
-import Utils.Couleurs;
+import utils.Couleurs;
 import entite.Entite;
 
 public class AffichDJ {

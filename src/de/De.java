@@ -9,7 +9,7 @@ public class De {
     private int _number;
     private int _faces;
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner _scanner = new Scanner(System.in);
 
     public De() {
         _name = "1d6";
@@ -36,7 +36,7 @@ public class De {
             total += rand.nextInt(1, this._faces + 1);
         }
         System.out.println("\nappuyez sur entrée pour lancer " + _name);
-        String sertaR = sc.nextLine();
+        _scanner.nextLine();
         System.out.println("Vous avez fait " + total);
 
         return total;

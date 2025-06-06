@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import de.De;
 import donjon.Donjon;
@@ -8,13 +8,12 @@ import entite.Monstre;
 import entite.personnages.Personnage;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class MJ {
 
     private final Couleurs _cl = new Couleurs();
 
-    ArrayList<String> _monstresCrees = new ArrayList<>();
+    private final ArrayList<String> _monstresCrees = new ArrayList<>();
 
     public MJ()
     {
@@ -62,19 +61,20 @@ public class MJ {
         return mons;
     }
 
-    public void posJ(Donjon DJ, Personnage perso, int[] pos)
+    public boolean posJ(Donjon DJ, Personnage perso, int[] pos)
     {
-        boolean test = DJ.positionPersonnage(pos, perso);
+        boolean test = DJ.positionVivant(pos, perso);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
         }
+        return test;
     }
 
     public void posM(Donjon DJ, Monstre mons, int[] pos)
     {
-        boolean test = DJ.positionMonstre(pos, mons);
+        boolean test = DJ.positionVivant(pos, mons);
 
         if (!test)
         {
@@ -96,12 +96,12 @@ public class MJ {
 
     public void presContext(String context)
     {
-        System.out.println("MJ- " + context);
+        System.out.println("MJ - " + context);
     }
 
     public void comAction(String commentaire)
     {
-        System.out.println("MJ- " + commentaire);
+        System.out.println("MJ - " + commentaire);
     }
 
 
@@ -112,19 +112,17 @@ public class MJ {
         DJ.switchCase(posD, posF);
     }
 
-    public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt, StatusDonjon val) {
+    public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt) {
 
         System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix));
-        val = DJ.getListePerso().get(choix).seFaitAttaquer(dgt, DJ);
 
-        return val;
+        return DJ.getListePerso().get(choix).seFaitAttaquer(dgt, DJ);
     }
 
-    public StatusDonjon degatMonstre(Donjon DJ, int choix, int dgt, StatusDonjon val) {
+    public StatusDonjon degatMonstre(Donjon DJ, int choix, int dgt) {
 
         System.out.println("Le Utils.MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix));
-        val = DJ.getListeMonstre().get(choix).seFaitAttaquer(dgt, DJ);
 
-        return val;
+        return DJ.getListeMonstre().get(choix).seFaitAttaquer(dgt, DJ);
     }
 }

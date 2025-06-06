@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import de.De;
 import donjon.Donjon;
@@ -11,15 +11,16 @@ import entite.equipement.armure.legere.*;
 import entite.equipement.armure.lourde.*;
 import entite.personnages.Personnage;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Inputs {
 
-    private Couleurs _cl = new Couleurs();
+    private final Couleurs _cl = new Couleurs();
 
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public Inputs()
     {
@@ -33,8 +34,7 @@ public class Inputs {
         if (choix.equals("o"))
         {
             int[] tailleDj = tailleDonjon();
-            Donjon dj = mj.creationDonjon(tailleDj);
-            return dj;
+            return mj.creationDonjon(tailleDj);
         }
         else if (choix.equals("n"))
         {
@@ -51,13 +51,13 @@ public class Inputs {
     {
         int[] tailleCote = new int[2];
 
-        System.out.println("\n\ntaille côté ordonnée");
-        String tc1s = sc.nextLine();
-        System.out.println("taille côté abscisse");
-        String tc2s = sc.nextLine();
         try {
-            tailleCote[0] = Integer.parseInt(tc1s);
-            tailleCote[1] = Integer.parseInt(tc2s);
+            System.out.println("\n\ntaille côté ordonnée");
+            tailleCote[0] = sc.nextInt();
+            sc.nextLine();
+            System.out.println("taille côté abscisse");
+            tailleCote[1] = sc.nextInt();
+            sc.nextLine();
 
             if (((15 <= tailleCote[0]) && (tailleCote[0] <= 25)) && ((15 <= tailleCote[1]) && (tailleCote[1] <= 25)))
             {
@@ -69,9 +69,10 @@ public class Inputs {
                 tailleDonjon();
             }
         }
-        catch (NumberFormatException erreur)
+        catch (InputMismatchException | NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
+            sc.nextLine();
             tailleDonjon();
         }
         tailleDonjon();
@@ -220,7 +221,7 @@ public class Inputs {
 
             if ((posi[0] == 0) || (posi[1] == 0))
             {
-                System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "[lettre majuscule][nombre]" + _cl.reset());
+                System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
                 return null;
             }
 
@@ -228,7 +229,7 @@ public class Inputs {
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "[lettre majuscule][nombre]" + _cl.reset());
+            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
             return null;
         }
     }
@@ -254,20 +255,25 @@ public class Inputs {
         }
         try {
             System.out.println("Portée de l'attaque ?");
-            int portee = Integer.parseInt(sc.nextLine());
+            int portee = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de dés pour le calcul de l'attaque ?");
-            int nbrDeDeg = Integer.parseInt(sc.nextLine());
+            int nbrDeDeg = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de face pour les dés pour le calcul de l'attaque ?");
-            int nbrFaceDeDeg = Integer.parseInt(sc.nextLine());
+            int nbrFaceDeDeg = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de dés pour le calcul des charactéristiques ?");
-            int nbrDeCha = Integer.parseInt(sc.nextLine());
+            int nbrDeCha = sc.nextInt();
+            sc.nextLine();
             System.out.println("Nombre de face pour les dés pour le calcul des charactéristiques ?");
-            int nbrFaceDeCha = Integer.parseInt(sc.nextLine());
+            int nbrFaceDeCha = sc.nextInt();
+            sc.nextLine();
 
             return mj.createM(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
 
         }
-        catch (NumberFormatException erreur)
+        catch (InputMismatchException | NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nSeul l'espèce et le symbole du monstre peut contenir autre chose que des entier." + _cl.reset() + "\nRecomencez");
             creationMonstre(mj);
@@ -301,18 +307,18 @@ public class Inputs {
         if (!pers.getStock().isEmpty()) {
             System.out.println("Quel équipement équiper ?");
 
-            int i = 0;
+            int i = 1;
             for (Equipement eqi : pers.getStock()) {
                 System.out.println(i + "- " + eqi.getName());
                 i++;
             }
 
             try {
-                int equ = Integer.parseInt(sc.nextLine());
-                Equipement equip = pers.getStock().get(equ);
-                return equip;
+                int equ = sc.nextInt() - 1;
+                sc.nextLine();
+                return pers.getStock().get(equ);
             }
-            catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+            catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
             {
                 System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
                 equiperEquip(pers);
@@ -324,7 +330,7 @@ public class Inputs {
 
     public void depViv(Donjon dj, MJ mj)
     {
-        int choix = 0;
+        int choix = 1;
 
         System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
         for (Personnage pers : dj.getListePerso()) {
@@ -335,17 +341,26 @@ public class Inputs {
         }
 
         try {
-            int perso = Integer.parseInt(sc.nextLine());
+            int perso = sc.nextInt() - 1;
+            sc.nextLine();
 
-            int[] posD = dj.getListePerso().get(perso).getPos();
+            int[] posD;
+
+            if (perso < dj.getListePerso().size()) {
+                posD = dj.getListePerso().get(perso).getPos();
+            }
+            else {
+                posD = dj.getListeMonstre().get(perso - dj.getListePerso().size()).getPos();
+            }
 
             int[] posF = choixCase("où mettre l'entité");
 
             mj.depViv(dj, posD, posF);
         }
-        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            sc.nextLine();
             depViv(dj, mj);
         }
     }
@@ -353,7 +368,7 @@ public class Inputs {
 
     public StatusDonjon degatPersonnage(Donjon dj, MJ mj)
     {
-        int choix = 0;
+        int choix = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\nChoisissez un joueur :");
@@ -362,19 +377,15 @@ public class Inputs {
             System.out.println(choix++ + "- " + pers);
         }
 
-        choix = sc.nextInt();
+        choix = sc.nextInt() - 1;
+        sc.nextLine();
 
         try {
-            System.out.println("Combien de dé(s) pour infliger les dégats ?");
-            int nbDe = sc.nextInt();
-            System.out.println("Combien de faces pour les dés ?");
-            int nbFaceDe = sc.nextInt();
+            int dgt = infligerDegat();
 
-            int dgt = new De(nbDe, nbFaceDe).roll();
-
-            val = mj.degatJoueur(dj, choix, dgt, val);
+            val = mj.degatJoueur(dj, choix, dgt);
         }
-        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
             degatPersonnage(dj, mj);
@@ -386,7 +397,7 @@ public class Inputs {
 
     public StatusDonjon degatMonstre(Donjon dj, MJ mj)
     {
-        int choix = 0;
+        int choix = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\nChoisissez un monstre :");
@@ -394,25 +405,29 @@ public class Inputs {
             System.out.println(choix++ + ". " + mons);
         }
 
-        choix = sc.nextInt();
-
         try {
-            System.out.println("Combien de dé(s) pour infliger les dégats ?");
-            int nbDe = sc.nextInt();
-            System.out.println("Combien de faces pour les dés ?");
-            int nbFaceDe = sc.nextInt();
+            int dgt = infligerDegat();
 
-            int dgt = new De(nbDe, nbFaceDe).roll();
-
-            val = mj.degatMonstre(dj, choix, dgt, val);
+            val = mj.degatMonstre(dj, choix, dgt);
         }
-        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
             degatMonstre(dj, mj);
         }
 
         return val;
+    }
+
+    private int infligerDegat() {
+        System.out.println("Combien de dé(s) pour infliger les dégats ?");
+        int nbDe = sc.nextInt();
+        sc.nextLine();
+        System.out.println("Combien de faces pour les dés ?");
+        int nbFaceDe = sc.nextInt();
+        sc.nextLine();
+
+        return new De(nbDe, nbFaceDe).roll();
     }
 
 }
