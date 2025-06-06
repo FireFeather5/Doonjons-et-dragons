@@ -1,6 +1,7 @@
 package de;
 
 import utils.Affichage;
+import utils.Couleurs;
 import utils.SortieAffichage;
 
 import java.util.Random;
@@ -14,6 +15,7 @@ public class De {
 
     private final Scanner _scanner = new Scanner(System.in);
     private final Affichage _affichage = new Affichage(SortieAffichage.CONSOLE);
+    private final Couleurs _couleur = new Couleurs();
 
     public De() {
         _name = "1d6";
@@ -41,7 +43,18 @@ public class De {
         }
         _affichage.afficher(false, "\nappuyez sur entrée pour lancer " + _name);
         _scanner.nextLine();
-        _affichage.afficher(false, "Vous avez fait " + total);
+        if (total < (_number * _faces) / 4) {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.rouge(total));
+        }
+        else if (total < (_number * _faces) / 2) {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.jaune(total));
+        }
+        else if (total < (3 * _number * _faces) / 4) {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.vert(total));
+        }
+        else {
+            _affichage.afficher(true, "Vous avez fait ", _couleur.cyan(total));
+        }
 
         return total;
     }
