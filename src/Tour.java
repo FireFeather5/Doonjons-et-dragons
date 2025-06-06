@@ -1,4 +1,4 @@
-import Utils.*;
+import utils.*;
 import donjon.Donjon;
 import entite.Monstre;
 import entite.Vivant;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Tour {
 
     private final Couleurs _cl = new Couleurs();
-    private Inputs _input = new Inputs();
+    private final Inputs _input = new Inputs();
 
     private final ArrayList<Vivant> _vivTri;
     private int _nbViv;
@@ -18,7 +18,7 @@ public class Tour {
     private final MJ _mj;
     private final Donjon _dj;
 
-    Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
 
     public Tour(ArrayList<Vivant> vivTri, MJ mj, Donjon dj)
     {
@@ -123,7 +123,7 @@ public class Tour {
                                 }
                             }
                         }
-
+                        // /!\ CODE DUPLIQUE, je vois pas trop comment regler ca
                         if (val.equals(StatusDonjon.NORMAL)) {
                             _dj.afficherDJ();
                             val = _action.actionMjFinTour(_dj, _mj);

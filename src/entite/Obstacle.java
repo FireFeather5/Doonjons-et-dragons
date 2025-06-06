@@ -1,6 +1,5 @@
 package entite;
 
-import Utils.Inputs;
 import donjon.Donjon;
 import statistiques.Position;
 

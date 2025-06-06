@@ -1,7 +1,7 @@
 package donjon;
 
-import Utils.MJ;
-import Utils.Inputs;
+import utils.MJ;
+import utils.Inputs;
 import de.De;
 import entite.Monstre;
 import entite.Obstacle;
@@ -51,8 +51,8 @@ public class CreationDonjonDefault {
                 obs.addPos(_input.positionCase("K10"), DJ);
                 obs.addPos(_input.positionCase("K11"), DJ);
 
-                DJ.positionMonstre(_input.positionCase("P14"), demogordgon);
-                DJ.positionMonstre(_input.positionCase("E4"), dragonBleu);
+                DJ.positionVivant(_input.positionCase("P14"), demogordgon);
+                DJ.positionVivant(_input.positionCase("E4"), dragonBleu);
 
                 DJ.positionEquipement(_input.positionCase("K4"), epeeLongue);
                 DJ.positionEquipement(_input.positionCase("J15"), fronde);
@@ -75,8 +75,8 @@ public class CreationDonjonDefault {
                 obs.addPos(_input.positionCase("N11"), DJ);
                 obs.addPos(_input.positionCase("N12"), DJ);
 
-                DJ.positionMonstre(_input.positionCase("T15"), dragonBleu);
-                DJ.positionMonstre(_input.positionCase("K9"), demogordgon);
+                DJ.positionVivant(_input.positionCase("T15"), dragonBleu);
+                DJ.positionVivant(_input.positionCase("K9"), demogordgon);
 
                 DJ.positionEquipement(_input.positionCase("F5"), epeeLongue);
                 DJ.positionEquipement(_input.positionCase("P14"), fronde);
@@ -110,8 +110,8 @@ public class CreationDonjonDefault {
                 obs.addPos(_input.positionCase("P10"), DJ);
                 obs.addPos(_input.positionCase("P11"), DJ);
 
-                DJ.positionMonstre(_input.positionCase("O8"), demogordgon);
-                DJ.positionMonstre(_input.positionCase("H11"), dragonBleu);
+                DJ.positionVivant(_input.positionCase("O8"), demogordgon);
+                DJ.positionVivant(_input.positionCase("H11"), dragonBleu);
 
                 DJ.positionEquipement(_input.positionCase("H8"), cotteMaille);
                 DJ.positionEquipement(_input.positionCase("L8"), epeeLongue);
@@ -145,19 +145,19 @@ public class CreationDonjonDefault {
         int[] taille = {rand.nextInt(15, 26), rand.nextInt(15, 26)};
 
         Donjon DJ = new Donjon(taille);
-
+        int numeroMonstre = 1;
         for (int i = 0; i < taille[0]; i++) {
             for (int j = 0; j < taille[1]; j++) {
                 int element = rand.nextInt(0, 100);
                 if (element < 1) {
                     Monstre mystique = mj.createM(
                             "Monstre mystique",
-                            "</>",
+                            "<" + numeroMonstre++ + ">",
                             rand.nextInt(1, 4),
                             new De(rand.nextInt(1, 4), rand.nextInt(4, 10)),
                             new De(rand.nextInt(1, 4), rand.nextInt(4, 10))
                     );
-                    DJ.positionMonstre(new int[]{i+1, j+1}, mystique);
+                    DJ.positionVivant(new int[]{i+1, j+1}, mystique);
                 }
                 else if (element < 6) {
                     DJ.positionEquipement(new int[]{i+1, j+1}, equipements.get(rand.nextInt(0, equipements.size())));

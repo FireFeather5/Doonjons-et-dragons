@@ -1,6 +1,6 @@
 package entite.equipement.arme.distance;
 
-import Utils.TypeArme;
+import utils.TypeArme;
 import entite.equipement.arme.Arme;
 
 public abstract class ArmeDistance extends Arme {

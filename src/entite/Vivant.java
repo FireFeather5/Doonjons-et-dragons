@@ -1,8 +1,6 @@
 package entite;
 
-import Utils.StatusDonjon;
-import Utils.TypeVivant;
-import donjon.Donjon;
+import utils.TypeVivant;
 
 public interface Vivant extends Entite {
 
@@ -16,9 +14,9 @@ public interface Vivant extends Entite {
 
     int getPV();
 
-    void comAction(String comAct);
-
     TypeVivant getTypeVivant();
+
+    int[] getPos();
 
     @Override
     String toString();

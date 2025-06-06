@@ -1,7 +1,7 @@
 package entite.equipement.arme;
 
-import Utils.TypeArme;
-import Utils.TypeEquipement;
+import utils.TypeArme;
+import utils.TypeEquipement;
 import entite.equipement.Equipement;
 
 public abstract class Arme extends Equipement {
@@ -9,7 +9,6 @@ public abstract class Arme extends Equipement {
     private final int _nbDe;
     private final int _nbFacesDe;
     private final int _range;
-    private final TypeArme _typeArm;
 
     private int _bonusMagique = 0;
 
@@ -22,7 +21,6 @@ public abstract class Arme extends Equipement {
         this._nbDe = nbDe;
         this._nbFacesDe = nbFacesDe;
         this._range = range;
-        _typeArm = typeArm;
     }
 
     public void bonusMagique() {

@@ -1,10 +1,12 @@
 package entite.equipement;
 
-import Utils.TypeArme;
-import Utils.TypeArmure;
-import Utils.TypeEquipement;
+import utils.TypeArme;
+import utils.TypeArmure;
+import utils.TypeEquipement;
 import entite.Entite;
 import statistiques.Position;
+
+import java.util.Optional;
 
 public abstract class Equipement implements Entite {
     private final String _name;
@@ -12,8 +14,8 @@ public abstract class Equipement implements Entite {
     private final int _forceBonus;
     private final Position _pos;
     private final TypeEquipement _typeEqu;
-    private TypeArme _typeArm = null;
-    private TypeArmure _typeArmur = null;
+    private final TypeArme _typeArm;
+    private final TypeArmure _typeArmur;
 
     public Equipement(String name, TypeEquipement typeEqu, TypeArme typeArm, TypeArmure typeArmur) {
         this(name, typeEqu, typeArm, typeArmur, 0, 0);
@@ -55,14 +57,14 @@ public abstract class Equipement implements Entite {
         return _typeEqu;
     }
 
-    public TypeArme getTypeArm()
+    public Optional<TypeArme> getTypeArm()
     {
-        return _typeArm;
+        return Optional.ofNullable(this._typeArm);
     }
 
-    public TypeArmure getTypeArmur()
+    public Optional<TypeArmure> getTypeArmur()
     {
-        return _typeArmur;
+        return Optional.ofNullable(this._typeArmur);
     }
 
     public String aff()
