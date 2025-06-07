@@ -65,7 +65,7 @@ public class Donjon {
                     if (!_mons.contains(mons)) {
                         _mons.add(mons);
                     }
-                    mons.position(pc[0], pc[1]);            //donne sa position au monstre
+                    mons.setPosition(pc[0], pc[1]);            //donne sa position au monstre
                     _donjon[pc[0] - 1][pc[1] - 1] = mons;
                     return true;
                 }
@@ -76,7 +76,7 @@ public class Donjon {
                     if (!_pers.contains(perso)) {
                         _pers.add(perso);
                     }
-                    perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                    perso.setPosition(pc[0], pc[1]);            //donne sa position au joueur
                     _donjon[pc[0] - 1][pc[1] - 1] = perso;
                     return true;
                 }
@@ -84,7 +84,7 @@ public class Donjon {
                     for (Equipement var : _equip) {
                         if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
                             perso.peutRamasser(var);
-                            perso.position(pc[0], pc[1]);            //donne sa position au joueur
+                            perso.setPosition(pc[0], pc[1]);            //donne sa position au joueur
                             _donjon[pc[0] - 1][pc[1] - 1] = perso;
                             return true;
                         }
@@ -165,7 +165,7 @@ public class Donjon {
         return StatusDonjon.JOUEUR_MORT;
     }
 
-    public void switchCase(int[] pcD, int[] pcF)
+    /*public void switchCase(int[] pcD, int[] pcF)
     {
         boolean caseVal = false;
         for (Personnage per : _pers)
@@ -191,6 +191,7 @@ public class Donjon {
             if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
             {
                 _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
+
                 System.out.println("Le déplacement à fonctionné");
                 emptyCase(pcD);
             }
@@ -203,7 +204,47 @@ public class Donjon {
         {
             System.out.println(_cl.rouge() + "Il n'y a ni personnage ni monstre sur la case départ" + _cl.reset());
         }
+    }*/
+
+
+    public void switchCase(Personnage perso, int[] pcF)
+    {
+        int[] pcD = perso.getPos();
+
+         if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
+        {
+            _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
+
+            System.out.println("Le déplacement à fonctionné");
+            perso.setPosition(pcF[0], pcF[1]);
+            emptyCase(pcD);
+        }
+        else
+        {
+            System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
+        }
     }
+
+
+    public void switchCase(Monstre mons, int[] pcF)
+    {
+        int[] pcD = mons.getPos();
+
+        if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
+        {
+            _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
+
+            System.out.println("Le déplacement à fonctionné");
+            mons.setPosition(pcF[0], pcF[1]);
+            emptyCase(pcD);
+        }
+        else
+        {
+            System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
+        }
+    }
+
+
 
     public void emptyCase(int[] pc)
     {

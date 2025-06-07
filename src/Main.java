@@ -29,4 +29,10 @@ public class Main {
             tr.tour();
         }
     }
+
+
+    // faire une liste monstre et un liste perso dans tour, et utiliser celles la en argument au lieu de celles de donjon ?
+    // et sinon utiliser listeVivant de tour ? (genre pour le mj)
+
+
 }

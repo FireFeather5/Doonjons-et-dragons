@@ -12,8 +12,10 @@ public class Tour {
     private final Couleurs _cl = new Couleurs();
     private final Inputs _input = new Inputs();
 
-    private final ArrayList<Vivant> _vivTri;
+    private ArrayList<Vivant> _vivTri = new ArrayList<>();
     private int _nbViv;
+    private StatusDonjon _val;
+
     private final Actions _action = new Actions();
     private final MJ _mj;
     private final Donjon _dj;
@@ -22,6 +24,7 @@ public class Tour {
 
     public Tour(ArrayList<Vivant> vivTri, MJ mj, Donjon dj)
     {
+        _val = StatusDonjon.NORMAL;
         _vivTri = new ArrayList<>();
         _vivTri.addAll(vivTri);
         _nbViv = _vivTri.size();
@@ -32,13 +35,12 @@ public class Tour {
 
     public void tour()
     {
-        StatusDonjon val = StatusDonjon.NORMAL;
         int compTour = 1;
 
-        while (val == StatusDonjon.NORMAL) {
+        while (_val.equals(StatusDonjon.NORMAL)) {
             for (int j = 0; j < _nbViv; j++) {
                 for (int i = 0; i < 3; i++) {
-                    if (val == StatusDonjon.NORMAL) {
+                    if (_val.equals(StatusDonjon.NORMAL)) {
                         System.out.print("\n\n");
                         System.out.println(_cl.jaune() + "-------------------------------------------------------------------");
                         System.out.print("\n           Tour de " + _vivTri.get(j).getLilInfos() + "\n Tour N°" + compTour + "\n");
@@ -58,25 +60,17 @@ public class Tour {
                         System.out.println(_vivTri.get(j).getInfos());
                         System.out.println("\nIl vous reste " + _cl.cyan() + (3 - i) + _cl.reset() + " actions.");
 
-                        if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
-                            val = _action.actionPerso(_dj, (Personnage) _vivTri.get(j));
+                        /*if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
+                            _val = _action.actionPerso(_dj, (Personnage) _vivTri.get(j));
                         }
                         else {
-                            val = _action.actionMonstre(_dj, (Monstre) _vivTri.get(j));
-                        }
+                            _val = _action.actionMonstre(_dj, (Monstre) _vivTri.get(j));
+                        }*/
 
-                        if (val == StatusDonjon.MONSTRE_MORT) {
-                            for (int n = 0; n < _nbViv; n++) {
-                                if (_vivTri.get(n).getPV() <= 0) {
-                                    _vivTri.remove(_vivTri.get(n));
-                                    _nbViv--;
+                        _val = _action.actionVivant(_dj, _vivTri.get(j));
 
-                                    if (n <= j) {
-                                        j--;
-                                    }
-                                }
-                            }
-                            val = StatusDonjon.NORMAL;
+                        if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
+                            _val = monstreMort(j);
                         }
 
                         if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
@@ -123,22 +117,12 @@ public class Tour {
                                 }
                             }
                         }
-                        // /!\ CODE DUPLIQUE, je vois pas trop comment regler ca
-                        if (val.equals(StatusDonjon.NORMAL)) {
-                            _dj.afficherDJ();
-                            val = _action.actionMjFinTour(_dj, _mj);
-                            if (val == StatusDonjon.MONSTRE_MORT) {
-                                for (int n = 0; n < _nbViv; n++) {
-                                    if (_vivTri.get(n).getPV() <= 0) {
-                                        _vivTri.remove(_vivTri.get(n));
-                                        _nbViv--;
 
-                                        if (n <= j) {
-                                            j--;
-                                        }
-                                    }
-                                }
-                                val = StatusDonjon.NORMAL;
+                        if (_val.equals(StatusDonjon.NORMAL)) {
+                            _dj.afficherDJ();
+                            _val = _action.actionMjFinTour(_dj, _mj);
+                            if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
+                                _val = monstreMort(j);
                             }
                         }
 
@@ -148,8 +132,30 @@ public class Tour {
             compTour++;
         }
 
+        finDonjon();
 
-        if (val == StatusDonjon.JOUEUR_MORT) {
+    }
+
+
+    public StatusDonjon monstreMort(int vivant)
+    {
+        for (int n = 0; n < _nbViv; n++) {
+            if (_vivTri.get(n).getPV() <= 0) {
+                _vivTri.remove(_vivTri.get(n));
+                _nbViv--;
+
+                if (n <= vivant) {
+                    vivant--;
+                }
+            }
+        }
+        return StatusDonjon.NORMAL;
+    }
+
+
+    public void finDonjon()
+    {
+        if (_val == StatusDonjon.JOUEUR_MORT) {
             System.out.println(_cl.rouge() + "\nLes joueurs ont perdu" + _cl.reset());
             for (Vivant vi : _vivTri)
             {
@@ -157,18 +163,11 @@ public class Tour {
                 {
                     _vivTri.remove(vi);
                 }
-                else
-                {
-                    vi.getPV();
-                }
             }
         } else {
             System.out.println(_cl.vert() + "\nLes joueurs ont fini le donjon" + _cl.reset());
-            for (Vivant vi : _vivTri)
-            {
-                vi.getPV();
-            }
         }
     }
+
 
 }

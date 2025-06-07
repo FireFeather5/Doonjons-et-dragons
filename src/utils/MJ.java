@@ -106,9 +106,14 @@ public class MJ {
 
 
 
-    public void depViv(Donjon DJ, int[] posD, int[] posF)
+    public void depViv(Donjon DJ, Personnage perso, int[] posF)
     {
-        DJ.switchCase(posD, posF);
+        DJ.switchCase(perso, posF);
+    }
+
+    public void depViv(Donjon DJ, Monstre mons, int[] posF)
+    {
+        DJ.switchCase(mons, posF);
     }
 
     public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt) {

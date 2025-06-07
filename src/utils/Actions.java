@@ -2,6 +2,7 @@ package utils;
 
 import donjon.Donjon;
 import entite.Monstre;
+import entite.Vivant;
 import entite.equipement.Equipement;
 import entite.equipement.arme.Arme;
 import entite.personnages.Personnage;
@@ -73,12 +74,12 @@ public class Actions {
                     }
                     break;
                 case 2:
-                    val = StatusDonjon.ERREUR_CHOIX_CASE;
-                    while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                    val = StatusDonjon.ERREUR;
+                    while (val.equals(StatusDonjon.ERREUR))
                     {
                         int[] posAtt = _input.choixCase("à attaquer");
                         val = perso.attaquer(DJ, posAtt);
-                        if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                        if (val.equals(StatusDonjon.ERREUR)) {
                             System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
                         }
                     }
@@ -295,12 +296,12 @@ public class Actions {
                     }
                     break;
                 case 2:
-                    val = StatusDonjon.ERREUR_CHOIX_CASE;
-                    while (val.equals(StatusDonjon.ERREUR_CHOIX_CASE))
+                    val = StatusDonjon.ERREUR;
+                    while (val.equals(StatusDonjon.ERREUR))
                     {
                         int[] posAtt = _input.choixCase("à attaquer");
                         val = mons.attaquer(DJ, posAtt);
-                        if (val.equals(StatusDonjon.ERREUR_CHOIX_CASE)) {
+                        if (val.equals(StatusDonjon.ERREUR)) {
                             System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
                         }
                     }
@@ -315,6 +316,56 @@ public class Actions {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
             sc.nextLine();
             actionMonstre(DJ, mons);
+        }
+        return val;
+    }
+
+
+
+
+    public StatusDonjon actionVivant(Donjon DJ, Vivant vivant)
+    {
+        StatusDonjon val = StatusDonjon.NORMAL;
+        System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
+        try {
+            int choix = sc.nextInt();
+            sc.nextLine();
+            boolean ok = false;
+
+            switch (choix) {
+                case 1:
+                    while(!ok) {
+                        int[] pos = _input.choixCase("où se déplacer");
+                        ok = vivant.seDeplacer(DJ, pos);
+                        if (ok) {
+                            System.out.println("Déplacement effectué");
+                        }
+                        else {
+                            System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                        }
+                    }
+                    break;
+                case 2:
+                    val = StatusDonjon.ERREUR;
+                    while (val.equals(StatusDonjon.ERREUR))
+                    {
+                        int[] posAtt = _input.choixCase("à attaquer");
+                        val = vivant.attaquer(DJ, posAtt);
+                        if (val.equals(StatusDonjon.ERREUR)) {
+                            System.out.println(_cl.rouge() + "\nLes cases sont dans le format suivant : [lettre][nombre]" + _cl.reset());
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                    actionVivant(DJ, vivant);
+            }
+        }
+        catch (InputMismatchException | NumberFormatException | NullPointerException erreur)
+        {
+            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            sc.nextLine();
+            actionVivant(DJ, vivant);
         }
         return val;
     }
@@ -339,7 +390,7 @@ public class Actions {
                     _input.depViv(DJ, mj);
                     break;
                 case 3:
-                    val = _input.degatVivant(DJ, mj);
+                        val = _input.degatVivant(DJ, mj);
                     break;
                 case 4:
                     _input.ajoutObstacle(DJ, mj);

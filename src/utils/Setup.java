@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Setup {
     private int _nbPersonnages;
     private int _nbEtreVivants;
-    private final ArrayList<Vivant> _etreVivants = new ArrayList<>();
+    private ArrayList<Vivant> _etreVivants;
     private final Inputs _inputs = new Inputs();
     private final Couleurs _couleur = new Couleurs();
     private final MJ _mj = new MJ();
@@ -91,6 +91,7 @@ public class Setup {
 
     public Donjon setupDonjon(ArrayList<Personnage> personnages, int tour)
     {
+        _etreVivants = new ArrayList<>();
 
         for (Personnage personnage : personnages)
         {

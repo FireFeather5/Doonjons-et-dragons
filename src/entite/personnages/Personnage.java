@@ -81,7 +81,7 @@ public class Personnage implements Vivant {
         }
     }
 
-    public void position(int pos1, int pos2)
+    public void setPosition(int pos1, int pos2)
     {
         _pos.changPos(pos1, pos2);
     }
@@ -227,7 +227,7 @@ public class Personnage implements Vivant {
             }
             catch (ArrayIndexOutOfBoundsException erreur)
             {
-                return StatusDonjon.ERREUR_CHOIX_CASE;
+                return StatusDonjon.ERREUR;
             }
         } else {
             System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
@@ -254,8 +254,6 @@ public class Personnage implements Vivant {
     public void seSoigner(int soin) {
         this._stats.pv(Math.min(this._stats.retPv() + soin, this._stats.retPvT()));
     }
-
-
 
     public void peutRamasser(Equipement equip)
     {

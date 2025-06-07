@@ -61,7 +61,7 @@ public class Monstre implements Vivant {
         this._numero ++;
     }
 
-    public void position(int pos1, int pos2)
+    public void setPosition(int pos1, int pos2)
     {
         _pos.changPos(pos1, pos2);
     }
@@ -117,7 +117,7 @@ public class Monstre implements Vivant {
         catch (ArrayIndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nAttaquer en dehors du donjon n'est pas la chose la plus utile..." + _cl.reset());
-            return StatusDonjon.ERREUR_CHOIX_CASE;
+            return StatusDonjon.ERREUR;
         }
         return val;
     }

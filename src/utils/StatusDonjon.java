@@ -5,5 +5,5 @@ public enum StatusDonjon {
     JOUEUR_MORT,
     AUCUN_MONSTRE,
     MONSTRE_MORT,
-    ERREUR_CHOIX_CASE
+    ERREUR
 }

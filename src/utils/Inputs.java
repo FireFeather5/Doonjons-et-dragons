@@ -284,7 +284,7 @@ public class Inputs {
 
     public String contextDonjon()
     {
-        System.out.println("\n\nQuel est le context ?");
+        System.out.println("\n\nQuel est le contexte ?");
         return sc.nextLine();
     }
 
@@ -341,21 +341,19 @@ public class Inputs {
         }
 
         try {
-            int perso = sc.nextInt() - 1;
+            int vivant = sc.nextInt() - 1;
             sc.nextLine();
 
-            int[] posD;
-
-            if (perso < dj.getListePerso().size()) {
-                posD = dj.getListePerso().get(perso).getPos();
+            if (vivant < dj.getListePerso().size()) {
+                Personnage perso = dj.getListePerso().get(vivant);
+                int[] posF = choixCase("où mettre l'entité");
+                mj.depViv(dj, perso, posF);
             }
             else {
-                posD = dj.getListeMonstre().get(perso - dj.getListePerso().size()).getPos();
+                Monstre mons = dj.getListeMonstre().get(vivant - dj.getListePerso().size());
+                int[] posF = choixCase("où mettre l'entité");
+                mj.depViv(dj, mons, posF);
             }
-
-            int[] posF = choixCase("où mettre l'entité");
-
-            mj.depViv(dj, posD, posF);
         }
         catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
@@ -369,7 +367,7 @@ public class Inputs {
     public StatusDonjon degatVivant(Donjon dj, MJ mj)
     {
         int choix = 1;
-        int choixM = 1;
+        int choixP = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.println("\nChoisissez un monstre ou un personnage :");
@@ -377,22 +375,23 @@ public class Inputs {
         for (Personnage pers : dj.getListePerso())
         {
             System.out.println(choix++ + "- " + pers);
+            choixP++;
         }
 
         for (Monstre mons : dj.getListeMonstre())
         {
-            System.out.println(choix++ + ". " + mons);
-            choixM++;
+            System.out.println(choix++ + "- " + mons);
         }
 
         try {
+            //sc veut pas fonctionner si erreur avant
             choix = sc.nextInt();
             sc.nextLine();
 
             int dgt = infligerDegats();
 
-            if (choix <= choixM) {
-                val = mj.degatMonstre(dj, choix-1, dgt);
+            if (choix > choixP) {
+                val = mj.degatMonstre(dj, choix-choixP, dgt);
             }
             else {
                 val = mj.degatJoueur(dj, choix-1, dgt);
