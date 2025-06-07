@@ -16,16 +16,16 @@ public class Main {
         System.out.println(cl.rouge() + "Bienvenue dans DOOnjon et Dragons" + cl.reset());
 
         //                     Crea persos
-        ArrayList<Personnage> Pers = new ArrayList<>(setup.setupPersonnages());
+        ArrayList<Personnage> pers = new ArrayList<>(setup.setupPersonnages());
 
         //               TOURS
         for (int tour = 1; tour <= 3; tour++) {
-            Donjon donjon  = setup.setupDonjon(Pers, tour);
+            Donjon donjon  = setup.setupDonjon(pers, tour);
 
             //                  Initiative
             ArrayList<Vivant> etreVivantsTrie = new ArrayList<>(setup.setupInitiative());
 
-            Tour tr = new Tour(etreVivantsTrie, mj, donjon);
+            Tour tr = new Tour(etreVivantsTrie, pers, mj, donjon);
             tr.tour();
         }
     }

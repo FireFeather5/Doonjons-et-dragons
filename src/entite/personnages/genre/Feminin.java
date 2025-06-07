@@ -13,7 +13,6 @@ public class Feminin implements Genre {
         {
             return mot;
         }
-
         return mot + "e";
     }
 }

@@ -140,7 +140,7 @@ public class Setup {
 
         _etreVivants.addAll(donjon.getListeMonstre());
 
-        this._nbEtreVivants = _nbPersonnages + donjon.getListeMonstre().size();
+        _nbEtreVivants = _nbPersonnages + donjon.getListeMonstre().size();
 
 
         String text = _inputs.contextDonjon();

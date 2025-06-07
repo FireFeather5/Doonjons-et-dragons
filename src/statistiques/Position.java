@@ -29,7 +29,6 @@ public class Position {
 
     public int[] getPosition()
     {
-        System.out.println(_abscisse + " a     o " + _ordonnee);
         return new int[] {_abscisse, _ordonnee};
     }
 }

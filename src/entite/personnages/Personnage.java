@@ -109,7 +109,7 @@ public class Personnage implements Vivant {
                     boolean val = DJ.positionVivant(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case
+                        DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case                          GET POSITION
 
                         _peutRamasser = false;
                         _peutRamEqu = null;
@@ -183,53 +183,54 @@ public class Personnage implements Vivant {
         }
     }
 
-    public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
+    public StatusDonjon attaquer(Donjon DJ, Monstre mons)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
         Arme arme = getArmeEquipe();
 
-        if (arme != null) {
+        if (arme != null)
+        {
             this._deChar.changeDe(1, 20);
             int touche;
             int tou;
 
-            if (arme.getTypeArm().isPresent() && arme.getTypeArm().get().equals(TypeArme.DISTANCE)) {
+            if (arme.getTypeArm().isPresent() && arme.getTypeArm().get().equals(TypeArme.DISTANCE))
+            {
                 tou = this._stats.retDex();
-            } else {
+            }
+            else
+            {
                 tou = this._stats.retFor();
             }
             touche = tou;
 
-            try {
-                int detou = this._deChar.roll() + arme.getBonusMagique();
-                touche += detou;
-                Monstre mons = DJ.getMons(posAtt);
-                if (mons != null)
+            int detou = this._deChar.roll() + arme.getBonusMagique();
+            touche += detou;
+
+            if (((mons.getPos()[0] >= _pos.getAbscisse() - arme.getRange()) && (mons.getPos()[0] <= _pos.getAbscisse() + arme.getRange()) && ((mons.getPos()[1] >= _pos.getOrdonnee() - arme.getRange()) && (mons.getPos()[1] <= _pos.getOrdonnee() + arme.getRange()))))
+            {
+                if (touche > mons.getArmorClass())
                 {
-                    if (((posAtt[0] >= _pos.getAbscisse() - arme.getRange()) && (posAtt[0] <= _pos.getAbscisse() + arme.getRange()) && ((posAtt[1] >= _pos.getOrdonnee() - arme.getRange()) && (posAtt[1] <= _pos.getOrdonnee() + arme.getRange())))) {
-                        if (touche > mons.getArmorClass()) {
-                            System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
-                            this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
-                            int atk = this._deChar.roll() + arme.getBonusMagique();
-                            int bonus = arme.getBonusMagique();
-                            System.out.println(this._nom + " fait " + (atk - bonus) + " + " + bonus + " = " + atk + " dégats à " + mons + " !");
-                            val = mons.seFaitAttaquer(atk, DJ);
-                        } else {
-                            System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
-                        }
-                    } else {
-                        System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
-                    }
-                } else {
-                    System.out.println(_cl.rouge() + "Il n'y a pas de monstre à attaquer sur cette case." + _cl.reset());
+                    System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+                    this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
+                    int atk = this._deChar.roll() + arme.getBonusMagique();
+                    int bonus = arme.getBonusMagique();
+                    System.out.println(this._nom + " fait " + atk + " dégats à " + mons + " !");
+                    val = mons.seFaitAttaquer(atk, DJ);
+                }
+                else
+                {
+                    System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
                 }
             }
-            catch (ArrayIndexOutOfBoundsException erreur)
+            else
             {
-                return StatusDonjon.ERREUR;
+                System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
             }
-        } else {
+        }
+        else
+        {
             System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
         }
         return val;

@@ -9,6 +9,8 @@ import donjon.Donjon;
 import statistiques.Position;
 import statistiques.Stats;
 
+import java.util.ArrayList;
+
 public class Monstre implements Vivant {
 
     private final Couleurs _cl = new Couleurs();
@@ -84,17 +86,14 @@ public class Monstre implements Vivant {
         return false;
     }
 
-    public StatusDonjon attaquer(Donjon DJ, int[] posAtt)
+    public StatusDonjon attaquer(Donjon DJ, Personnage pers)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
         System.out.print("\n");
         this._deChar.changeDe(1, 20);
 
-        try {
-            Personnage pers = DJ.getPers(posAtt);
-            if (pers != null) {
-                if (((posAtt[0] >= _pos.getAbscisse() - _portAtt) && (posAtt[0] <= _pos.getAbscisse() + _portAtt)) && ((posAtt[1] >= _pos.getOrdonnee() - _portAtt) && (posAtt[1] <= _pos.getOrdonnee() + _portAtt))) {
+                if (((pers.getPos()[0] >= _pos.getAbscisse() - _portAtt) && (pers.getPos()[0] <= _pos.getAbscisse() + _portAtt)) && ((pers.getPos()[1] >= _pos.getOrdonnee() - _portAtt) && (pers.getPos()[1] <= _pos.getOrdonnee() + _portAtt))) {
                     // un des deux est forcément à 0 donc on peut directement ajouter les deux
                     // (évite un if else)
                     int detou = this._deChar.roll();
@@ -110,15 +109,7 @@ public class Monstre implements Vivant {
                 } else {
                     System.out.println(this + " n'a pas une portée suffisante");
                 }
-            } else {
-                System.out.println(_cl.rouge() + "Il n'y a pas de personnage à attaquer sur cette case." + _cl.reset());
-            }
-        }
-        catch (ArrayIndexOutOfBoundsException erreur)
-        {
-            System.out.println(_cl.rouge() + "\nAttaquer en dehors du donjon n'est pas la chose la plus utile..." + _cl.reset());
-            return StatusDonjon.ERREUR;
-        }
+
         return val;
     }
 

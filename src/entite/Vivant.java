@@ -9,9 +9,7 @@ public interface Vivant extends Entite {
 
     void setPosition(int pos1, int pos2);
     boolean seDeplacer(Donjon DJ, int[] pos);
-    StatusDonjon attaquer(Donjon DJ, int[] posAtt);
     StatusDonjon seFaitAttaquer(int degats, Donjon DJ);
-
 
 
 

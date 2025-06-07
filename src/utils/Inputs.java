@@ -3,6 +3,7 @@ package utils;
 import de.De;
 import donjon.Donjon;
 import entite.Monstre;
+import entite.Vivant;
 import entite.equipement.Equipement;
 import entite.equipement.arme.courante.*;
 import entite.equipement.arme.distance.*;
@@ -11,6 +12,7 @@ import entite.equipement.armure.legere.*;
 import entite.equipement.armure.lourde.*;
 import entite.personnages.Personnage;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -328,86 +330,63 @@ public class Inputs {
     }
 
 
-    public void depViv(Donjon dj, MJ mj)
+    public void depViv(Donjon dj, MJ mj, ArrayList<Vivant> listeVivant)
     {
         int choix = 1;
 
         System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
-        for (Personnage pers : dj.getListePerso()) {
-            System.out.println(choix++ + "- " + pers);
-        }
-        for (Monstre mons : dj.getListeMonstre()) {
-            System.out.println(choix++ + "- " + mons);
+        for (Vivant viv : listeVivant) {
+            System.out.println(choix + "- " + viv);
+            choix++;
         }
 
-        try {
-            int vivant = sc.nextInt() - 1;
-            sc.nextLine();
+        try
+        {
+            int vivant = Integer.parseInt(sc.nextLine()) - 1;
 
-            if (vivant < dj.getListePerso().size()) {
-                Personnage perso = dj.getListePerso().get(vivant);
-                int[] posF = choixCase("où mettre l'entité");
-                mj.depViv(dj, perso, posF);
-            }
-            else {
-                Monstre mons = dj.getListeMonstre().get(vivant - dj.getListePerso().size());
-                int[] posF = choixCase("où mettre l'entité");
-                mj.depViv(dj, mons, posF);
-            }
+            int[] posF = choixCase("où mettre l'entité");
+
+            mj.depViv(dj, listeVivant.get(vivant), posF);
         }
-        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            sc.nextLine();
-            depViv(dj, mj);
+            depViv(dj, mj, listeVivant);
         }
     }
 
 
-    public StatusDonjon degatVivant(Donjon dj, MJ mj)
+    public StatusDonjon degatVivant(Donjon dj, MJ mj, ArrayList<Vivant> listeVivant)
     {
-        int choix = 1;
-        int choixP = 1;
         StatusDonjon val = StatusDonjon.NORMAL;
 
-        System.out.println("\nChoisissez un monstre ou un personnage :");
+        int choix = 1;
 
-        for (Personnage pers : dj.getListePerso())
-        {
-            System.out.println(choix++ + "- " + pers);
-            choixP++;
-        }
-
-        for (Monstre mons : dj.getListeMonstre())
-        {
-            System.out.println(choix++ + "- " + mons);
+        System.out.println("\nChoisissez un joueur ou un monstre à déplacer :");
+        for (Vivant viv : listeVivant) {
+            System.out.println(choix + "- " + viv);
+            choix++;
         }
 
         try {
-            //sc veut pas fonctionner si erreur avant
-            choix = sc.nextInt();
-            sc.nextLine();
+            int vivant = Integer.parseInt(sc.nextLine()) - 1;
 
             int dgt = infligerDegats();
 
-            if (choix > choixP) {
-                val = mj.degatMonstre(dj, choix-choixP, dgt);
-            }
-            else {
-                val = mj.degatJoueur(dj, choix-1, dgt);
-            }
+            val = mj.degatVivant(dj, listeVivant.get(vivant), dgt);
         }
-        catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            degatVivant(dj, mj);
+            degatVivant(dj, mj, listeVivant);
         }
 
         return val;
     }
 
 
-    private int infligerDegats() {
+    private int infligerDegats()
+    {
         System.out.println("Combien de dé(s) pour infliger les dégats ?");
         int nbDe = sc.nextInt();
         sc.nextLine();

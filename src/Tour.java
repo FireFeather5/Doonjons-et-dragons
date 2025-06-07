@@ -1,6 +1,6 @@
+import entite.Monstre;
 import utils.*;
 import donjon.Donjon;
-import entite.Monstre;
 import entite.Vivant;
 import entite.personnages.Personnage;
 
@@ -12,7 +12,9 @@ public class Tour {
     private final Couleurs _cl = new Couleurs();
     private final Inputs _input = new Inputs();
 
-    private ArrayList<Vivant> _vivTri = new ArrayList<>();
+    private final ArrayList<Vivant> _listeVivant;
+    private final ArrayList<Personnage> _listePersonnage;
+    private final ArrayList<Monstre> _listeMonstre;
     private int _nbViv;
     private StatusDonjon _val;
 
@@ -22,12 +24,20 @@ public class Tour {
 
     private final Scanner sc = new Scanner(System.in);
 
-    public Tour(ArrayList<Vivant> vivTri, MJ mj, Donjon dj)
+    public Tour(ArrayList<Vivant> vivTri, ArrayList<Personnage> listePers, MJ mj, Donjon dj)
     {
         _val = StatusDonjon.NORMAL;
-        _vivTri = new ArrayList<>();
-        _vivTri.addAll(vivTri);
-        _nbViv = _vivTri.size();
+
+        _listeVivant = new ArrayList<>();
+        _listeVivant.addAll(vivTri);
+
+        _listePersonnage = new ArrayList<>();
+        _listePersonnage.addAll(listePers);
+
+        _listeMonstre = new ArrayList<>();
+        _listeMonstre.addAll(dj.getListeMonstre());
+
+        _nbViv = _listeVivant.size();
         _mj = mj;
         _dj = dj;
 
@@ -43,21 +53,21 @@ public class Tour {
                     if (_val.equals(StatusDonjon.NORMAL)) {
                         System.out.print("\n\n");
                         System.out.println(_cl.jaune() + "-------------------------------------------------------------------");
-                        System.out.print("\n           Tour de " + _vivTri.get(j).getLilInfos() + "\n Tour N°" + compTour + "\n");
+                        System.out.print("\n           Tour de " + _listeVivant.get(j).getLilInfos() + "\n Tour N°" + compTour + "\n");
                         System.out.println("-------------------------------------------------------------------\n" + _cl.reset());
                         for (int k = 0; k < _nbViv; k++) {
                             if (k != j) {
                                 System.out.print("           ");
-                                System.out.print(_vivTri.get(k).getLilInfos());
+                                System.out.print(_listeVivant.get(k).getLilInfos());
                             } else {
                                 System.out.print(_cl.bleu() + "       --> ");
-                                System.out.print(_vivTri.get(k).getLilInfos() + _cl.reset());
+                                System.out.print(_listeVivant.get(k).getLilInfos() + _cl.reset());
                             }
                         }
 
 
                         _dj.afficherDJ();
-                        System.out.println(_vivTri.get(j).getInfos());
+                        System.out.println(_listeVivant.get(j).getInfos());
                         System.out.println("\nIl vous reste " + _cl.cyan() + (3 - i) + _cl.reset() + " actions.");
 
                         /*if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
@@ -67,13 +77,13 @@ public class Tour {
                             _val = _action.actionMonstre(_dj, (Monstre) _vivTri.get(j));
                         }*/
 
-                        _val = _action.actionVivant(_dj, _vivTri.get(j));
+                        _val = _action.actionVivant(_dj, _listeVivant.get(j), _listeMonstre, _listePersonnage);
 
                         if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
                             _val = monstreMort(j);
                         }
 
-                        if (_vivTri.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
+                        if (_listeVivant.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
                             String comm = "o";
 
                             while (!comm.equals("n"))
@@ -83,7 +93,7 @@ public class Tour {
 
                                 if (comm.equals("o"))
                                 {
-                                    _input.persoCommenteAction((Personnage) _vivTri.get(j));
+                                    _input.persoCommenteAction((Personnage) _listeVivant.get(j));
                                     comm = "n";
                                 }
                                 else if (comm.equals("mj"))
@@ -120,7 +130,7 @@ public class Tour {
 
                         if (_val.equals(StatusDonjon.NORMAL)) {
                             _dj.afficherDJ();
-                            _val = _action.actionMjFinTour(_dj, _mj);
+                            _val = _action.actionMjFinTour(_dj, _mj, _listeVivant);
                             if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
                                 _val = monstreMort(j);
                             }
@@ -140,8 +150,8 @@ public class Tour {
     public StatusDonjon monstreMort(int vivant)
     {
         for (int n = 0; n < _nbViv; n++) {
-            if (_vivTri.get(n).getPV() <= 0) {
-                _vivTri.remove(_vivTri.get(n));
+            if (_listeVivant.get(n).getPV() <= 0) {
+                _listeVivant.remove(_listeVivant.get(n));
                 _nbViv--;
 
                 if (n <= vivant) {
@@ -157,15 +167,11 @@ public class Tour {
     {
         if (_val == StatusDonjon.JOUEUR_MORT) {
             System.out.println(_cl.rouge() + "\nLes joueurs ont perdu" + _cl.reset());
-            for (Vivant vi : _vivTri)
-            {
-                if (vi.getTypeVivant().equals(TypeVivant.MONSTRE))
-                {
-                    _vivTri.remove(vi);
-                }
-            }
+            _listeVivant.clear();
+            System.exit(0);
         } else {
             System.out.println(_cl.vert() + "\nLes joueurs ont fini le donjon" + _cl.reset());
+            _listeVivant.clear();
         }
     }
 

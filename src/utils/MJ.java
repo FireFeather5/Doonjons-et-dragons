@@ -3,6 +3,7 @@ package utils;
 import de.De;
 import donjon.Donjon;
 import entite.Obstacle;
+import entite.Vivant;
 import entite.equipement.Equipement;
 import entite.Monstre;
 import entite.personnages.Personnage;
@@ -106,27 +107,15 @@ public class MJ {
 
 
 
-    public void depViv(Donjon DJ, Personnage perso, int[] posF)
+    public void depViv(Donjon DJ, Vivant viv, int[] posF)
     {
-        DJ.switchCase(perso, posF);
+        DJ.positionVivant(posF, viv);
     }
 
-    public void depViv(Donjon DJ, Monstre mons, int[] posF)
+    public StatusDonjon degatVivant(Donjon DJ, Vivant viv, int dgt)
     {
-        DJ.switchCase(mons, posF);
-    }
+        System.out.println("Le MJ inflige " + dgt + " dégats a " + viv);
 
-    public StatusDonjon degatJoueur(Donjon DJ, int choix, int dgt) {
-
-        System.out.println("Le MJ inflige " + dgt + " a " + DJ.getListePerso().get(choix));
-
-        return DJ.getListePerso().get(choix).seFaitAttaquer(dgt, DJ);
-    }
-
-    public StatusDonjon degatMonstre(Donjon DJ, int choix, int dgt) {
-
-        System.out.println("Le MJ inflige " + dgt + " a " + DJ.getListeMonstre().get(choix));
-
-        return DJ.getListeMonstre().get(choix).seFaitAttaquer(dgt, DJ);
+        return viv.seFaitAttaquer(dgt, DJ);
     }
 }
