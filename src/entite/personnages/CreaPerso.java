@@ -50,8 +50,7 @@ public class CreaPerso {
                 3- Humain
                 4- Nain""");
         try {
-            int race = sc.nextInt();
-            sc.nextLine();
+            int race = Integer.parseInt(sc.nextLine());
             switch (race) {
                 case 1: {
                     _ra = new Elfes();
@@ -75,7 +74,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
+        catch (NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de race" + _cl.reset());
             Race();
         }
@@ -90,8 +89,7 @@ public class CreaPerso {
                 3- Magicien
                 4- Roublard""");
         try {
-            int classe = sc.nextInt();
-            sc.nextLine();
+            int classe = Integer.parseInt(sc.nextLine());
             switch (classe) {
                 case 1: {
                     _cla = new Clerc();
@@ -115,7 +113,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
+        catch (NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Classe();
         }
@@ -128,8 +126,7 @@ public class CreaPerso {
                 1- Homme
                 2- Femme""");
         try {
-            int gre = sc.nextInt();
-            sc.nextLine();
+            int gre = Integer.parseInt(sc.nextLine());
             switch (gre) {
                 case 1: {
                     _gre = new Masculin();
@@ -145,7 +142,7 @@ public class CreaPerso {
                 }
             }
         }
-        catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
+        catch (NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix de classe" + _cl.reset());
             Genre();
         }

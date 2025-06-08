@@ -77,7 +77,7 @@ public class Tour {
                             _val = _action.actionMonstre(_dj, (Monstre) _vivTri.get(j));
                         }*/
 
-                        _val = _action.actionVivant(_dj, _listeVivant.get(j), _listeMonstre, _listePersonnage);
+                        _val = _action.actionVivant(_dj, _listeVivant.get(j), _listeMonstre, _listePersonnage, _listeVivant);
 
                         if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
                             _val = monstreMort(j);

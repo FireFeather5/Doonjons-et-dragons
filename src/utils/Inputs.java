@@ -55,11 +55,9 @@ public class Inputs {
 
         try {
             System.out.println("\n\ntaille côté ordonnée");
-            tailleCote[0] = sc.nextInt();
-            sc.nextLine();
+            tailleCote[0] = Integer.parseInt(sc.nextLine());
             System.out.println("taille côté abscisse");
-            tailleCote[1] = sc.nextInt();
-            sc.nextLine();
+            tailleCote[1] = Integer.parseInt(sc.nextLine());
 
             if (((15 <= tailleCote[0]) && (tailleCote[0] <= 25)) && ((15 <= tailleCote[1]) && (tailleCote[1] <= 25)))
             {
@@ -74,7 +72,6 @@ public class Inputs {
         catch (InputMismatchException | NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
-            sc.nextLine();
             tailleDonjon();
         }
         tailleDonjon();
@@ -257,25 +254,20 @@ public class Inputs {
         }
         try {
             System.out.println("Portée de l'attaque ?");
-            int portee = sc.nextInt();
-            sc.nextLine();
+            int portee = Integer.parseInt(sc.nextLine());
             System.out.println("Nombre de dés pour le calcul de l'attaque ?");
-            int nbrDeDeg = sc.nextInt();
-            sc.nextLine();
+            int nbrDeDeg = Integer.parseInt(sc.nextLine());
             System.out.println("Nombre de face pour les dés pour le calcul de l'attaque ?");
-            int nbrFaceDeDeg = sc.nextInt();
-            sc.nextLine();
+            int nbrFaceDeDeg = Integer.parseInt(sc.nextLine());
             System.out.println("Nombre de dés pour le calcul des charactéristiques ?");
-            int nbrDeCha = sc.nextInt();
-            sc.nextLine();
+            int nbrDeCha = Integer.parseInt(sc.nextLine());
             System.out.println("Nombre de face pour les dés pour le calcul des charactéristiques ?");
-            int nbrFaceDeCha = sc.nextInt();
-            sc.nextLine();
+            int nbrFaceDeCha = Integer.parseInt(sc.nextLine());
 
             return mj.createM(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
 
         }
-        catch (InputMismatchException | NumberFormatException erreur)
+        catch (NumberFormatException erreur)
         {
             System.out.println(_cl.rouge() + "\nSeul l'espèce et le symbole du monstre peut contenir autre chose que des entier." + _cl.reset() + "\nRecomencez");
             creationMonstre(mj);
@@ -316,11 +308,10 @@ public class Inputs {
             }
 
             try {
-                int equ = sc.nextInt() - 1;
-                sc.nextLine();
-                return pers.getStock().get(equ);
+                int equ = Integer.parseInt(sc.nextLine());
+                return pers.getStock().get(equ-1);
             }
-            catch (InputMismatchException | NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+            catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
             {
                 System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
                 equiperEquip(pers);
@@ -387,14 +378,24 @@ public class Inputs {
 
     private int infligerDegats()
     {
-        System.out.println("Combien de dé(s) pour infliger les dégats ?");
-        int nbDe = sc.nextInt();
-        sc.nextLine();
-        System.out.println("Combien de faces pour les dés ?");
-        int nbFaceDe = sc.nextInt();
-        sc.nextLine();
+        try
+        {
+            System.out.println("Combien de dé(s) pour infliger les dégats ?");
+            int nbDe = Integer.parseInt(sc.nextLine());
 
-        return new De(nbDe, nbFaceDe).roll();
+            System.out.println("Combien de faces pour les dés ?");
+            int nbFaceDe = Integer.parseInt(sc.nextLine());
+
+            return new De(nbDe, nbFaceDe).roll();
+        }
+            catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        {
+            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            infligerDegats();
+        }
+
+        infligerDegats();
+        return 0;
     }
 
 }

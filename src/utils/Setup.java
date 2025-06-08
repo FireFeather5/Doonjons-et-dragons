@@ -28,14 +28,12 @@ public class Setup {
         while (_nbPersonnages == 0) {
             System.out.println("\nCombien de personnages voulez-vous créer ?");
             try {
-                _nbPersonnages = _scanner.nextInt();
-                _scanner.nextLine();
+                _nbPersonnages = Integer.parseInt(_scanner.nextLine());
                 if (_nbPersonnages == 0) {
                     System.out.println(_couleur.rouge() + "\nIl doit y avoir au moins un personnage !" + _couleur.reset());
                 }
-            } catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
+            } catch (NumberFormatException | NullPointerException erreur) {
                 System.out.println(_couleur.rouge() + "Mauvaise entrée clavier" + _couleur.reset());
-                _scanner.nextLine();
             }
         }
 

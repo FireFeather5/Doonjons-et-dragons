@@ -28,135 +28,150 @@ public class Actions {
     }
                     // A REVOIR
 
-    public void lancerSort(Donjon DJ, Personnage person) {
-        if (!person.getSorts().isEmpty()) {
+    public void lancerSort(Donjon DJ, Personnage person, ArrayList<Personnage> listePersonnage, ArrayList<Vivant> listeVivant)
+    {
+        if (!person.getSorts().isEmpty())
+        {
+            boolean magicien = false;
+
+            if (person.getClasse().equals("Magicien"))
+            {
+                magicien = true;
+            }
+
             int choix = 1;
-            System.out.println("Liste des sorts :");
-            for (Sort sort : person.getSorts()) {
+
+            System.out.println("Lequel voulez-vous lancer ?");
+            for (Sort sort : person.getSorts())
+            {
                 System.out.println(choix++ + "- " + sort.getNom() + " : " + sort.getDescription());
             }
-            System.out.println("Lequel voulez-vous lancer ?");
-            try {
-                choix = sc.nextInt();
-                sc.nextLine();
-                if (person.getClasse().equals("Clerc")) {
-                    if (choix == 1) {
-                        int choixPerso = 1;
-                        for (Personnage perso : DJ.getListePerso()) {
-                            System.out.println(choixPerso + "- " + perso.toString());
-                        }
-                        choixPerso = sc.nextInt();
-                        sc.nextLine();
-                        ((Guerison) person.getSorts().getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
-                    }
-                    else {
-                        throw new Exception();
-                    }
-                }
-                else if (person.getClasse().equals("Magicien")) {
-                    switch (choix) {
-                        case 1:
-                            int choixPerso = 1;
-                            for (Personnage perso : DJ.getListePerso()) {
-                                System.out.println("\t" + choixPerso + "- " + perso.toString());
-                                choixPerso++;
-                            }
-                            System.out.println("Choisissez un allie a soigner :");
-                            choixPerso = sc.nextInt();
-                            sc.nextLine();
-                            ((Guerison) person.getSorts().getFirst()).lancer(DJ.getListePerso().get(choixPerso - 1));
-                            break;
-                        case 2:
-                            int choixEntite1 = 1;
 
-                            for (Personnage perso : DJ.getListePerso()) {
-                                System.out.println("\t" + choixEntite1 + "- " + perso.toString());
-                                choixEntite1++;
-                            }
-                            int choixEntite2 = choixEntite1;
-                            for (Monstre mons : DJ.getListeMonstre()) {
-                                System.out.println("\t" + choixEntite2 + "- " + mons.getNom());
-                                choixEntite2++;
+            try {
+                choix = Integer.parseInt(sc.nextLine());
+
+
+                switch (choix) {
+
+                    case 1:
+                        int choixPerso = 1;
+
+                        for (Personnage perso : listePersonnage)
+                        {
+                            System.out.println(choixPerso + "- " + perso);
+                            choixPerso++;
+                        }
+
+                        System.out.println("Choisissez un allié à soigner :");
+                        choixPerso = Integer.parseInt(sc.nextLine());
+
+                        ((Guerison) person.getSorts().get(0)).lancer(DJ.getListePerso().get(choixPerso - 1));
+
+                        break;
+
+                    case 2:
+                        if (magicien) {
+
+                            int choixVivant1 = 1;
+
+                            for (Vivant vivant : listeVivant) {
+                                System.out.println(choixVivant1 + "- " + vivant);
+                                choixVivant1++;
                             }
 
                             System.out.println("Choisissez la première entité à téléporter :");
-                            choixEntite1 = sc.nextInt();
-                            sc.nextLine();
-                            System.out.println("Choisissez la deuxième entité à téléporter :");
-                            choixEntite2 = sc.nextInt();
-                            sc.nextLine();
+                            choixVivant1 = Integer.parseInt(sc.nextLine());
 
-                            if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 <= DJ.getListePerso().size()) {
-                                ((BoogieWoogie) person.getSorts().get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListePerso().get(choixEntite2-1), DJ);
-                            }
-                            else if (choixEntite1 > DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
-                                ((BoogieWoogie) person.getSorts().get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1-DJ.getListePerso().size()), DJ.getListeMonstre().get(choixEntite2-1-DJ.getListePerso().size()), DJ);
-                            }
-                            else if (choixEntite1 <= DJ.getListePerso().size() && choixEntite2 > DJ.getListePerso().size()) {
-                                ((BoogieWoogie) person.getSorts().get(1)).lancer(DJ.getListePerso().get(choixEntite1-1), DJ.getListeMonstre().get(choixEntite2-1-DJ.getListePerso().size()), DJ);
-                            }
-                            else {
-                                ((BoogieWoogie) person.getSorts().get(1)).lancer(DJ.getListeMonstre().get(choixEntite1-1-DJ.getListePerso().size()), DJ.getListePerso().get(choixEntite2-1), DJ);
-                            }
-                            break;
-                        case 3:
+                            System.out.println("Choisissez la deuxième entité à téléporter :");
+                            int choixVivant2 = Integer.parseInt(sc.nextLine());
+
+                            ((BoogieWoogie) person.getSorts().get(1)).lancer(listeVivant.get(choixVivant1 - 1), listeVivant.get(choixVivant2 - 1), DJ);
+                        }
+                        break;
+
+                    case 3:
+                        if (magicien) {
+
                             int choixArme = 1;
-                            for (Personnage perso : DJ.getListePerso()) {
-                                System.out.println("Personnage : " + perso.toString());
+
+                            for (Personnage perso : listePersonnage) {
+                                System.out.println("Personnage : " + perso);
+
                                 for (Equipement equipement : perso.getStock()) {
                                     if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
-                                        System.out.println("\t" + choixArme++ + "- " + equipement.getName());
+                                        System.out.println(choixArme + "- " + equipement.getName());
+                                        choixArme++;
                                     }
                                 }
                                 for (Equipement equipement : perso.getEquipees()) {
                                     if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
-                                        System.out.println("\t" + choixArme++ + "- " + "(Equipée) " + equipement.getName());
+                                        System.out.println(choixArme + "- (Equipée) " + equipement.getName());
+                                        choixArme++;
                                     }
                                 }
                             }
-                            System.out.println("Choisissez une arme a améliorer (+1 dgt, +1 touche) :");
-                            choixArme = sc.nextInt();
-                            sc.nextLine();
+
+                            System.out.println("Choisissez une arme a améliorer (+1 dégat, +1 touche) :");
+                            choixArme = Integer.parseInt(sc.nextLine());
+
                             boolean ok = false;
+
                             int idArme = 1;
-                            for (Personnage perso : DJ.getListePerso()) {
-                                for (Equipement equipement : perso.getStock()) {
-                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
-                                        if (choixArme == idArme) {
-                                            ((ArmeMagique)perso.getSorts().get(2)).lancer((Arme)equipement);
+
+                            for (Personnage perso : listePersonnage)
+                            {
+                                for (Equipement equipement : perso.getStock())
+                                {
+                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME))
+                                    {
+                                        if (choixArme == idArme)
+                                        {
+                                            ((ArmeMagique) person.getSorts().get(2)).lancer((Arme) equipement);
                                             ok = true;
                                             break;
                                         }
-                                        else {
+                                        else
+                                        {
                                             idArme++;
                                         }
                                     }
                                 }
-                                for (Equipement equipement : perso.getEquipees()) {
-                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME)) {
-                                        if (choixArme == idArme) {
-                                            ((ArmeMagique)perso.getSorts().get(2)).lancer((Arme)equipement);
+                                for (Equipement equipement : perso.getEquipees())
+                                {
+                                    if (equipement.getTypeEquip().equals(TypeEquipement.ARME))
+                                    {
+                                        if (choixArme == idArme)
+                                        {
+                                            ((ArmeMagique) person.getSorts().get(2)).lancer((Arme) equipement);
                                             ok = true;
                                             break;
-                                        } else {
+                                        }
+                                        else
+                                        {
                                             idArme++;
                                         }
                                     }
-                                }
-                                if (!ok) {
-                                    throw new Exception();
                                 }
                             }
-                            break;
-                        default:
-                            throw new Exception();
-                    }
+
+                            if (!ok)
+                            {
+                                System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                                lancerSort(DJ, person, listePersonnage, listeVivant);
+                            }
+                        }
+                        break;
+
+                    default:
+                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                        lancerSort(DJ, person, listePersonnage, listeVivant);
                 }
+
+
             }
-            catch (Exception e) {
-                System.out.println(_cl.rouge() + "Choix invalide : " + e + _cl.reset());
-                sc.nextLine();
-                lancerSort(DJ, person);
+            catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
+                System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                lancerSort(DJ, person, listePersonnage, listeVivant);
             }
 
         }
@@ -169,7 +184,7 @@ public class Actions {
 
 
 
-    public StatusDonjon actionVivant(Donjon DJ, Vivant vivant, ArrayList<Monstre> listeMonstre, ArrayList<Personnage> listePersonnage)
+    public StatusDonjon actionVivant(Donjon DJ, Vivant vivant, ArrayList<Monstre> listeMonstre, ArrayList<Personnage> listePersonnage, ArrayList<Vivant> listeVivant)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
         boolean sort = false;
@@ -206,13 +221,8 @@ public class Actions {
             }
         }
 
-
-
-
-
         try {
-            int choix = sc.nextInt();
-            sc.nextLine();
+            int choix = Integer.parseInt(sc.nextLine());
             boolean ok = false;
 
             switch (choix) {
@@ -293,12 +303,12 @@ public class Actions {
                 case 4:
                     if (sort)
                     {
-                        lancerSort(DJ, ((Personnage)vivant));
+                        lancerSort(DJ, (Personnage)vivant, listePersonnage, listeVivant);
                     }
                     else
                     {
                         System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage);
+                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
                     }
                     break;
                 case 5:
@@ -309,19 +319,18 @@ public class Actions {
                     else
                     {
                         System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage);
+                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
                     }
                     break;
                 default:
                     System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    actionVivant(DJ, vivant,  listeMonstre, listePersonnage);
+                    actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
             }
         }
-        catch (InputMismatchException | NumberFormatException | NullPointerException erreur)
+        catch (NumberFormatException | NullPointerException erreur)
         {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            sc.nextLine();
-            actionVivant(DJ, vivant,  listeMonstre, listePersonnage);
+            actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
         }
         return val;
     }
@@ -337,8 +346,7 @@ public class Actions {
         System.out.println("\n\n\nQue veut faire le Maitre du Jeu ?");
         System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire des dégats à un joueur/monstre\n4- Ajouter des obstacles");
         try {
-            int choix = sc.nextInt();
-            sc.nextLine();
+            int choix = Integer.parseInt(sc.nextLine());
             switch (choix) {
                 case 1:
                     break;
@@ -358,7 +366,6 @@ public class Actions {
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
             System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            sc.nextLine();
             actionMjFinTour(DJ, mj, listeVivant);
         }
         return val;
