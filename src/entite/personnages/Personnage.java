@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class Personnage implements Vivant {
 
-    private final Couleurs _cl = new Couleurs();
+    private final Couleurs _couleur = new Couleurs();
 
     private final String _nom;
     private final Races _race;
@@ -56,7 +56,7 @@ public class Personnage implements Vivant {
         _stats.pvt(_classe.getPv());
         _stats.add(_race.getStat());
 
-        System.out.println(_cl.jaune() + "\n===== caractéristiques perso =====" + _cl.reset());
+        System.out.println(_couleur.jaune() + "\n===== caractéristiques perso =====" + _couleur.reset());
         System.out.println("\nLancement d'un dé pour la caractéristique de force.");
         _stats.forc(_deChar.roll() + 3);
         System.out.println("\nLancement d'un dé pour la caractéristique de dextérité.");
@@ -225,7 +225,7 @@ public class Personnage implements Vivant {
         }
         else
         {
-            System.out.println(_cl.rouge() + _nom + " n'a pas d'arme équipée." + _cl.reset());
+            System.out.println(_couleur.rouge() + _nom + " n'a pas d'arme équipée." + _couleur.reset());
         }
         return statusDonj;
     }
@@ -236,7 +236,7 @@ public class Personnage implements Vivant {
         _stats.pv(pv);
         if (pv <= 0)
         {
-            System.out.println(_cl.rouge() + "\n" + this + " à été achevé." + _cl.reset());
+            System.out.println(_couleur.rouge() + "\n" + this + " à été achevé." + _couleur.reset());
             statusDonj = DJ.tuerPerso(this);
         }
         else
@@ -347,7 +347,7 @@ public class Personnage implements Vivant {
 
 
     public String getStat() {
-        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _couleur.jaune() + "\n\n===== " + this + " =====\n" + _couleur.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos()

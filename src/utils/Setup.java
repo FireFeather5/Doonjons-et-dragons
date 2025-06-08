@@ -13,7 +13,7 @@ public class Setup {
     private int _nbPersonnages;
     private int _nbVivants;
     private ArrayList<Vivant> _vivant;
-    private final Inputs _inputs = new Inputs();
+    private final Inputs _input = new Inputs();
     private final Couleurs _couleur = new Couleurs();
     private final MJ _mj = new MJ();
     private final Scanner _scanner = new Scanner(System.in);
@@ -49,7 +49,7 @@ public class Setup {
             {
                 if (choix.equals("o"))
                 {
-                    Equipement equip = _inputs.equiperEquip(personnage);
+                    Equipement equip = _input.equiperEquip(personnage);
                     personnage.sEquiper(equip);
 
                     System.out.println("\nVoulez-vous équiper un autre equipement ? (o/n)");
@@ -59,7 +59,7 @@ public class Setup {
                     {
                         if (choixx.equals("o"))
                         {
-                            Equipement equipe = _inputs.equiperEquip(personnage);
+                            Equipement equipe = _input.equiperEquip(personnage);
                             personnage.sEquiper(equipe);
                             choixx = "n";
                         }
@@ -100,27 +100,42 @@ public class Setup {
         System.out.print("                        Donjon n°" + tour + "\n\n");
         System.out.println("-------------------------------------------------------------------\n" + _couleur.reset());
 
-        Donjon donjon  = _inputs.creationDonjon(_mj);
+        Donjon donjon  = _input.creationDonjon(_mj);
 
         if (donjon == null)
         {
             CreationDonjonDefault createurDonjon = new CreationDonjonDefault();
-            System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
+            boolean reussi = false;
+
+            System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (o/n) ? (l'un des donjons par défaut sera utilisé sinon)");
             String choix = _scanner.nextLine();
-            if (choix.equals("o"))
+
+            while (!reussi)
             {
-                donjon = createurDonjon.donjonRandom();
+                if (choix.equals("o"))
+                {
+                    donjon = createurDonjon.donjonRandom();
+                    reussi = true;
+                }
+                else if (choix.equals("n"))
+                {
+                    donjon = createurDonjon.creationDonjonDefaut();
+                    reussi = true;
+                }
+                else
+                {
+                    System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
+                    System.out.println("Recommencez");
+                    choix = _scanner.nextLine();
+                }
             }
-            else
-            {
-                donjon = createurDonjon.creationDonjonDefaut();
-            }
+
         }
         else
         {
-            _inputs.ajoutObstacle(donjon, _mj);
-            _inputs.ajoutMonstre(donjon, _mj);
-            _inputs.ajoutEquipement(donjon, _mj);
+            _input.ajoutObstacle(donjon, _mj);
+            _input.ajoutMonstre(donjon, _mj);
+            _input.ajoutEquipement(donjon, _mj);
         }
 
         for (int i = 0; i < _nbPersonnages; i++)
@@ -128,7 +143,7 @@ public class Setup {
             boolean ok = false;
             while (!ok)
             {
-                int[] pos = _inputs.choixCase("de " + personnages.get(i));
+                int[] pos = _input.choixCase("de " + personnages.get(i));
                 ok = _mj.setPositionPerso(donjon, personnages.get(i), pos);
             }
             donjon.afficherDJ();
@@ -140,7 +155,7 @@ public class Setup {
         _nbVivants = _nbPersonnages + donjon.getListeMonstre().size();
 
 
-        String text = _inputs.contextDonjon();
+        String text = _input.contextDonjon();
         if (text.isEmpty()) {
             text = "Pas de contexte !";
         }

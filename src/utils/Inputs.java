@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class Inputs {
 
-    private final Couleurs _cl = new Couleurs();
+    private final Couleurs _couleur = new Couleurs();
 
     private final static String[] _ord = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
@@ -31,7 +31,7 @@ public class Inputs {
 
     public Donjon creationDonjon(MJ mj)
     {
-        System.out.println("\n\nVoulez-vous creer un donjons (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un genere aleatoirement)");
+        System.out.println("\n\nVoulez-vous créer un donjon (o/n) ? (dans le cas contraire, vous pourrez choisir entre un donjon par défaut ou un donjon généré aléatoirement)");
         String choix = sc.nextLine();
         if (choix.equals("o"))
         {
@@ -44,6 +44,8 @@ public class Inputs {
         }
         else
         {
+            System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
+            System.out.println("Recommencez");
             creationDonjon(mj);
         }
         return null;
@@ -65,13 +67,13 @@ public class Inputs {
             }
             else
             {
-                System.out.println(_cl.rouge() + "Erreur dans la taille du donjon" + _cl.reset());
+                System.out.println(_couleur.rouge() + "Erreur dans la taille du donjon" + _couleur.reset());
                 tailleDonjon();
             }
         }
         catch (InputMismatchException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _cl.reset());
+            System.out.println(_couleur.rouge() + "\nErreur dans la saisie des tailles du donjon, il ne doit y avoir que des nombres" + _couleur.reset());
             tailleDonjon();
         }
         tailleDonjon();
@@ -99,7 +101,7 @@ public class Inputs {
             }
             else
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
                 ajoutObstacle(DJ, mj);
             }
         }
@@ -127,7 +129,7 @@ public class Inputs {
             }
             else
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
                 ajoutMonstre(DJ, mj);
             }
         }
@@ -180,7 +182,7 @@ public class Inputs {
                     case null, default -> ok = false;
                 }
                 if (!ok) {
-                    System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
+                    System.out.println(_couleur.rouge() + "/!\\ ATTENTION : Equipement non crée" + _couleur.reset());
                 } else {
                     DJ.afficherDJ();
                     boolean test = false;
@@ -197,7 +199,7 @@ public class Inputs {
             }
             else
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
                 ajoutEquipement(DJ, mj);
             }
         }
@@ -207,7 +209,7 @@ public class Inputs {
 
     public int[] choixCase(String context)
     {
-        System.out.println("\n\nChoisir la case " + context + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
+        System.out.println("\n\nChoisir la case " + context + _couleur.cyan() + "   [lettre majuscule][nombre]" + _couleur.reset());
         String pos = sc.nextLine();
 
         int[] posi = positionCase(pos);
@@ -237,7 +239,7 @@ public class Inputs {
 
             if ((posi[0] == 0) || (posi[1] == 0))
             {
-                System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
+                System.out.println(_couleur.rouge() + "Les cases sont dans le format suivant : " + _couleur.cyan() + "   [lettre majuscule][nombre]" + _couleur.reset());
                 return null;
             }
 
@@ -245,7 +247,7 @@ public class Inputs {
         }
         catch (NullPointerException | StringIndexOutOfBoundsException | NumberFormatException erreur)
         {
-            System.out.println(_cl.rouge() + "Les cases sont dans le format suivant : " + _cl.cyan() + "   [lettre majuscule][nombre]" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Les cases sont dans le format suivant : " + _couleur.cyan() + "   [lettre majuscule][nombre]" + _couleur.reset());
             return null;
         }
     }
@@ -257,7 +259,7 @@ public class Inputs {
         String espece = sc.nextLine();
         while (espece.isEmpty())
         {
-            System.out.println(_cl.rouge() + "L'espèce ne peut pas être vide!" + _cl.reset());
+            System.out.println(_couleur.rouge() + "L'espèce ne peut pas être vide!" + _couleur.reset());
             System.out.println("Espèce ?");
             espece = sc.nextLine();
         }
@@ -266,7 +268,7 @@ public class Inputs {
         String symb = sc.nextLine();
         while ((symb.isEmpty()) || (symb.length() > 3))
         {
-            System.out.println(_cl.rouge() + "Le symbole doit être entre 1 et 3 caractères!" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Le symbole doit être entre 1 et 3 caractères!" + _couleur.reset());
             System.out.println("Symbole d'affichage ?   (3 charactères max) ?");
             symb = sc.nextLine();
         }
@@ -313,7 +315,7 @@ public class Inputs {
         }
         catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nSeul l'espèce et le symbole du monstre peuvent contenir autre chose que des entier." + _cl.reset() + "\nRecomencez");
+            System.out.println(_couleur.rouge() + "\nSeul l'espèce et le symbole du monstre peuvent contenir autre chose que des entier." + _couleur.reset() + "\nRecomencez");
             creationMonstre(mj);
         }
         creationMonstre(mj);
@@ -359,7 +361,7 @@ public class Inputs {
             }
             catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
             {
-                System.out.println(_cl.rouge() + "Mauvaise valeur rentrée." + _cl.reset());
+                System.out.println(_couleur.rouge() + "Mauvaise valeur rentrée." + _couleur.reset());
                 equiperEquip(pers);
             }
         }
@@ -387,7 +389,7 @@ public class Inputs {
         }
         catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
+            System.out.println(_couleur.rouge() + "\nErreur dans la saisie." + _couleur.reset() + "\nRecommencez");
             mjDeplaceVivant(dj, mj, listeVivant);
         }
     }
@@ -414,8 +416,8 @@ public class Inputs {
         }
         catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            mjDegatVivant(dj, mj, listeVivant);
+            System.out.println(_couleur.rouge() + "\nErreur dans la saisie." + _couleur.reset() + "\nRecommencez");
+            val = mjDegatVivant(dj, mj, listeVivant);
         }
 
         return val;
@@ -424,6 +426,7 @@ public class Inputs {
 
     private int infligerDegats()
     {
+        int degat = 0;
         try
         {
             System.out.println("Combien de dé(s) pour infliger les dégats ?");
@@ -432,16 +435,15 @@ public class Inputs {
             System.out.println("Combien de faces pour les dés ?");
             int nbFaceDe = Integer.parseInt(sc.nextLine());
 
-            return new De(nbDe, nbFaceDe).roll();
+            degat = new De(nbDe, nbFaceDe).roll();
+            return degat;
         }
-            catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
+        catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
-            System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            infligerDegats();
+            System.out.println(_couleur.rouge() + "\nErreur dans la saisie." + _couleur.reset() + "\nRecommencez");
+            degat = infligerDegats();
         }
-
-        infligerDegats();
-        return 0;
+        return degat;
     }
 
 }

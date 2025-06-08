@@ -475,10 +475,46 @@ package utils
     }
 
     enum StatusDonjon <<enumerate>>
+    {
+        NORMAL
+        JOUEUR_MORT,
+        AUCUN_MONSTRE,
+        MONSTRE_MORT,
+        ERREUR
+    }
+
     enum Erreurs <<enumerate>>
+    {
+        VITESSE_SOUS_3
+        PROBLEME_CASE,
+        TOUT_OK
+    }
+
     enum TypeArme <<enumerate>>
+    {
+        COURANTE
+        DISTANCE,
+        GUERRE
+    }
+
     enum TypeArmure <<enumerate>>
+    {
+        LOURDE
+        LEGERE
+    }
+
     enum TypeEquipement <<enumerate>>
+    {
+        ARME
+        ARMURE
+    }
+
+    enum TypeVivant <<enumerate>>
+    {
+        PERSONNAGE
+        MONSTRE
+    }
+
 }
 
 package donjon
@@ -598,40 +634,68 @@ Monstre "*" *--> "1\n_deChar" De : a des caractéristiques >
 Monstre "*" *--> "1\n_stats" Stats : a des statistiques >
 Monstre "*" *--> "1\n_pos" Position : a une position >
 
-Monstre .> Personnage : <<use>>
+Monstre .> Personnage : <<call/use>>
 Monstre .> Donjon : <<call/use>>
+Monstre .> Erreurs : <<instantiate>>
+Monstre .> StatusDonjon : <<instantiate>>
+Monstre .> TypeVivant : <<instantiate>>
+
+
 
 Personnage "*" *--> "1\n_race" Races : fait parti de >
 Personnage "*" *--> "1\n_classe" Classe : fait parti de >
-Personnage "*" *--> "1\n_gre" Genre : a un >
+Personnage "*" *--> "1\n_genre" Genre : a un >
 Personnage "*" *--> "1\n_deChar" De : a des caractéristiques >
 Personnage "*" *--> "1\n_stats" Stats : a des statistiques >
 Personnage "*" *--> "1\n_pos" Position : a une position >
-Personnage "*" o--> "1\n_peutRamEqu" Equipement : peut ramasser >
+Personnage "*" o--> "1\_equipementARamasser" Equipement : peut ramasser >
 Personnage "*" *--> "*\n_stock" Equipement : a dans son inventaire >
 Personnage "*" *--> "1\n_equipee" Equipement : est equipé avec >
 Personnage "*" *--> "*\n_sorts" Sort : possède >
 
-Personnage .> Monstre : <<use>>
+Personnage .> Monstre : <<call/use>>
 Personnage .> Donjon : <<call/use>>
 Personnage .> Equipement : <<call/use>>
+Personnage .> Erreurs : <<instantiate>>
+Personnage .> StatusDonjon : <<instantiate>>
+Personnage .> TypeVivant : <<instantiate>>
+
+
 
 CreaPerso "*" *--> "1\n_race" Races : le personnage fait parti de >
 CreaPerso "*" *--> "1\n_classe" Classe : le personnage fait parti de >
-CreaPerso "*" *--> "1\n_gre" Genre : le personnage a un >
+CreaPerso "*" *--> "1\n_genre" Genre : le personnage a un >
 
 CreaPerso .> Personnage : <<instantiate>>
+CreaPerso .> Races : <<instantiate>>
+CreaPerso .> Classe : <<instantiate>>
+CreaPerso .> Genre : <<instantiate>>
+
+
 
 Obstacle "*" *--> "1\n_pos" Position : a une position >
 
 Obstacle .> Donjon : <<call/use>>
 
-Equipement "*" *--> "1\n_pos" Position : a une position >
 
-Tour "*" o--> "1\n_vivTri" Vivant : a une liste de vivant >
+
+Equipement "*" *--> "1\n_pos" Position : a une position >
+Equipement "*" *--> "1\n_typeEquip" TypeEquipement : à un type >
+Equipement "*" *--> "1\n_typeArm" TypeArme : peut avoir un type d'arme >
+Equipement "*" *--> "1\n_typeArmur" TypeArmure : peut avoir un type d'armure >
+
+
+
+
+Tour "*" o--> "1\n_listeVivant" Vivant : a une liste de vivants >
+Tour "*" o--> "1\n_listePersonnage" Personnage : a une liste de personnages >
+Tour "*" *--> "1\n_listeMonstre" Monstre : a une liste de monstres >
 Tour "*" o--> "1\n_mj" MJ : a un maitre du jeu >
 Tour "*" o--> "1\n_dj" Donjon : a un donjon >
+Tour "*" o--> "1\n_statusDonjon" StatusDonjon : a un statut >
 Tour "*" *--> "1\n_action" Actions : peut faire des actions >
+
+
 
 Donjon "*" *--> "1\n_donjon" Entite : le donjon est composé de >
 Donjon "*" *--> "1\n_affDJ" AffichDJ : affiche le donjon >
@@ -639,31 +703,38 @@ Donjon "*" *--> "1\n_equip" Equipement : liste des équipements >
 Donjon "*" *--> "1\n_pers" Personnage : liste des personnages >
 Donjon "*" *--> "1\n_mons" Monstre : liste des monstres >
 
+Donjon .> Vivant : <<call/use>>
 Donjon .> Personnage : <<call/use>>
 Donjon .> Monstre : <<call/use>>
 Donjon .> Obstacle : <<call/use>>
 Donjon .> Equipement : <<call/use>>
+Donjon .> StatusDonjon : <<instantiate>>
+
+
 
 CreationDonjonDefault .> Donjon : <<instantiate/call>>
 CreationDonjonDefault .> Monstre : <<instantiate>>
 CreationDonjonDefault .> Equipement : <<instantiate>>
 
-MJ "*" *--> "1\n_action" Actions : peut faire des actions >
+
 
 MJ .> Donjon : <<use/call>>
 MJ .> Personnage : <<use/call>>
+MJ .> Vivant : <<use/call>>
+MJ .> Equipement : <<use>>
 MJ .> Monstre : <<instantiate/use/call>>
+MJ .> StatusDonjon : <<instantiate>>
+
+
 
 Actions .> Donjon : <<use/call>>
 Actions .> Personnage : <<use/call>>
+Actions .> Vivant : <<use/call>>
 Actions .> Monstre : <<use/call>>
 Actions .> MJ : <<use/call>>
 
-Inputs .> Donjon : <<use/call>>
-Inputs .> Personnage : <<use/call>>
-Inputs .> MJ : <<use/call>>
 
-Personnage .|> Entite
+
 Personnage .|> Vivant
 Equipement .|> Entite
 
@@ -675,20 +746,36 @@ Armure -up-|> Equipement
 ArmureLegere -up-|> Armure
 ArmureLourde -up-|> Armure
 
-'bug
-'Donjon "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'CreaPerso "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Personnage "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Monstre "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Tour "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Actions "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'Inputs "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
-'MJ "*" *------> "1\n_cl" Couleurs : couleurs de l'affichage >
 
-CreationDonjonDefault "*" *--> "1\n_input" Inputs : entrées utilisateur >
-Personnage "*" *--> "1\n_input" Inputs : entrées utilisateur >
-Monstre "*" *--> "1\n_input" Inputs : entrées utilisateur >
-Actions "*" *--> "1\n_input" Inputs : entrées utilisateur >
-MJ "*" *--> "1\n_input" Inputs : entrées utilisateur >
+
+'bug si affichée
+'Setup "*" *--> "1\n_vivant" Vivant : liste des vivants >
+'Setup "*" *--> "1\n_mj" MJ : utilise >
+
+
+'bug si affichée
+'Inputs .> Donjon : <<instantiate/use/call>>
+'Inputs .> Personnage : <<use/call>>
+'Inputs .> MJ : <<use/call>>
+'Inputs .> Vivant : <<use/call>>
+
+
+'bug si affichée
+'Donjon "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'CreaPerso "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'Personnage "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'Monstre "*" *------> "1\ncouleur" Couleurs : couleurs de l'affichage >
+'Tour "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'Actions "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'Inputs "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'MJ "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+'Setup "*" *------> "1\n_couleur" Couleurs : couleurs de l'affichage >
+
+'CreationDonjonDefault "*" *--> "1\n_input" Inputs : entrées utilisateur >
+'Personnage "*" *--> "1\n_input" Inputs : entrées utilisateur >
+'Monstre "*" *--> "1\n_input" Inputs : entrées utilisateur >
+'Actions "*" *--> "1\n_input" Inputs : entrées utilisateur >
+'MJ "*" *--> "1\n_input" Inputs : entrées utilisateur >
+'Setup "*" *--> "1\n_input" Inputs : entrées utilisateur >
 
 @enduml

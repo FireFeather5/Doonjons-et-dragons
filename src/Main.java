@@ -29,6 +29,6 @@ public class Main {
             tr.tour();
         }
 
-        System.out.println("                   Les joueurs ont fini le jeu!                   ");
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n                   Les joueurs ont fini le jeu!                   \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 }

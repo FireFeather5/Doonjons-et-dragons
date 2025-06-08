@@ -11,10 +11,10 @@ public class AffichDJ {
     private final String[][] _donjon;
     private final static String[] _tableauLettres = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 
-    public AffichDJ(int tc1, int tc2)
+    public AffichDJ(int tailleCote1, int tailleCote2)
     {
-        _tailleCote1 = tc1;
-        _tailleCote2 = tc2;
+        _tailleCote1 = tailleCote1;
+        _tailleCote2 = tailleCote2;
         _donjon = new String[_tailleCote1][_tailleCote2];
     }
 

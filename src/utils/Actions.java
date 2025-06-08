@@ -194,9 +194,6 @@ public class Actions {
     }
 
 
-
-
-
     public void lancerSort(Donjon DJ, Personnage person, ArrayList<Personnage> listePersonnage, ArrayList<Vivant> listeVivant)
     {
         if (!person.getSorts().isEmpty())
@@ -354,9 +351,6 @@ public class Actions {
             System.out.println(_couleur.rouge() + "Vous n'avez pas de sort..." + _couleur.reset());
         }
     }
-
-
-
 
 
     public StatusDonjon actionMjFinTour(Donjon DJ, MJ mj, ArrayList<Vivant> listeVivant)

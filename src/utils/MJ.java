@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class MJ {
 
-    private final Couleurs _cl = new Couleurs();
+    private final Couleurs _couleur = new Couleurs();
 
     private final ArrayList<String> _monstresCrees = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Erreur dans la selection de la position" + _couleur.reset());
         }
         return test;
     }
@@ -68,7 +68,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Erreur dans la selection de la position" + _couleur.reset());
         }
         return test;
     }
@@ -79,7 +79,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Erreur dans la selection de la position" + _couleur.reset());
         }
         return test;
     }
@@ -90,7 +90,7 @@ public class MJ {
 
         if (!test)
         {
-            System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Erreur dans la selection de la position" + _couleur.reset());
         }
         return test;
     }
