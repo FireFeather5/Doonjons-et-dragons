@@ -28,6 +28,8 @@ public class Main {
             Tour tr = new Tour(etreVivantsTrie, pers, mj, donjon);
             tr.tour();
         }
+
+        System.out.println("                   Les joueurs ont fini le jeu!                   ");
     }
 
 

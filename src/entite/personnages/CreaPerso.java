@@ -69,7 +69,7 @@ public class CreaPerso {
                     break;
                 }
                 default: {
-                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    System.out.println(_cl.rouge() + "Mauvais chiffre choisi." + _cl.reset());
                     Race();
                 }
             }
@@ -108,7 +108,7 @@ public class CreaPerso {
                     break;
                 }
                 default: {
-                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    System.out.println(_cl.rouge() + "Mauvais chiffre choisi." + _cl.reset());
                     Classe();
                 }
             }
@@ -137,7 +137,7 @@ public class CreaPerso {
                     break;
                 }
                 default: {
-                    System.out.println(_cl.rouge() + "Mauvais chiffre choisit." + _cl.reset());
+                    System.out.println(_cl.rouge() + "Mauvais chiffre choisi." + _cl.reset());
                     Genre();
                 }
             }

@@ -159,6 +159,11 @@ public class Tour {
                 }
             }
         }
+        for (int n = 0; n < _listeMonstre.size(); n++) {
+            if (_listeMonstre.get(n).getPV() <= 0) {
+                _listeMonstre.remove(_listeMonstre.get(n));
+            }
+        }
         return StatusDonjon.NORMAL;
     }
 

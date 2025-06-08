@@ -21,11 +21,6 @@ public class BoogieWoogie implements Sort {
     }
 
     public void lancer(Vivant etreVivant1, Vivant etreVivant2, Donjon DJ) {
-        int [] posTemp = etreVivant1.getPos().clone();
-        DJ.emptyCase(etreVivant1.getPos());
-        DJ.emptyCase(etreVivant2.getPos());
-        DJ.positionVivant(_input.positionCase(ALPHABET[etreVivant2.getPos()[1]-1] + etreVivant2.getPos()[0]), etreVivant1);
-        DJ.positionVivant(_input.positionCase(ALPHABET[posTemp[1]-1] + posTemp[0]), etreVivant2);
-
+        DJ.switchCase(etreVivant1, etreVivant2);
     }
 }

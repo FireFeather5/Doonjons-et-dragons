@@ -165,85 +165,20 @@ public class Donjon {
         return StatusDonjon.JOUEUR_MORT;
     }
 
-    /*public void switchCase(int[] pcD, int[] pcF)
+
+    public void switchCase(Vivant viv1, Vivant viv2)
     {
-        boolean caseVal = false;
-        for (Personnage per : _pers)
-        {
-            if (per.equals(_donjon[pcD[0]-1][pcD[1]-1]))
-            {
-                caseVal = true;
-                break;
-            }
-        }
+        int[] posViv1 = viv1.getPos();
+        int[] posViv2 = viv2.getPos();
 
-        if (!caseVal) {
-            for (Monstre mos : _mons) {
-                if (mos.equals(_donjon[pcD[0] - 1][pcD[1] - 1])) {
-                    caseVal = true;
-                    break;
-                }
-            }
-        }
+        _donjon[posViv2[0] - 1][posViv2[1] - 1] = viv1;
+        _donjon[posViv1[0] - 1][posViv1[1] - 1] = viv2;
 
-        if (caseVal)
-        {
-            if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
-            {
-                _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
+        viv1.setPosition(posViv2[0], posViv2[1]);
+        viv2.setPosition(posViv1[0], posViv1[1]);
 
-                System.out.println("Le déplacement à fonctionné");
-                emptyCase(pcD);
-            }
-            else
-            {
-                System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
-            }
-        }
-        else
-        {
-            System.out.println(_cl.rouge() + "Il n'y a ni personnage ni monstre sur la case départ" + _cl.reset());
-        }
-    }*/
-
-
-    public void switchCase(Personnage perso, int[] pcF)
-    {
-        int[] pcD = perso.getPos();
-
-         if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
-        {
-            _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
-
-            System.out.println("Le déplacement à fonctionné");
-            perso.setPosition(pcF[0], pcF[1]);
-            emptyCase(pcD);
-        }
-        else
-        {
-            System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
-        }
+        System.out.println("L'échange à fonctionné");
     }
-
-
-    public void switchCase(Monstre mons, int[] pcF)
-    {
-        int[] pcD = mons.getPos();
-
-        if (_donjon[pcF[0] - 1][pcF[1] - 1] == null)
-        {
-            _donjon[pcF[0] - 1][pcF[1] - 1] = _donjon[pcD[0]-1][pcD[1]-1];
-
-            System.out.println("Le déplacement à fonctionné");
-            mons.setPosition(pcF[0], pcF[1]);
-            emptyCase(pcD);
-        }
-        else
-        {
-            System.out.println(_cl.rouge() + "La case d'arrivée n'est pas vide" + _cl.reset());
-        }
-    }
-
 
 
     public void emptyCase(int[] pc)

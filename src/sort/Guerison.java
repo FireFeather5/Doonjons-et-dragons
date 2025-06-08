@@ -15,7 +15,9 @@ public class Guerison implements Sort {
         return "Lancer 1d10 pour soigner un équipier.";
     }
 
-    public void lancer(Personnage perso) {
-        perso.seSoigner(new De(1, 10).roll());
+    public int lancer(Personnage perso) {
+        int soin = new De(1, 10).roll();
+        perso.seSoigner(soin);
+        return soin;
     }
 }

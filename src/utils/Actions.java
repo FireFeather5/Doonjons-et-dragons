@@ -41,7 +41,7 @@ public class Actions {
 
             int choix = 1;
 
-            System.out.println("Lequel voulez-vous lancer ?");
+            System.out.println("\nLequel voulez-vous lancer ?");
             for (Sort sort : person.getSorts())
             {
                 System.out.println(choix++ + "- " + sort.getNom() + " : " + sort.getDescription());
@@ -56,16 +56,19 @@ public class Actions {
                     case 1:
                         int choixPerso = 1;
 
+                        System.out.println("\nChoisissez un allié à soigner :");
+
                         for (Personnage perso : listePersonnage)
                         {
                             System.out.println(choixPerso + "- " + perso);
                             choixPerso++;
                         }
 
-                        System.out.println("Choisissez un allié à soigner :");
                         choixPerso = Integer.parseInt(sc.nextLine());
 
-                        ((Guerison) person.getSorts().get(0)).lancer(DJ.getListePerso().get(choixPerso - 1));
+                        int soin = ((Guerison) person.getSorts().get(0)).lancer(listePersonnage.get(choixPerso - 1));
+
+                        System.out.println("\n" + listePersonnage.get(choixPerso - 1) + " à été soigné de " + soin + " pv.");
 
                         break;
 
@@ -74,12 +77,13 @@ public class Actions {
 
                             int choixVivant1 = 1;
 
+                            System.out.println("\n");
                             for (Vivant vivant : listeVivant) {
                                 System.out.println(choixVivant1 + "- " + vivant);
                                 choixVivant1++;
                             }
 
-                            System.out.println("Choisissez la première entité à téléporter :");
+                            System.out.println("\nChoisissez la première entité à téléporter :");
                             choixVivant1 = Integer.parseInt(sc.nextLine());
 
                             System.out.println("Choisissez la deuxième entité à téléporter :");
@@ -127,6 +131,7 @@ public class Actions {
                                         if (choixArme == idArme)
                                         {
                                             ((ArmeMagique) person.getSorts().get(2)).lancer((Arme) equipement);
+                                            System.out.println("\n" + equipement + "à été amélioré.");
                                             ok = true;
                                             break;
                                         }
@@ -143,6 +148,7 @@ public class Actions {
                                         if (choixArme == idArme)
                                         {
                                             ((ArmeMagique) person.getSorts().get(2)).lancer((Arme) equipement);
+                                            System.out.println("\n" + equipement + "à été amélioré.");
                                             ok = true;
                                             break;
                                         }
@@ -245,6 +251,7 @@ public class Actions {
                         while (val.equals(StatusDonjon.ERREUR))
                         {
                             int nbMonstre = 0;
+                            System.out.println("\n");
                             for (Monstre mons : listeMonstre)
                             {
                                 nbMonstre++;
@@ -268,6 +275,7 @@ public class Actions {
                         while (val.equals(StatusDonjon.ERREUR))
                         {
                             int nbPerso = 0;
+                            System.out.println("\n");
                             for (Personnage perso : listePersonnage)
                             {
                                 nbPerso++;
@@ -288,16 +296,22 @@ public class Actions {
                     }
                     break;
                 case 3:
-                    if (personnage) {
-                        while (!ok) {
+                    if (personnage)
+                    {
+                        while (!ok)
+                        {
                             Equipement equip = _input.equiperEquip(((Personnage)vivant));
                             ok = ((Personnage)vivant).sEquiper(equip);
-                            if (ok) {
+                            if (ok)
+                            {
                                 System.out.println(equip.getName() + " à bien été équipé");
-                            } else {
-                                System.out.println(_cl.rouge() + "ERREUR : l'equipement n'est pas dans l'inventaire" + _cl.reset());
                             }
                         }
+                    }
+                    else
+                    {
+                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
                     }
                     break;
                 case 4:
