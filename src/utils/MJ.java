@@ -36,25 +36,25 @@ public class MJ {
         return DJ;
     }
 
-    public void addObst(Donjon DJ, int[] pos)
+    public boolean ajoutObstacle(Donjon DJ, int[] pos)
     {
         Obstacle obs = new Obstacle();
-        boolean test = obs.addPos(pos, DJ);
+        boolean test = obs.addPositionDonjon(pos, DJ);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            addObst(DJ, pos);
         }
+        return test;
     }
 
-    public Monstre createM(String espece, String symb, int portee, De degAtt, De charac)
+    public Monstre creationMonstre(String espece, String symb, int portee, De degAtt, De charac)
     {
         Monstre mons = new Monstre(espece, symb, portee, degAtt, charac);
 
         for (String monstre : this._monstresCrees) {
             if (monstre.equals(espece)) {
-                mons.multiMonstre();
+                mons.numeroMonstre();
             }
         }
         this._monstresCrees.add(espece);
@@ -62,7 +62,7 @@ public class MJ {
         return mons;
     }
 
-    public boolean posJ(Donjon DJ, Personnage perso, int[] pos)
+    public boolean setPositionPerso(Donjon DJ, Personnage perso, int[] pos)
     {
         boolean test = DJ.positionVivant(pos, perso);
 
@@ -73,26 +73,26 @@ public class MJ {
         return test;
     }
 
-    public void posM(Donjon DJ, Monstre mons, int[] pos)
+    public boolean setPositionMonstre(Donjon DJ, Monstre mons, int[] pos)
     {
         boolean test = DJ.positionVivant(pos, mons);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            this.posM(DJ, mons, pos);
         }
+        return test;
     }
 
-    public void posEquip(Donjon DJ, Equipement equip, int[] pos)
+    public boolean setPositionEquipement(Donjon DJ, Equipement equip, int[] pos)
     {
         boolean test = DJ.positionEquipement(pos, equip);
 
         if (!test)
         {
             System.out.println(_cl.rouge() + "Erreur dans la selection de la position" + _cl.reset());
-            this.posEquip(DJ, equip, pos);
         }
+        return test;
     }
 
     public void presContext(String context)
@@ -100,23 +100,23 @@ public class MJ {
         System.out.println("MJ - " + context);
     }
 
-    public void comAction(String commentaire)
+    public void commentaireAction(String commentaire)
     {
         System.out.println("\nMJ - " + commentaire);
     }
 
 
 
-    public void depViv(Donjon DJ, Vivant viv, int[] posF)
+    public void deplacementVivant(Donjon DJ, Vivant viv, int[] posFinale)
     {
-        DJ.emptyCase(viv.getPos());
-        DJ.positionVivant(posF, viv);
+        DJ.emptyCase(viv.getPosition());
+        DJ.positionVivant(posFinale, viv);
     }
 
-    public StatusDonjon degatVivant(Donjon DJ, Vivant viv, int dgt)
+    public StatusDonjon degatVivant(Donjon DJ, Vivant viv, int degats)
     {
-        System.out.println("Le MJ inflige " + dgt + " dégats a " + viv);
+        System.out.println("Le MJ inflige " + degats + " dégats a " + viv);
 
-        return viv.seFaitAttaquer(dgt, DJ);
+        return viv.seFaitAttaquer(degats, DJ);
     }
 }

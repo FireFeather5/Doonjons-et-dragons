@@ -18,15 +18,15 @@ public interface Vivant extends Entite {
 
     String getInfos();
 
-    String getLilInfos();
+    String getPetitesInfos();
 
-    int getIni();
+    int getInitiative();
 
     int getPV();
 
     TypeVivant getTypeVivant();
 
-    int[] getPos();
+    int[] getPosition();
 
     @Override
     String toString();

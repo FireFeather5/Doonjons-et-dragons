@@ -13,12 +13,12 @@ public class Halfelins implements Races {
         _stat.vit(2);
     }
 
-    public Stats stat()
+    public Stats getStat()
     {
         return _stat;
     }
 
-    public String getRa()
+    public String getRace()
     {
         return "Halfelin";
     }

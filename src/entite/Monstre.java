@@ -10,16 +10,14 @@ import donjon.Donjon;
 import statistiques.Position;
 import statistiques.Stats;
 
-import java.util.ArrayList;
-
 public class Monstre implements Vivant {
 
-    private final Couleurs _cl = new Couleurs();
+    private final Couleurs _couleur = new Couleurs();
 
     private final String _espece;
     private final String _symb;
     private int _numero = 1;
-    private final int _portAtt;
+    private final int _porteeAttaque;
     private final De _degAtt;
     private final Stats _stats;
     private final Position _pos;
@@ -30,13 +28,13 @@ public class Monstre implements Vivant {
         _deChar = charac;
         _espece = espece;
         _symb = symb;
-        _portAtt = portAtt;
+        _porteeAttaque = portAtt;
         _degAtt = degAtt;
 
         _pos = new Position();
         _stats = new Stats();
 
-        System.out.println(_cl.jaune() + "\n\n===== initialisation monstre " + _espece + " =====" + _cl.reset());
+        System.out.println(_couleur.jaune() + "\n\n===== initialisation monstre " + _espece + " =====" + _couleur.reset());
         System.out.println("\nLancement d'un dé pour les points de vie.");
         _stats.pvt(_deChar.roll());
         System.out.println("\nLancement d'un dé pour la caractéristique de vitesse.");
@@ -46,7 +44,7 @@ public class Monstre implements Vivant {
         System.out.println("\nLancement d'un dé pour la caractéristique d'armure.");
         _stats.arm(_deChar.roll());
 
-        if (_portAtt == 1)
+        if (_porteeAttaque == 1)
         {
             _stats.dex(0);
             System.out.println("\nLancement d'un dé pour la caractéristique de force.");
@@ -60,7 +58,7 @@ public class Monstre implements Vivant {
         }
     }
 
-    public void multiMonstre() {
+    public void numeroMonstre() {
         this._numero ++;
     }
 
@@ -78,7 +76,7 @@ public class Monstre implements Vivant {
 
         int distDep = _stats.retVit() / 3;
 
-        int[] posOld = getPos();
+        int[] posOld = getPosition();
 
         if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep)))
         {
@@ -94,12 +92,12 @@ public class Monstre implements Vivant {
 
     public StatusDonjon attaquer(Donjon DJ, Personnage pers)
     {
-        StatusDonjon val = StatusDonjon.NORMAL;
+        StatusDonjon statusDonj = StatusDonjon.NORMAL;
 
         System.out.print("\n");
         this._deChar.changeDe(1, 20);
 
-                if (((pers.getPos()[0] >= _pos.getAbscisse() - _portAtt) && (pers.getPos()[0] <= _pos.getAbscisse() + _portAtt)) && ((pers.getPos()[1] >= _pos.getOrdonnee() - _portAtt) && (pers.getPos()[1] <= _pos.getOrdonnee() + _portAtt))) {
+                if (((pers.getPosition()[0] >= _pos.getAbscisse() - _porteeAttaque) && (pers.getPosition()[0] <= _pos.getAbscisse() + _porteeAttaque)) && ((pers.getPosition()[1] >= _pos.getOrdonnee() - _porteeAttaque) && (pers.getPosition()[1] <= _pos.getOrdonnee() + _porteeAttaque))) {
                     // un des deux est forcément à 0 donc on peut directement ajouter les deux
                     // (évite un if else)
                     int detou = this._deChar.roll();
@@ -108,7 +106,7 @@ public class Monstre implements Vivant {
                     if (touche > pers.getArmorClass()) {
                         int atk = this._degAtt.roll();
                         System.out.println(this + " fait " + atk + " dégats à " + pers + " !");
-                        val = pers.seFaitAttaquer(atk, DJ);
+                        statusDonj = pers.seFaitAttaquer(atk, DJ);
                     } else {
                         System.out.println(this + " ne perce pas l'armure de " + pers + " (jet de touche : " + (_stats.retFor() + _stats.retDex()) + " + " + detou + " = " + touche + ")");
                     }
@@ -116,23 +114,23 @@ public class Monstre implements Vivant {
                     System.out.println(this + " n'a pas une portée suffisante");
                 }
 
-        return val;
+        return statusDonj;
     }
 
     public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
-        StatusDonjon val = StatusDonjon.NORMAL;
+        StatusDonjon statusDonj = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
         _stats.pv(pv);
         if (pv <= 0)
         {
-            System.out.println(_cl.rouge() + "\n" + this + " à été achevé." + _cl.reset());
-            val = DJ.tuerMonstre(this);
+            System.out.println(_couleur.rouge() + "\n" + this + " à été achevé." + _couleur.reset());
+            statusDonj = DJ.tuerMonstre(this);
         }
         else
         {
             System.out.println("\n" + this + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
-        return val;
+        return statusDonj;
     }
 
 
@@ -141,24 +139,24 @@ public class Monstre implements Vivant {
     }
 
     public String getStat() {
-        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _couleur.jaune() + "\n\n===== " + this + " =====\n" + _couleur.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
     public String getInfos() {
-        return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
+        return _couleur.jaune() + "\n\n===== " + this + " =====\n" + _couleur.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
     }
 
-    public String getLilInfos()
+    public String getPetitesInfos()
     {
-        return (aff() + "    " + this + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
+        return (affichage() + "    " + this + " (" + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
     }
 
-    public int[] getPos()
+    public int[] getPosition()
     {
         return _pos.getPosition();
     }
 
-    public int getIni()
+    public int getInitiative()
     {
         return _stats.retIni();
     }
@@ -172,7 +170,9 @@ public class Monstre implements Vivant {
         return this._espece;
     }
 
-    public String aff()
+
+
+    public String affichage()
     {
         if (_symb.length() == 3) {
             return _symb;

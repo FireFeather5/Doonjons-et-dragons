@@ -24,13 +24,13 @@ public class Personnage implements Vivant {
     private final String _nom;
     private final Races _race;
     private final Classe _classe;
-    private final Genre _gre;
+    private final Genre _genre;
 
     private final De _deChar = new De(4, 4);
     private final Stats _stats;
     private final Position _pos;
 
-    private Equipement _peutRamEqu = null;
+    private Equipement _equipementARamasser = null;
     private boolean _peutRamasser;
 
     private final ArrayList<Equipement> _stock;
@@ -38,7 +38,7 @@ public class Personnage implements Vivant {
     private final ArrayList<Sort> _sorts;
 
 
-    public Personnage(String nom, Races race, Classe classe, Genre gre)
+    public Personnage(String nom, Races race, Classe classe, Genre genre)
     {
         _stock = new ArrayList<>();
         _equipee = new ArrayList<>();
@@ -50,11 +50,11 @@ public class Personnage implements Vivant {
         _nom = nom;
         _race = race;
         _classe = classe;
-        _gre = gre;
+        _genre = genre;
 
 
-        _stats.pvt(_classe.pv());
-        _stats.add(_race.stat());
+        _stats.pvt(_classe.getPv());
+        _stats.add(_race.getStat());
 
         System.out.println(_cl.jaune() + "\n===== caractéristiques perso =====" + _cl.reset());
         System.out.println("\nLancement d'un dé pour la caractéristique de force.");
@@ -71,10 +71,10 @@ public class Personnage implements Vivant {
         _peutRamasser = false;
 
 
-        if (_classe.getCla().equals("Clerc")) {
+        if (_classe.getClasse().equals("Clerc")) {
             this._sorts.add(new Guerison());
         }
-        else if (_classe.getCla().equals("Magicien")) {
+        else if (_classe.getClasse().equals("Magicien")) {
             this._sorts.add(new Guerison());
             this._sorts.add(new BoogieWoogie());
             this._sorts.add(new ArmeMagique());
@@ -98,27 +98,18 @@ public class Personnage implements Vivant {
         try {
             int distDep = _stats.retVit() / 3;
 
-            int[] posOld = getPos();
+            int[] posOld = getPosition();
 
             if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
 
-                //if (!_peutRamasser) {
-                    boolean val = DJ.positionVivant(pos, this);
-                    if (val) {
-                        DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        return Erreurs.TOUT_OK;
-                    } else {
-                        return Erreurs.PROBLEME_CASE;
-                    }
-                /*} else {
-                    boolean val = DJ.positionVivant(pos, this);
-                    if (val) {
-                        DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        return Erreurs.TOUT_OK;
-                    } else {
-                        return Erreurs.PROBLEME_CASE;
-                    }
-                }*/
+            boolean statusDonj = DJ.positionVivant(pos, this);
+            if (statusDonj) {
+                DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
+                return Erreurs.TOUT_OK;
+            } else {
+                return Erreurs.PROBLEME_CASE;
+            }
+
             } else {
                 return Erreurs.PROBLEME_CASE;
             }
@@ -186,7 +177,7 @@ public class Personnage implements Vivant {
 
     public StatusDonjon attaquer(Donjon DJ, Monstre mons)
     {
-        StatusDonjon val = StatusDonjon.NORMAL;
+        StatusDonjon statusDonj = StatusDonjon.NORMAL;
 
         Arme arme = getArmeEquipe();
 
@@ -209,7 +200,7 @@ public class Personnage implements Vivant {
             int detou = this._deChar.roll() + arme.getBonusMagique();
             touche += detou;
 
-            if (((mons.getPos()[0] >= _pos.getAbscisse() - arme.getRange()) && (mons.getPos()[0] <= _pos.getAbscisse() + arme.getRange()) && ((mons.getPos()[1] >= _pos.getOrdonnee() - arme.getRange()) && (mons.getPos()[1] <= _pos.getOrdonnee() + arme.getRange()))))
+            if (((mons.getPosition()[0] >= _pos.getAbscisse() - arme.getRange()) && (mons.getPosition()[0] <= _pos.getAbscisse() + arme.getRange()) && ((mons.getPosition()[1] >= _pos.getOrdonnee() - arme.getRange()) && (mons.getPosition()[1] <= _pos.getOrdonnee() + arme.getRange()))))
             {
                 if (touche > mons.getArmorClass())
                 {
@@ -220,7 +211,7 @@ public class Personnage implements Vivant {
                     int bonus = arme.getBonusMagique();
                     System.out.println(_nom + " fait " + atk + " dégats à " + mons + " !");
 
-                    val = mons.seFaitAttaquer(atk, DJ);
+                    statusDonj = mons.seFaitAttaquer(atk, DJ);
                 }
                 else
                 {
@@ -236,23 +227,23 @@ public class Personnage implements Vivant {
         {
             System.out.println(_cl.rouge() + _nom + " n'a pas d'arme équipée." + _cl.reset());
         }
-        return val;
+        return statusDonj;
     }
 
     public StatusDonjon seFaitAttaquer(int degats, Donjon DJ) {
-        StatusDonjon val = StatusDonjon.NORMAL;
+        StatusDonjon statusDonj = StatusDonjon.NORMAL;
         int pv = _stats.retPv() - degats;
         _stats.pv(pv);
         if (pv <= 0)
         {
             System.out.println(_cl.rouge() + "\n" + this + " à été achevé." + _cl.reset());
-            val = DJ.tuerPerso(this);
+            statusDonj = DJ.tuerPerso(this);
         }
         else
         {
             System.out.println("\n" + this + " n'a plus que " + _stats.retPv() + "/" + _stats.retPvT() + " PV.");
         }
-        return val;
+        return statusDonj;
     }
 
     public void seSoigner(int soin) {
@@ -261,23 +252,23 @@ public class Personnage implements Vivant {
 
     public void peutRamasser(Equipement equip)
     {
-        _peutRamEqu = equip;
+        _equipementARamasser = equip;
         _peutRamasser = true;
     }
 
     public void ramasser(Donjon DJ)
     {
-        _stock.add(_peutRamEqu);
-        DJ.ramasserEquipement(_peutRamEqu);
-        System.out.println(_peutRamEqu.getName() + " à été ramassé");
+        _stock.add(_equipementARamasser);
+        DJ.ramasserEquipement(_equipementARamasser);
+        System.out.println(_equipementARamasser.getName() + " à été ramassé");
         _peutRamasser = false;
-        _peutRamEqu = null;
+        _equipementARamasser = null;
     }
 
-    public void reinilisation()
+    public void reinilisationRamasser()
     {
         _peutRamasser = false;
-        _peutRamEqu = null;
+        _equipementARamasser = null;
     }
 
     public void comAction(String comAct)
@@ -285,7 +276,7 @@ public class Personnage implements Vivant {
         System.out.println(this + " - " + comAct);
     }
 
-    public void regePV()
+    public void regenerationPerso()
     {
         _stats.pv(_stats.retPvT());
     }
@@ -322,7 +313,7 @@ public class Personnage implements Vivant {
 
     public Equipement getPeutRamEqu()
     {
-        return _peutRamEqu;
+        return _equipementARamasser;
     }
 
     public int getArmorClass() {
@@ -348,10 +339,12 @@ public class Personnage implements Vivant {
         return porte.toString();
     }
 
-
     public ArrayList<Sort> getSorts() {
         return _sorts;
     }
+
+
+
 
     public String getStat() {
         return _cl.jaune() + "\n\n===== " + this + " =====\n" + _cl.reset() + "\nPv : " + _stats.retPv() + "/" + _stats.retPvT() + "\nForce : " + _stats.retFor() + "\nDexterite : " + _stats.retDex() + "\nVitesse : " + _stats.retVit() + "\nInitiative : " + _stats.retIni()  + "\nClasse d'armure : " + _stats.retArm();
@@ -362,17 +355,17 @@ public class Personnage implements Vivant {
         return getStat() + "\n\nEquipement :\n" + getEquipeeString() + "\nInventaire :\n" + getStockString();
     }
 
-    public String getLilInfos()
+    public String getPetitesInfos()
     {
-        return (aff() + "    " + _nom + " (" + _gre.genrer(_classe.getCla()) + " " + _gre.genrer(_race.getRa()) + " " + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
+        return (affichage() + "    " + _nom + " (" + _genre.genrer(_classe.getClasse()) + " " + _genre.genrer(_race.getRace()) + " " + _stats.retPv() + "/" + _stats.retPvT() + ")" + "\n");
     }
 
-    public int[] getPos()
+    public int[] getPosition()
     {
         return _pos.getPosition();
     }
 
-    public int getIni()
+    public int getInitiative()
     {
         return _stats.retIni();
     }
@@ -384,7 +377,7 @@ public class Personnage implements Vivant {
 
     public String getClasse()
     {
-        return _classe.getCla();
+        return _classe.getClasse();
     }
 
     public boolean peutRam()
@@ -398,7 +391,9 @@ public class Personnage implements Vivant {
     }
 
 
-    public String aff()
+
+
+    public String affichage()
     {
         if (_nom.length() >= 3)
         {

@@ -15,12 +15,12 @@ public class Humain implements Races {
         _stat.ini(2);
     }
 
-    public Stats stat()
+    public Stats getStat()
     {
         return _stat;
     }
 
-    public String getRa()
+    public String getRace()
     {
         return "Humain";
     }

@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public interface Classe {
 
-    int pv();
+    int getPv();
 
     ArrayList<Equipement> getEquiBase();
 
-    String getCla();
+    String getClasse();
 
 }

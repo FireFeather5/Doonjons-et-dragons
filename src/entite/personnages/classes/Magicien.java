@@ -18,7 +18,7 @@ public class Magicien implements Classe {
         _equiBase.add(new Fronde());
     }
 
-    public int pv()
+    public int getPv()
     {
         return _pv;
     }
@@ -28,7 +28,7 @@ public class Magicien implements Classe {
         return _equiBase;
     }
 
-    public String getCla()
+    public String getClasse()
     {
         return "Magicien";
     }

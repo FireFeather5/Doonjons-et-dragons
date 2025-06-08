@@ -5,12 +5,12 @@ import entite.personnages.Personnage;
 
 public class Guerison implements Sort {
 
-    @Override
+
     public String getNom() {
         return "Guérison";
     }
 
-    @Override
+
     public String getDescription() {
         return "Lancer 1d10 pour soigner un équipier.";
     }

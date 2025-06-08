@@ -23,7 +23,7 @@ public class CreationDonjonDefault {
     {
     }
 
-    public Donjon createDefaultDJ()
+    public Donjon creationDonjonDefaut()
     {
         Random rand = new Random();
         int choixDonjon = rand.nextInt(0, 3);
@@ -45,11 +45,11 @@ public class CreationDonjonDefault {
 
         switch(choixDonjon) {
             case 0:
-                obs.addPos(_input.positionCase("J8"), DJ);
-                obs.addPos(_input.positionCase("J9"), DJ);
-                obs.addPos(_input.positionCase("K9"), DJ);
-                obs.addPos(_input.positionCase("K10"), DJ);
-                obs.addPos(_input.positionCase("K11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("J8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("J9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K10"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K11"), DJ);
 
                 DJ.positionVivant(_input.positionCase("P14"), demogordgon);
                 DJ.positionVivant(_input.positionCase("E4"), dragonBleu);
@@ -61,19 +61,19 @@ public class CreationDonjonDefault {
                 DJ.positionEquipement(_input.positionCase("T14"), rapiere);
                 break;
             case 1:
-                obs.addPos(_input.positionCase("H7"), DJ);
-                obs.addPos(_input.positionCase("H8"), DJ);
-                obs.addPos(_input.positionCase("H9"), DJ);
-                obs.addPos(_input.positionCase("H10"), DJ);
-                obs.addPos(_input.positionCase("H11"), DJ);
-                obs.addPos(_input.positionCase("H12"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H10"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H12"), DJ);
 
-                obs.addPos(_input.positionCase("N7"), DJ);
-                obs.addPos(_input.positionCase("N8"), DJ);
-                obs.addPos(_input.positionCase("N9"), DJ);
-                obs.addPos(_input.positionCase("N10"), DJ);
-                obs.addPos(_input.positionCase("N11"), DJ);
-                obs.addPos(_input.positionCase("N12"), DJ);
+                obs.addPositionDonjon(_input.positionCase("N7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("N8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("N9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("N10"), DJ);
+                obs.addPositionDonjon(_input.positionCase("N11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("N12"), DJ);
 
                 DJ.positionVivant(_input.positionCase("T15"), dragonBleu);
                 DJ.positionVivant(_input.positionCase("K9"), demogordgon);
@@ -82,33 +82,33 @@ public class CreationDonjonDefault {
                 DJ.positionEquipement(_input.positionCase("P14"), fronde);
                 break;
             case 2:
-                obs.addPos(_input.positionCase("G7"), DJ);
-                obs.addPos(_input.positionCase("G8"), DJ);
-                obs.addPos(_input.positionCase("G9"), DJ);
-                obs.addPos(_input.positionCase("G10"), DJ);
-                obs.addPos(_input.positionCase("G11"), DJ);
-                obs.addPos(_input.positionCase("H7"), DJ);
-                obs.addPos(_input.positionCase("H9"), DJ);
-                obs.addPos(_input.positionCase("I8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("G7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("G8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("G9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("G10"), DJ);
+                obs.addPositionDonjon(_input.positionCase("G11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("H9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("I8"), DJ);
 
-                obs.addPos(_input.positionCase("K7"), DJ);
-                obs.addPos(_input.positionCase("K9"), DJ);
-                obs.addPos(_input.positionCase("K10"), DJ);
-                obs.addPos(_input.positionCase("K11"), DJ);
-                obs.addPos(_input.positionCase("L7"), DJ);
-                obs.addPos(_input.positionCase("L9"), DJ);
-                obs.addPos(_input.positionCase("L11"), DJ);
-                obs.addPos(_input.positionCase("M7"), DJ);
-                obs.addPos(_input.positionCase("M8"), DJ);
-                obs.addPos(_input.positionCase("M9"), DJ);
-                obs.addPos(_input.positionCase("M11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K10"), DJ);
+                obs.addPositionDonjon(_input.positionCase("K11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("L7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("L9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("L11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("M7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("M8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("M9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("M11"), DJ);
 
-                obs.addPos(_input.positionCase("O7"), DJ);
-                obs.addPos(_input.positionCase("P7"), DJ);
-                obs.addPos(_input.positionCase("P8"), DJ);
-                obs.addPos(_input.positionCase("P9"), DJ);
-                obs.addPos(_input.positionCase("P10"), DJ);
-                obs.addPos(_input.positionCase("P11"), DJ);
+                obs.addPositionDonjon(_input.positionCase("O7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("P7"), DJ);
+                obs.addPositionDonjon(_input.positionCase("P8"), DJ);
+                obs.addPositionDonjon(_input.positionCase("P9"), DJ);
+                obs.addPositionDonjon(_input.positionCase("P10"), DJ);
+                obs.addPositionDonjon(_input.positionCase("P11"), DJ);
 
                 DJ.positionVivant(_input.positionCase("O8"), demogordgon);
                 DJ.positionVivant(_input.positionCase("H11"), dragonBleu);
@@ -150,7 +150,7 @@ public class CreationDonjonDefault {
             for (int j = 0; j < taille[1]; j++) {
                 int element = rand.nextInt(0, 100);
                 if (element < 1) {
-                    Monstre mystique = mj.createM(
+                    Monstre mystique = mj.creationMonstre(
                             "Monstre mystique",
                             "<" + numeroMonstre++ + ">",
                             rand.nextInt(1, 4),

@@ -12,12 +12,12 @@ public class Elfes implements Races {
         _stat.dex(6);
     }
 
-    public Stats stat()
+    public Stats getStat()
     {
         return _stat;
     }
 
-    public String getRa()
+    public String getRace()
     {
         return "Elfe";
     }

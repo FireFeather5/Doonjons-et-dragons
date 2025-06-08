@@ -18,7 +18,7 @@ public class Roublard implements Classe {
         _equiBase.add(new ArcCourt());
     }
 
-    public int pv()
+    public int getPv()
     {
         return _pv;
     }
@@ -28,7 +28,7 @@ public class Roublard implements Classe {
         return _equiBase;
     }
 
-    public String getCla()
+    public String getClasse()
     {
         return "Roublard";
     }

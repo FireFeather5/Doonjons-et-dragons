@@ -85,8 +85,14 @@ public class Inputs {
 
         while (!choix.equals("n")) {
             if (choix.equals("o")) {
-                int[] pos = choixCase("de l'obstacle");
-                mj.addObst(DJ, pos);
+
+                boolean ok = false;
+                while (!ok)
+                {
+                    int[] pos = choixCase("de l'obstacle");
+                    ok = mj.ajoutObstacle(DJ, pos);
+                }
+
                 DJ.afficherDJ();
                 System.out.println("\n\nCréer un autre obstacle (o/n) ?");
                 choix = sc.nextLine();
@@ -107,8 +113,14 @@ public class Inputs {
             if (choix.equals("o")) {
                 Monstre mons = creationMonstre(mj);
                 DJ.afficherDJ();
-                int[] pos = choixCase("de " + mons);
-                mj.posM(DJ, mons, pos);
+
+                boolean ok = false;
+                while (!ok)
+                {
+                    int[] pos = choixCase("de " + mons);
+                    ok = mj.setPositionMonstre(DJ, mons, pos);
+                }
+
                 DJ.afficherDJ();
                 System.out.println("\n\nCréer un autre monstre (o/n) ?");
                 choix = sc.nextLine();
@@ -170,9 +182,14 @@ public class Inputs {
                 if (!ok) {
                     System.out.println(_cl.rouge() + "/!\\ ATTENTION : Equipement non crée" + _cl.reset());
                 } else {
-                    int[] pos = choixCase("de l'équipement : " + equip);
                     DJ.afficherDJ();
-                    mj.posEquip(DJ, equip, pos);
+                    boolean test = false;
+                    while (!test)
+                    {
+                        int[] pos = choixCase("de l'équipement : " + equip);
+                        test = mj.setPositionEquipement(DJ, equip, pos);
+                    }
+
                     DJ.afficherDJ();
                 }
                 System.out.println("\n\nCréer un autre equipement (o/n)?");
@@ -291,7 +308,7 @@ public class Inputs {
                 nbrFaceDeCha = Integer.parseInt(sc.nextLine());
             }
 
-            return mj.createM(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
+            return mj.creationMonstre(espece, symb, portee, new De(nbrDeDeg, nbrFaceDeDeg), new De(nbrDeCha, nbrFaceDeCha));
 
         }
         catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
@@ -313,7 +330,7 @@ public class Inputs {
     {
         System.out.println("Le MJ commente l'action effectuée");
         String comm = sc.nextLine();
-        mj.comAction(comm);
+        mj.commentaireAction(comm);
     }
 
     public void persoCommenteAction(Personnage perso)
@@ -322,6 +339,8 @@ public class Inputs {
         String comm = sc.nextLine();
         perso.comAction(comm);
     }
+
+
 
     public Equipement equiperEquip(Personnage pers)
     {
@@ -348,7 +367,7 @@ public class Inputs {
     }
 
 
-    public void depViv(Donjon dj, MJ mj, ArrayList<Vivant> listeVivant)
+    public void mjDeplaceVivant(Donjon dj, MJ mj, ArrayList<Vivant> listeVivant)
     {
         int choix = 1;
 
@@ -364,17 +383,17 @@ public class Inputs {
 
             int[] posF = choixCase("où mettre l'entité");
 
-            mj.depViv(dj, listeVivant.get(vivant), posF);
+            mj.deplacementVivant(dj, listeVivant.get(vivant), posF);
         }
         catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            depViv(dj, mj, listeVivant);
+            mjDeplaceVivant(dj, mj, listeVivant);
         }
     }
 
 
-    public StatusDonjon degatVivant(Donjon dj, MJ mj, ArrayList<Vivant> listeVivant)
+    public StatusDonjon mjDegatVivant(Donjon dj, MJ mj, ArrayList<Vivant> listeVivant)
     {
         StatusDonjon val = StatusDonjon.NORMAL;
 
@@ -396,7 +415,7 @@ public class Inputs {
         catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur)
         {
             System.out.println(_cl.rouge() + "\nErreur dans la saisie." + _cl.reset() + "\nRecomencez");
-            degatVivant(dj, mj, listeVivant);
+            mjDegatVivant(dj, mj, listeVivant);
         }
 
         return val;

@@ -12,12 +12,12 @@ public class Nain implements Races {
         _stat.forc(6);
     }
 
-    public Stats stat()
+    public Stats getStat()
     {
         return _stat;
     }
 
-    public String getRa()
+    public String getRace()
     {
         return "Nain";
     }

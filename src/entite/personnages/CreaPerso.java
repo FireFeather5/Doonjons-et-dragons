@@ -7,16 +7,15 @@ import entite.personnages.genre.Genre;
 import entite.personnages.genre.Masculin;
 import entite.personnages.races.*;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreaPerso {
 
     private final Couleurs _cl = new Couleurs();
 
-    private Races _ra;
-    private Classe _cla;
-    private Genre _gre;
+    private Races _race;
+    private Classe _classe;
+    private Genre _genre;
 
     private final Scanner sc = new Scanner(System.in);
 
@@ -38,7 +37,7 @@ public class CreaPerso {
         Race();
         Classe();
         Genre();
-        return new Personnage(_nom, _ra, _cla, _gre);
+        return new Personnage(_nom, _race, _classe, _genre);
     }
 
     public void Race()
@@ -53,19 +52,19 @@ public class CreaPerso {
             int race = Integer.parseInt(sc.nextLine());
             switch (race) {
                 case 1: {
-                    _ra = new Elfes();
+                    _race = new Elfes();
                     break;
                 }
                 case 2: {
-                    _ra = new Halfelins();
+                    _race = new Halfelins();
                     break;
                 }
                 case 3: {
-                    _ra = new Humain();
+                    _race = new Humain();
                     break;
                 }
                 case 4: {
-                    _ra = new Nain();
+                    _race = new Nain();
                     break;
                 }
                 default: {
@@ -92,19 +91,19 @@ public class CreaPerso {
             int classe = Integer.parseInt(sc.nextLine());
             switch (classe) {
                 case 1: {
-                    _cla = new Clerc();
+                    _classe = new Clerc();
                     break;
                 }
                 case 2: {
-                    _cla = new Guerrier();
+                    _classe = new Guerrier();
                     break;
                 }
                 case 3: {
-                    _cla = new Magicien();
+                    _classe = new Magicien();
                     break;
                 }
                 case 4: {
-                    _cla = new Roublard();
+                    _classe = new Roublard();
                     break;
                 }
                 default: {
@@ -129,11 +128,11 @@ public class CreaPerso {
             int gre = Integer.parseInt(sc.nextLine());
             switch (gre) {
                 case 1: {
-                    _gre = new Masculin();
+                    _genre = new Masculin();
                     break;
                 }
                 case 2: {
-                    _gre = new Feminin();
+                    _genre = new Feminin();
                     break;
                 }
                 default: {

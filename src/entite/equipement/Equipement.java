@@ -13,7 +13,7 @@ public abstract class Equipement implements Entite {
     private final int _speedMalus;
     private final int _forceBonus;
     private final Position _pos;
-    private final TypeEquipement _typeEqu;
+    private final TypeEquipement _typeEquip;
     private final TypeArme _typeArm;
     private final TypeArmure _typeArmur;
 
@@ -29,7 +29,7 @@ public abstract class Equipement implements Entite {
         this._name = name;
         this._speedMalus = speedMalus;
         this._forceBonus = forceBonus;
-        _typeEqu = typeEqu;
+        _typeEquip = typeEqu;
         _typeArm = typeArm;
         _typeArmur = typeArmur;
         _pos = new Position();
@@ -57,9 +57,10 @@ public abstract class Equipement implements Entite {
         return this._name;
     }
 
+
     public TypeEquipement getTypeEquip()
     {
-        return _typeEqu;
+        return _typeEquip;
     }
 
     public Optional<TypeArme> getTypeArm()
@@ -72,7 +73,8 @@ public abstract class Equipement implements Entite {
         return Optional.ofNullable(this._typeArmur);
     }
 
-    public String aff()
+
+    public String affichage()
     {
         return " * ";
     }

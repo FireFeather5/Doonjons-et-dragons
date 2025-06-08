@@ -4,7 +4,7 @@ import statistiques.Stats;
 
 public interface Races {
 
-    Stats stat();
+    Stats getStat();
 
-    String getRa();
+    String getRace();
 }

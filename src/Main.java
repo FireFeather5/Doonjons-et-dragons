@@ -10,10 +10,10 @@ public class Main {
     public static void main(String[] args){
 
         Setup setup = new Setup();
-        Couleurs cl = new Couleurs();
+        Couleurs couleur = new Couleurs();
         MJ mj = new MJ();
 
-        System.out.println(cl.rouge() + "Bienvenue dans DOOnjon et Dragons" + cl.reset());
+        System.out.println(couleur.rouge() + "Bienvenue dans DOOnjon et Dragons" + couleur.reset());
 
         //                     Crea persos
         ArrayList<Personnage> pers = new ArrayList<>(setup.setupPersonnages());

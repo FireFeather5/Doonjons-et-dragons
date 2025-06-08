@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class Actions {
 
-    private final Couleurs _cl = new Couleurs();
+    private final Couleurs _couleur = new Couleurs();
     private final Inputs _input = new Inputs();
 
     private final Scanner sc = new Scanner(System.in);
@@ -26,7 +26,176 @@ public class Actions {
     {
 
     }
-                    // A REVOIR
+    public StatusDonjon actionVivant(Donjon DJ, Vivant vivant, ArrayList<Monstre> listeMonstre, ArrayList<Personnage> listePersonnage, ArrayList<Vivant> listeVivant)
+    {
+        StatusDonjon statusDonj = StatusDonjon.NORMAL;
+        boolean sort = false;
+        boolean ramasser = false;
+        boolean personnage = false;
+
+        System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
+
+
+        if (vivant.getTypeVivant().equals(TypeVivant.PERSONNAGE))
+        {
+            personnage = true;
+
+            System.out.println("3- S'équiper");
+
+            if (((Personnage)vivant).getClasse().equals("Clerc") || ((Personnage)vivant).getClasse().equals("Magicien"))
+            {
+                System.out.println("4- Sorts");
+                sort = true;
+            }
+            else
+            {
+                System.out.println(_couleur.gris() + "4- Sorts" + _couleur.reset());
+            }
+
+            if (((Personnage)vivant).peutRam())
+            {
+                System.out.println("5- Ramasser");
+                ramasser = true;
+            }
+            else
+            {
+                System.out.println(_couleur.gris() + "5- Ramasser" + _couleur.reset());
+            }
+        }
+
+        try {
+            int choix = Integer.parseInt(sc.nextLine());
+            Erreurs erreurs = Erreurs.PROBLEME_CASE;
+
+            switch (choix) {
+                case 1:
+                    while(erreurs.equals(Erreurs.PROBLEME_CASE))
+                    {
+                        int[] pos = _input.choixCase("où se déplacer");
+                        erreurs = vivant.seDeplacer(DJ, pos);
+                        if (erreurs.equals(Erreurs.TOUT_OK))
+                        {
+                            System.out.println("Déplacement effectué");
+                        }
+                        else if (erreurs.equals(Erreurs.PROBLEME_CASE))
+                        {
+                            System.out.println(_couleur.rouge() + "Problème dans le choix de la case" + _couleur.reset());
+                        }
+                        else
+                        {
+                            System.out.println(_couleur.rouge() + vivant + " n'a pas une vitesse suffisante pour se déplacer." + _couleur.reset());
+                        }
+                    }
+                    break;
+                case 2:
+                    statusDonj = StatusDonjon.ERREUR;
+                    if (personnage)
+                    {
+                        while (statusDonj.equals(StatusDonjon.ERREUR))
+                        {
+                            int nbMonstre = 0;
+                            System.out.println("\n");
+                            for (Monstre mons : listeMonstre)
+                            {
+                                nbMonstre++;
+                                System.out.println(nbMonstre + "- " + mons);
+                            }
+
+                            try {
+                                int monstre = Integer.parseInt(sc.nextLine());
+
+                                Monstre mons = listeMonstre.get(monstre-1);
+
+                                statusDonj = ((Personnage) vivant).attaquer(DJ, mons);
+
+                            } catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur) {
+                                System.out.println(_couleur.rouge() + "\nErreur dans le choix du monstre" + _couleur.reset());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        while (statusDonj.equals(StatusDonjon.ERREUR))
+                        {
+                            int nbPerso = 0;
+                            System.out.println("\n");
+                            for (Personnage perso : listePersonnage)
+                            {
+                                nbPerso++;
+                                System.out.println(nbPerso + "- " + perso);
+                            }
+
+                            try {
+                                int pers = Integer.parseInt(sc.nextLine());
+
+                                Personnage perso = listePersonnage.get(pers-1);
+
+                                statusDonj = ((Monstre) vivant).attaquer(DJ, perso);
+
+                            } catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur) {
+                                System.out.println(_couleur.rouge() + "\nErreur dans le choix du personnage" + _couleur.reset());
+                            }
+                        }
+                    }
+                    break;
+                case 3:
+                    if (personnage)
+                    {
+                        boolean reussi = false;
+                        while (!reussi)
+                        {
+                            Equipement equip = _input.equiperEquip(((Personnage)vivant));
+                            reussi = ((Personnage)vivant).sEquiper(equip);
+                            if (reussi)
+                            {
+                                System.out.println(equip.getName() + " à bien été équipé");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
+                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
+                    }
+                    break;
+                case 4:
+                    if (sort)
+                    {
+                        lancerSort(DJ, (Personnage)vivant, listePersonnage, listeVivant);
+                    }
+                    else
+                    {
+                        System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
+                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
+                    }
+                    break;
+                case 5:
+                    if (ramasser)
+                    {
+                        ((Personnage)vivant).ramasser(DJ);
+                    }
+                    else
+                    {
+                        System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
+                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
+                    }
+                    break;
+                default:
+                    System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
+                    actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
+            }
+        }
+        catch (NumberFormatException | NullPointerException erreur)
+        {
+            System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
+            actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
+        }
+        return statusDonj;
+    }
+
+
+
+
 
     public void lancerSort(Donjon DJ, Personnage person, ArrayList<Personnage> listePersonnage, ArrayList<Vivant> listeVivant)
     {
@@ -118,7 +287,7 @@ public class Actions {
                             System.out.println("Choisissez une arme a améliorer (+1 dégat, +1 touche) :");
                             choixArme = Integer.parseInt(sc.nextLine());
 
-                            boolean ok = false;
+                            boolean reussi = false;
 
                             int idArme = 1;
 
@@ -132,7 +301,7 @@ public class Actions {
                                         {
                                             ((ArmeMagique) person.getSorts().get(2)).lancer((Arme) equipement);
                                             System.out.println("\n" + equipement + "à été amélioré.");
-                                            ok = true;
+                                            reussi = true;
                                             break;
                                         }
                                         else
@@ -149,7 +318,7 @@ public class Actions {
                                         {
                                             ((ArmeMagique) person.getSorts().get(2)).lancer((Arme) equipement);
                                             System.out.println("\n" + equipement + "à été amélioré.");
-                                            ok = true;
+                                            reussi = true;
                                             break;
                                         }
                                         else
@@ -160,201 +329,30 @@ public class Actions {
                                 }
                             }
 
-                            if (!ok)
+                            if (!reussi)
                             {
-                                System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                                System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
                                 lancerSort(DJ, person, listePersonnage, listeVivant);
                             }
                         }
                         break;
 
                     default:
-                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                        System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
                         lancerSort(DJ, person, listePersonnage, listeVivant);
                 }
 
 
             }
             catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-                System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+                System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
                 lancerSort(DJ, person, listePersonnage, listeVivant);
             }
 
         }
         else {
-            System.out.println(_cl.rouge() + "Vous n'avez pas de sort..." + _cl.reset());
+            System.out.println(_couleur.rouge() + "Vous n'avez pas de sort..." + _couleur.reset());
         }
-    }
-
-
-
-
-
-    public StatusDonjon actionVivant(Donjon DJ, Vivant vivant, ArrayList<Monstre> listeMonstre, ArrayList<Personnage> listePersonnage, ArrayList<Vivant> listeVivant)
-    {
-        StatusDonjon val = StatusDonjon.NORMAL;
-        boolean sort = false;
-        boolean ramasser = false;
-        boolean personnage = false;
-
-        System.out.println("\nChoisir une action :\n1- Se déplacer\n2- Attaquer");
-
-
-        if (vivant.getTypeVivant().equals(TypeVivant.PERSONNAGE))
-        {
-            personnage = true;
-
-            System.out.println("3- S'équiper");
-
-            if (((Personnage)vivant).getClasse().equals("Clerc") || ((Personnage)vivant).getClasse().equals("Magicien"))
-            {
-                System.out.println("4- Sorts");
-                sort = true;
-            }
-            else
-            {
-                System.out.println(_cl.blanc() + "4- Sorts" + _cl.reset());
-            }
-
-            if (((Personnage)vivant).peutRam())
-            {
-                System.out.println("5- Ramasser");
-                ramasser = true;
-            }
-            else
-            {
-                System.out.println(_cl.blanc() + "5- Ramasser" + _cl.reset());
-            }
-        }
-
-        try {
-            int choix = Integer.parseInt(sc.nextLine());
-            Erreurs erreurs = Erreurs.PROBLEME_CASE;
-
-            switch (choix) {
-                case 1:
-                    while(erreurs.equals(Erreurs.PROBLEME_CASE))
-                    {
-                        int[] pos = _input.choixCase("où se déplacer");
-                        erreurs = vivant.seDeplacer(DJ, pos);
-                        if (erreurs.equals(Erreurs.TOUT_OK))
-                        {
-                            System.out.println("Déplacement effectué");
-                        }
-                        else if (erreurs.equals(Erreurs.PROBLEME_CASE))
-                        {
-                            System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
-                        }
-                        else
-                        {
-                            System.out.println(_cl.rouge() + vivant + " n'a pas une vitesse suffisante pour se déplacer." + _cl.reset());
-                        }
-                    }
-                    break;
-                case 2:
-                    val = StatusDonjon.ERREUR;
-                    if (personnage)
-                    {
-                        while (val.equals(StatusDonjon.ERREUR))
-                        {
-                            int nbMonstre = 0;
-                            System.out.println("\n");
-                            for (Monstre mons : listeMonstre)
-                            {
-                                nbMonstre++;
-                                System.out.println(nbMonstre + "- " + mons);
-                            }
-
-                            try {
-                                int monstre = Integer.parseInt(sc.nextLine());
-
-                                Monstre mons = listeMonstre.get(monstre-1);
-
-                                val = ((Personnage) vivant).attaquer(DJ, mons);
-
-                            } catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur) {
-                                System.out.println(_cl.rouge() + "\nErreur dans le choix du monstre" + _cl.reset());
-                            }
-                        }
-                    }
-                    else
-                    {
-                        while (val.equals(StatusDonjon.ERREUR))
-                        {
-                            int nbPerso = 0;
-                            System.out.println("\n");
-                            for (Personnage perso : listePersonnage)
-                            {
-                                nbPerso++;
-                                System.out.println(nbPerso + "- " + perso);
-                            }
-
-                            try {
-                                int pers = Integer.parseInt(sc.nextLine());
-
-                                Personnage perso = listePersonnage.get(pers-1);
-
-                                val = ((Monstre) vivant).attaquer(DJ, perso);
-
-                            } catch (NullPointerException | NumberFormatException | IndexOutOfBoundsException erreur) {
-                                System.out.println(_cl.rouge() + "\nErreur dans le choix du personnage" + _cl.reset());
-                            }
-                        }
-                    }
-                    break;
-                case 3:
-                    if (personnage)
-                    {
-                        boolean ok = false;
-                        while (!ok)
-                        {
-                            Equipement equip = _input.equiperEquip(((Personnage)vivant));
-                            ok = ((Personnage)vivant).sEquiper(equip);
-                            if (ok)
-                            {
-                                System.out.println(equip.getName() + " à bien été équipé");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
-                    }
-                    break;
-                case 4:
-                    if (sort)
-                    {
-                        lancerSort(DJ, (Personnage)vivant, listePersonnage, listeVivant);
-                    }
-                    else
-                    {
-                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
-                    }
-                    break;
-                case 5:
-                    if (ramasser)
-                    {
-                        ((Personnage)vivant).ramasser(DJ);
-                    }
-                    else
-                    {
-                        System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                        actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
-                    }
-                    break;
-                default:
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
-            }
-        }
-        catch (NumberFormatException | NullPointerException erreur)
-        {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-            actionVivant(DJ, vivant,  listeMonstre, listePersonnage, listeVivant);
-        }
-        return val;
     }
 
 
@@ -363,7 +361,7 @@ public class Actions {
 
     public StatusDonjon actionMjFinTour(Donjon DJ, MJ mj, ArrayList<Vivant> listeVivant)
     {
-        StatusDonjon val = StatusDonjon.NORMAL;
+        StatusDonjon statusDonj = StatusDonjon.NORMAL;
 
         System.out.println("\n\n\nQue veut faire le Maitre du Jeu ?");
         System.out.println("1- Ne rien faire\n2- Déplacer un joueur/monstre\n3- Faire des dégats à un joueur/monstre\n4- Ajouter des obstacles");
@@ -373,24 +371,24 @@ public class Actions {
                 case 1:
                     break;
                 case 2:
-                    _input.depViv(DJ, mj, listeVivant);
+                    _input.mjDeplaceVivant(DJ, mj, listeVivant);
                     break;
                 case 3:
-                        val = _input.degatVivant(DJ, mj, listeVivant);
+                        statusDonj = _input.mjDegatVivant(DJ, mj, listeVivant);
                     break;
                 case 4:
                     _input.ajoutObstacle(DJ, mj);
                     break;
                 default:
-                    System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
-                    val = actionMjFinTour(DJ, mj, listeVivant);
+                    System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
+                    statusDonj = actionMjFinTour(DJ, mj, listeVivant);
             }
         }
         catch (InputMismatchException | NumberFormatException | NullPointerException erreur) {
-            System.out.println(_cl.rouge() + "Mauvais choix d'action" + _cl.reset());
+            System.out.println(_couleur.rouge() + "Mauvais choix d'action" + _couleur.reset());
             actionMjFinTour(DJ, mj, listeVivant);
         }
-        return val;
+        return statusDonj;
     }
 
 }

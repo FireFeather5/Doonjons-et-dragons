@@ -29,18 +29,21 @@ package entite
 
     interface Entite <<interface>>
     {
-        + {abstract} aff() : String
+        + {abstract} affichage() : String
     }
 
     interface Vivant <<interface>>
     {
+        + {abstract} setPosition(pos1 : Integer, pos2 : Integer)
+        + {abstract} seDeplacer(DJ : Donjon, pos : Integer[2]) : Erreurs
+        + {abstract} seFaitAttaquer(degats : Integer, DJ : Donjon) : StatusDonjon
         + {abstract} getStat() : String
         + {abstract} getInfos() : String
-        + {abstract} getLilInfos() : String
-        + {abstract} action(DJ : Donjon) : Integer
-        + {abstract} getIni() : Integer
+        + {abstract} getPetitesInfos() : String
+        + {abstract} getInitiative() : Integer
         + {abstract} getPV() : Integer
-        + {abstract} comAction() : String
+        + {abstract} getTypeVivant() : TypeVivant
+        + {abstract} getPosition() : Integer[2]
         + {abstract} toString() : String
     }
 
@@ -49,35 +52,34 @@ package entite
         - _espece : String
         - _symb : String
         - _numero : Integer
-        - _portAtt : Integer
+        - _porteeAttaque : Integer
         + <<create>> Monstre(espece : String, symb : String, portAtt : Integer, degAtt : De, charac : De)
-        + multiMonstre()
-        + position(pos1 : Integer, pos2 : Integer)
-        + seDeplacer(DJ Donjon)
-        + attaquer(DJ Donjon) : StatusDonjon
+        + numeroMonstre()
+        + setPosition(pos1 : Integer, pos2 : Integer)
+        + seDeplacer(DJ Donjon, pos : Integer[2]) : Erreurs
+        + attaquer(DJ Donjon, pers : Personnage) : StatusDonjon
         + seFaitAttaquer(degats : Integer, DJ Donjon) : StatusDonjon
-        + comAction()
 
         + getArmorClass() : Integer
         + getStat() : String
         + getInfos() : String
-        + getLilInfos() : String
-        + getPos() : Integer[2]
-        + getIni() : Integer
+        + getPetitesInfos() : String
+        + getPosition() : Integer[2]
+        + getInitiative() : Integer
         + getPV() : Integer
         + getNom() : String
-        + getTypeVivant() : TypeVivant
 
-        + aff() : String
+        + affichage() : String
+        + getTypeVivant() : TypeVivant
         + toString() : String
     }
 
     class Obstacle implements Entite
     {
         + <<create>> Obstacle
-        + position(pos1 : Integer, pos2 : Integer)
-        + addPos(pos : String, DJ : Donjon)
-        + aff() : String
+        + setPosition(pos1 : Integer, pos2 : Integer)
+        + addPositionDonjon(pos : String, DJ : Donjon)
+        + affichage() : String
     }
 
     package personnages
@@ -86,45 +88,45 @@ package entite
         {
             interface Classe <<interface>>
             {
-                + {abstract} pv() : Integer
+                + {abstract} getPv() : Integer
                 + {abstract} getEquiBase() : Equipement[*]
-                + {abstract} getCla() : String
+                + {abstract} getClasse() : String
             }
 
             class Clerc implements Classe
             {
                 - {static} _pv : Integer
                 + <<create>> Clerc()
-                + pv() : Integer
-                +  getEquiBase() : Equipement[*]
-                +  getCla() : String
+                + getPv() : Integer
+                + getEquiBase() : Equipement[*]
+                + getClasse() : String
             }
 
             class Guerrier implements Classe
             {
                 - {static} _pv : Integer
                 + <<create>> Guerrier()
-                + pv() : Integer
-                +  getEquiBase() : Equipement[*]
-                +  getCla() : String
+                + getPv() : Integer
+                + getEquiBase() : Equipement[*]
+                + getClasse() : String
             }
 
             class Magicien implements Classe
             {
                 - {static} _pv : Integer
                 + <<create>> Magicien()
-                + pv() : Integer
-                +  getEquiBase() : Equipement[*]
-                +  getCla() : String
+                + getPv() : Integer
+                + getEquiBase() : Equipement[*]
+                + getClasse() : String
             }
 
             class Roublard implements Classe
             {
                 - {static} _pv : Integer
                 + <<create>> Roublard()
-                + pv() : Integer
-                +  getEquiBase() : Equipement[*]
-                +  getCla() : String
+                + getPv() : Integer
+                + getEquiBase() : Equipement[*]
+                + getClasse() : String
             }
         }
 
@@ -132,36 +134,36 @@ package entite
         {
             interface Races <<interface>>
             {
-                + {abstract} stat() : Stats
-                + {abstract} getRa() : String
+                + {abstract} getStat() : Stats
+                + {abstract} getRace() : String
             }
 
             class Elfes implements Races
             {
                 + <<create>> Elfes()
-                + stat() : Stats
-                + getRa() : String
+                + getStat() : Stats
+                + getRace() : String
             }
 
             class Halfelins implements Races
             {
                 + <<create>> Halfelins()
-                + stat() : Stats
-                + getRa() : String
+                + getStat() : Stats
+                + getRace() : String
             }
 
             class Humain implements Races
             {
                 + <<create>> Humain()
-                + stat() : Stats
-                + getRa() : String
+                + getStat() : Stats
+                + getRace() : String
             }
 
             class Nain implements Races
             {
                 + <<create>> Nain()
-                + stat() : Stats
-                + getRa() : String
+                + getStat() : Stats
+                + getRace() : String
             }
         }
 
@@ -185,7 +187,6 @@ package entite
 
         class CreaPerso
         {
-            - _nom : String
             + <<create>> CreaPerso()
             + CreaPers() : Personnage
             + Race()
@@ -197,23 +198,26 @@ package entite
         {
             - _nom : String
             - _peutRamasser : Boolean
-            + <<create>> Personnage(nom : String, race : Races, classe : Classe, gre : Genre)
-            + position(pos1 : Integer, pos2 : Integer)
-            + seDplacer(DJ : Donjon)
+
+            + <<create>> Personnage(nom : String, race : Races, classe : Classe, genre : Genre)
+            + setPosition(pos1 : Integer, pos2 : Integer)
+            + seDeplacer(DJ : Donjon, pos : Integer[2]) : Erreurs
             + seDesequiper(equipement : Equipement)
-            + sEquiper(equipement : Equipement)
-            + attaquer(DJ Donjon) : StatusDonjon
+            + sEquiper(equipement : Equipement) : Boolean
+            + attaquer(DJ Donjon, mons : Monstre) : StatusDonjon
             + seFaitAttaquer(degats : Integer, DJ Donjon) : StatusDonjon
             + seSoigner(soin : Integer)
             + peutRamasser(equip : Equipement)
             + ramasser(DJ : Donjon)
-            + comAction() : String
-            + regePV()
+            + reinilisationRamasser()
+            + comAction()
+            + regenerationPerso()
 
             - getArmeEquipe() : Arme
             - getArmureEquipe() : Armure
-            + getStock() : String
+            + getStock() : Equipement[*]
             + getEquipees() : Equipement[*]
+            + getPeutRamEqu() : Equipement
             + getArmorClass() : Integer
             + getEquipeeString() : String
             + getStockString() : String
@@ -221,15 +225,15 @@ package entite
 
             + getStat() : String
             + getInfos() : String
-            + getLilInfos() : String
-            + getPos() : Integer[2]
-            + getIni() : Integer
+            + getPetitesInfos() : String
+            + getPosition() : Integer[2]
+            + getInitiative() : Integer
             + getPV() : Integer
             + getClasse() : String
             + peutRam() : Boolean
             + getTypeVivant() : TypeVivant
 
-            + aff() : String
+            + affichage() : String
             + toString() : String
         }
     }
@@ -241,14 +245,20 @@ package entite
             - _name : String
             - _speedMalus : Integer
             - _forceBonus : Integer
-            + <<create>> Equipement(name : String)
-            + <<create>> Equipement(name : String, speedMalus : Integer)
-            + <<create>> Equipement(name : String, speedMalus : Integer, forceBonus : Integer)
-            + getName() : String
+            + <<create>> Equipement(name : String, typeEqu : TypeEquipement, typeArm : TypeArme, typeArmur : TypeArmure)
+            + <<create>> Equipement(name : String, typeEqu : TypeEquipement, typeArm : TypeArme, typeArmur : TypeArmure, speedMalus : Integer)
+            + <<create>> Equipement(name : String, typeEqu : TypeEquipement, typeArm : TypeArme, typeArmur : TypeArmure, speedMalus : Integer, forceBonus : Integer)
+
+            + getPosition(pos1 : Integer, pos2 : Integer)
             + getSpeedMalus() : Integer
             + getForceBonus() : Integer
-            + position(pos1 : Integer, pos2 : Integer)
-            + aff() : String
+            + getName() : String
+
+            + getTypeEquip() : TypeEquipement
+            + getTypeArm() : TypeArme
+            + getTypeArmur() : TypeArmure
+
+            + affichage() : String
         }
 
         package arme
@@ -258,12 +268,12 @@ package entite
                 - _nbDe : Integer
                 - _nbFacesDe : Integer
                 - _range : Integer
-                + <<create>> Arme(name : String, nbDe : Integer, nbFacesDe : Integer, range : Integer, speedMalus : Integer, forceBonus : Integer)
-                + <<create>> Arme(name : String, nbDe : Integer, nbFacesDe : Integer, range : Integer)
-                + getDegats() : Integer[2]
-                + getRange() : Integer
+                + <<create>> Arme(name : String, typeArm : TypeArme, nbDe : Integer, nbFacesDe : Integer, range : Integer)
+                + <<create>> Arme(name : String, typeArm : TypeArme, nbDe : Integer, nbFacesDe : Integer, range : Integer, speedMalus : Integer, forceBonus : Integer)
                 + bonusMagique()
+                + getDegats() : Integer[2]
                 + getBonusMagique : Integer
+                + getRange() : Integer
                 + toString() : String
             }
 
@@ -332,8 +342,8 @@ package entite
             abstract class Armure <<abstract>>
             {
                 - _armorClass : Integer
-                + <<create>> Armure(name : String, armorClass : Integer, speedMalus : Integer)
-                + <<create>> Armure(name : String, armorClass : Integer)
+                + <<create>> Armure(name : String, typeArmur : TypeArmure, armorClass : Integer)
+                + <<create>> Armure(name : String, typeArmur : TypeArmure, armorClass : Integer, speedMalus : Integer)
                 + getArmorClass() : Integer
                 + toString() : String
             }
@@ -381,8 +391,9 @@ package entite
 class Tour
 {
     - _nbViv : Integer
-    + <<create>> Tour(vivTri : Vivant[*], mj : MJ, dj : Donjon)
+    + <<create>> Tour(listeVivant : Vivant[*], listePers : Personnage[*], mj : MJ, dj : Donjon)
     + tour()
+    + finDonjon()
 }
 
 package utils
@@ -390,19 +401,21 @@ package utils
     class MJ
     {
         - _monstreCrees : String[*]
+
         + <<create>> MJ()
-        + creationDonjon() : Donjon
-        + addObst(DJ : Donjon)
-        + createM(espece : String, symb : String, portee : Integer, degAtt : De, charac : De) : Monstre
-        + posJ(DJ : Donjon, perso : Personnage)
-        + posM(DJ : Donjon, mons : Monstre)
-        + posEquip(DJ : Donjon, equip : Equipement)
+
+        + creationDonjon(tailleDJ : Integer[2]) : Donjon
+        + ajoutObstacle(DJ : Donjon, pos : Integer[2]) : Boolean
+        + creationMonstre(espece : String, symb : String, portee : Integer, degAtt : De, charac : De) : Monstre
+        + setPositionPerso(DJ : Donjon, perso : Personnage, pos : Integer[2]) : Boolean
+        + setPositionMonstre(DJ : Donjon, mons : Monstre, pos : Integer[2]) : Boolean
+        + setPositionEquipement(DJ : Donjon, equip : Equipement, pos : Integer[2]) : Boolean
+
         + presContext()
-        + comAction()
-        + actionFT(DJ : Donjon) : StatusDonjon
-        + depViv(DJ : Donjon)
-        + degatJoueur(DJ : Donjon) : StatusDonjon
-        + degatMonstre(DJ : Donjon) : StatusDonjon
+        + commentaireAction()
+
+        + deplacementVivant(DJ : Donjon, viv : Vivant, posFinale : Integer[2])
+        + degatVivant(DJ : Donjon, viv : Vivant, degats : Integer) : StatusDonjon
     }
 
     class Couleurs
@@ -413,36 +426,59 @@ package utils
         + vert() : String
         + bleu() : String
         + cyan() : String
-        + blanc() : String
-        + noir() : String
+        + gris() : String
         + reset() : String
     }
 
     class Inputs
     {
         - {static} _ord : String[26]
+
         + <<create>> Inputs()
+
+        + creationDonjon(mj : MJ) : Donjon
         + tailleDonjon() : Integer[2]
         + ajoutObstacle(DJ : Donjon, mj : MJ)
         + ajoutMonstre(DJ : Donjon, mj : MJ)
         + ajoutEquipement(DJ : Donjon, mj : MJ)
+
         + choixCase(context : String) : Integer[2]
         + positionCase(pos : String) : Integer[2]
+
         + creationMonstre(mj : MJ) : Monstre
+
         + contextDonjon() : String
-        + mjCommenteAction() : String
-        + persoCommenteAction() : String
+        + mjCommenteAction(mj : MJ)
+        + persoCommenteAction(perso : Personnage)
+
         + equiperEquip(pers : Personnage) : Equipement
+        + mjDeplaceVivant(dj : Donjon, mj : MJ, listeVivant : Vivant)
+        + mjDegatVivant(dj : Donjon, mj : MJ, listeVivant : Vivant) : StatusDonjon
+        + infligerDegats() : Integer
     }
 
     class Actions
     {
         + <<create>> Actions()
-        + actionPerso(DJ : Donjon, perso : Personnage) : StatusDonjon
-        + lancerSort(DJ : Donjon, person : Personnage)
-        + actionMonstre(DJ : Donjon, mons : Monstre) : StatusDonjon
-        + actionMjFinTour(DJ : Donjon, mj : MJ) : StatusDonjon
+        + actionVivant(DJ : Donjon, vivant : Vivant, listeMonstre : Monstre[*], listePersonnage : Personnage[*], listeVivant : Vivant[*]) : StatusDonjon
+        + lancerSort(DJ : Donjon, person : Personnage, listePersonnage : Personnage[*], listeVivant : Vivant[*])
+        + actionMjFinTour(DJ : Donjon, mj : MJ, listeVivant : Vivant[*]) : StatusDonjon
     }
+
+    class Setup
+    {
+        - _nbPersonnages : Integer
+        - _nbVivants : Integer
+        + <<create>> Setup()
+        + setupPersonnage() : Personnage[*]
+        + setupDonjon(personnages : Personnage[*], tour : Integer) : Donjon
+    }
+
+    enum StatusDonjon <<enumerate>>
+    enum Erreurs <<enumerate>>
+    enum TypeArme <<enumerate>>
+    enum TypeArmure <<enumerate>>
+    enum TypeEquipement <<enumerate>>
 }
 
 package donjon
@@ -451,39 +487,38 @@ package donjon
     {
         - _tc1 : Integer
         - _tc2 : Integer
+
         + <<create>> Donjon(tailleCote : Integer[2])
+
         + positionObstacle(pc : Integer[2], obst : Obstacle) : Boolean
-        + positionPersonnage(pc : Integer[2], perso : Personnage) : Boolean
-        + positionMonstre(pc : Integer[2], mons : Monstre) : Boolean
+        + positionVivante(pc : Integer[2], vivant : Vivant) : Boolean
         + positionEquipement(pc : Integer[2], equip : Equipement) : Boolean
 
-        + getMons(pc : Integer[2]) : Monstre
-        + getPers(pc : Integer[2]) : Personnage
         + ramasserEquipement(equip : Equipement)
         + tuerMonstre(mons : Monstre) : StatusDonjon
         + tuerPerso(pers : Personnage) : StatusDonjon
-        + switchCase(pcD : Integer[2], pcF : Integer[2])
+        + switchCase(viv1 : Vivant, viv2 : Vivant)
         + emptyCase(pc : Integer[2])
-        + getListePerso() : Personnage[*]
         + getListeMonstre() : Monstre[*]
         + afficherDJ()
     }
 
     class AffichDJ
     {
-        - _tc1 : Integer
-        - _tc2 : Integer
+        - _tailleCote1 : Integer
+        - _tailleCote2 : Integer
         - _donjon : String[][]
-        - {static} _ord : String[26]
+        - {static} _tableauLettres : String[26]
         + <<create>> AffichDJ(tc1 : Integer, tc2 : Integer)
-        + rempDJ(dj : Entite[][])
+        + remplirDJ(dj : Entite[][])
         + afficherDJ(dj : Entite[][])
     }
 
     class CreationDonjonDefault
     {
         + <<create>> CreationDonjonDefault
-        + createDefaultDJ() : Donjon
+        + creationDonjonDefaut() : Donjon
+        + donjonRandom() : Donjon
     }
 }
 
@@ -547,17 +582,14 @@ package sort
     {
         + getNom() : String
         + getDescription() : String
-        + lancer(perso1 : Personnage, perso2 : Personnage)
-        + lancer(monstre1 : Monstre, monstre2 : Monstre)
-        + lancer(perso : Personnage, monstre : Monstre)
-        + lancer(monstre : Monstre, perso : Personnage)
+        + lancer(viv1 : Vivant, viv2 : Vivant, DJ : Donjon)
     }
 
     class Guerison implements Sort
     {
         + getNom() : String
         + getDescription() : String
-        + lancer(perso : Personnage)
+        + lancer(perso : Personnage) : Integer
     }
 }
 

@@ -13,17 +13,17 @@ public class Obstacle implements Entite {
         _pos = new Position();
     }
 
-    public void position(int pos1, int pos2)
+    public void setPosition(int pos1, int pos2)
     {
         _pos.changPos(pos1, pos2);
     }
 
-    public boolean addPos(int[] pos, Donjon DJ)
+    public boolean addPositionDonjon(int[] pos, Donjon DJ)
     {
         return DJ.positionObstacle(pos, this);
     }
 
-    public String aff()
+    public String affichage()
     {
         return "[ ]";
     }

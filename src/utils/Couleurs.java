@@ -32,14 +32,9 @@ public class Couleurs {
         return "\u001B[36m";
     }
 
-    public String blanc()
+    public String gris()
     {
         return "\u001B[37m";
-    }
-
-    public String noir()
-    {
-        return "\u001B[30m";
     }
 
     public String reset()

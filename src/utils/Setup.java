@@ -7,14 +7,12 @@ import entite.equipement.Equipement;
 import entite.personnages.*;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Setup {
     private int _nbPersonnages;
-    private int _nbEtreVivants;
-    private ArrayList<Vivant> _etreVivants;
+    private int _nbVivants;
+    private ArrayList<Vivant> _vivant;
     private final Inputs _inputs = new Inputs();
     private final Couleurs _couleur = new Couleurs();
     private final MJ _mj = new MJ();
@@ -89,12 +87,12 @@ public class Setup {
 
     public Donjon setupDonjon(ArrayList<Personnage> personnages, int tour)
     {
-        _etreVivants = new ArrayList<>();
+        _vivant = new ArrayList<>();
 
         for (Personnage personnage : personnages)
         {
-            personnage.regePV();
-            personnage.reinilisation();
+            personnage.regenerationPerso();
+            personnage.reinilisationRamasser();
         }
 
         System.out.print("\n\n");
@@ -107,16 +105,16 @@ public class Setup {
         if (donjon == null)
         {
             CreationDonjonDefault createurDonjon = new CreationDonjonDefault();
-            /*System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
+            System.out.println("\n\nVoulez-vous que le donjon soit créé aléatoirement (l'un des donjons par défaut sera utilisé sinon) ? (o/n)");
             String choix = _scanner.nextLine();
             if (choix.equals("o"))
             {
                 donjon = createurDonjon.donjonRandom();
             }
             else
-            {*/
-                donjon = createurDonjon.createDefaultDJ();
-            //}
+            {
+                donjon = createurDonjon.creationDonjonDefaut();
+            }
         }
         else
         {
@@ -131,15 +129,15 @@ public class Setup {
             while (!ok)
             {
                 int[] pos = _inputs.choixCase("de " + personnages.get(i));
-                ok = _mj.posJ(donjon, personnages.get(i), pos);
+                ok = _mj.setPositionPerso(donjon, personnages.get(i), pos);
             }
             donjon.afficherDJ();
-            _etreVivants.add(personnages.get(i));
+            _vivant.add(personnages.get(i));
         }
 
-        _etreVivants.addAll(donjon.getListeMonstre());
+        _vivant.addAll(donjon.getListeMonstre());
 
-        _nbEtreVivants = _nbPersonnages + donjon.getListeMonstre().size();
+        _nbVivants = _nbPersonnages + donjon.getListeMonstre().size();
 
 
         String text = _inputs.contextDonjon();
@@ -154,9 +152,9 @@ public class Setup {
 
     public ArrayList<Vivant> setupInitiative()
     {
-        for (int j = 0; j < _nbEtreVivants; j++)
+        for (int j = 0; j < _nbVivants; j++)
         {
-            System.out.println(_etreVivants.get(j).getStat());
+            System.out.println(_vivant.get(j).getStat());
         }
 
         De deInitiative = new De(1, 20);
@@ -166,16 +164,16 @@ public class Setup {
 
         System.out.println(_couleur.jaune() + "\n\n===== Choix de l'ordre de jeu =====" + _couleur.reset());
 
-        for (int j = 0; j < _nbEtreVivants; j++)
+        for (int j = 0; j < _nbVivants; j++)
         {
-            System.out.println("\n" + _etreVivants.get(j).toString() + " : ");
-            int init = _etreVivants.get(j).getIni();
+            System.out.println("\n" + _vivant.get(j).toString() + " : ");
+            int init = _vivant.get(j).getInitiative();
             init += deInitiative.roll();
 
             if (listeInitiatives.isEmpty())
             {
                 listeInitiatives.add(init);
-                vivantsTries.add(_etreVivants.get(j));
+                vivantsTries.add(_vivant.get(j));
             }
             else
             {
@@ -187,7 +185,7 @@ public class Setup {
                         if (init > listeInitiatives.get(i))
                         {
                             listeInitiatives.add(i, init);
-                            vivantsTries.add(i, _etreVivants.get(j));
+                            vivantsTries.add(i, _vivant.get(j));
                             inVivTri = true;
                         }
                     }
@@ -195,7 +193,7 @@ public class Setup {
                 if (!inVivTri)
                 {
                     listeInitiatives.add(init);
-                    vivantsTries.add(_etreVivants.get(j));
+                    vivantsTries.add(_vivant.get(j));
                 }
             }
         }

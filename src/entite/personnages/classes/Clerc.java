@@ -20,7 +20,7 @@ public class Clerc implements Classe {
         _equiBase.add(new ArbaleteLegere());
     }
 
-    public int pv()
+    public int getPv()
     {
         return _pv;
     }
@@ -30,7 +30,7 @@ public class Clerc implements Classe {
         return _equiBase;
     }
 
-    public String getCla()
+    public String getClasse()
     {
         return "Clerc";
     }

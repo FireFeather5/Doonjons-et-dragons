@@ -17,10 +17,10 @@ public class Donjon {
 
     private final Couleurs _cl = new Couleurs();
 
-    private final int _tc1;
-    private final int _tc2;
+    private final int _tailleCote1;
+    private final int _tailleCote2;
     private final Entite[][] _donjon;
-    private final AffichDJ _affDJ;
+    private final AffichDJ _affichageDJ;
 
     private final ArrayList<Equipement> _equip;
     private final ArrayList<Personnage> _pers;
@@ -28,18 +28,18 @@ public class Donjon {
 
     public Donjon(int[] tailleCote)
     {
-        _tc1 = tailleCote[0];
-        _tc2 = tailleCote[1];
-        _donjon = new Entite[_tc1][_tc2];
-        _affDJ = new AffichDJ(_tc1, _tc2);
+        _tailleCote1 = tailleCote[0];
+        _tailleCote2 = tailleCote[1];
+        _donjon = new Entite[_tailleCote1][_tailleCote2];
+        _affichageDJ = new AffichDJ(_tailleCote1, _tailleCote2);
 
         _equip = new ArrayList<>();
         _pers = new ArrayList<>();
         _mons = new ArrayList<>();
 
-        for (int i = 0; i < _tc1; i++)
+        for (int i = 0; i < _tailleCote1; i++)
         {
-            for (int j = 0; j < _tc2; j++)
+            for (int j = 0; j < _tailleCote2; j++)
             {
                 _donjon[i][j] = null;
             }
@@ -48,9 +48,9 @@ public class Donjon {
 
     public boolean positionObstacle(int[] pc, Obstacle obst)
     {
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+        if (((_tailleCote1 >= pc[0]) && (pc[0] >= 1)) && ((_tailleCote2 >= pc[1]) && (pc[1] >= 1))) {
             if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                obst.position(pc[0], pc[1]);            //donne sa position a l'obstacle
+                obst.setPosition(pc[0], pc[1]);            //donne sa position a l'obstacle
                 _donjon[pc[0] - 1][pc[1] - 1] = obst;
                 return true;
             }
@@ -58,15 +58,15 @@ public class Donjon {
         return false;
     }
 
-    public boolean positionVivant(int[] pc, Vivant etreVivant)
+    public boolean positionVivant(int[] pc, Vivant vivant)
     {
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
+        if (((_tailleCote1 >= pc[0]) && (pc[0] >= 1)) && ((_tailleCote2 >= pc[1]) && (pc[1] >= 1)))
         {
-            if (etreVivant.getTypeVivant().equals(TypeVivant.MONSTRE))
+            if (vivant.getTypeVivant().equals(TypeVivant.MONSTRE))
             {
-                if (!_mons.contains((Monstre) etreVivant))
+                if (!_mons.contains((Monstre) vivant))
                 {
-                    _mons.add((Monstre) etreVivant);
+                    _mons.add((Monstre) vivant);
                 }
 
                 if (_donjon[pc[0] - 1][pc[1] - 1] == null)
@@ -79,8 +79,8 @@ public class Donjon {
                         }
                     }
 
-                    ((Monstre) etreVivant).setPosition(pc[0], pc[1]);            //donne sa position au monstre
-                    _donjon[pc[0] - 1][pc[1] - 1] = ((Monstre) etreVivant);
+                    ((Monstre) vivant).setPosition(pc[0], pc[1]);            //donne sa position au monstre
+                    _donjon[pc[0] - 1][pc[1] - 1] = ((Monstre) vivant);
                     return true;
                 }
 
@@ -88,15 +88,15 @@ public class Donjon {
                 {
                     if (Arrays.equals(pc, equip.getPosition()))
                     {
-                        ((Monstre) etreVivant).setPosition(pc[0], pc[1]);            //donne sa position au monstre
-                        _donjon[pc[0] - 1][pc[1] - 1] = ((Monstre) etreVivant);
+                        ((Monstre) vivant).setPosition(pc[0], pc[1]);            //donne sa position au monstre
+                        _donjon[pc[0] - 1][pc[1] - 1] = ((Monstre) vivant);
 
                         return true;
                     }
                 }
             }
             else {
-                Personnage perso = (Personnage) etreVivant;
+                Personnage perso = (Personnage) vivant;
 
                 if (!_pers.contains(perso))
                 {
@@ -113,7 +113,7 @@ public class Donjon {
                                 _donjon[equip.getPosition()[0] - 1][equip.getPosition()[1] - 1] = equip;
                             }
                         }
-                        perso.reinilisation();
+                        perso.reinilisationRamasser();
                     }
 
                     for (Equipement equip : _equip) {
@@ -146,7 +146,7 @@ public class Donjon {
 
     public boolean positionEquipement(int[] pc, Equipement equip)
     {
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
+        if (((_tailleCote1 >= pc[0]) && (pc[0] >= 1)) && ((_tailleCote2 >= pc[1]) && (pc[1] >= 1))) {
             if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
                 if (!_equip.contains(equip)) {
                     _equip.add(equip);
@@ -159,35 +159,8 @@ public class Donjon {
         return false;
     }
 
-    public Monstre getMons(int[] pc)
-    {
-        if (_donjon[pc[0]-1][pc[1]-1] != null)
-        {
-            for(Monstre mons : _mons)
-            {
-                if (_donjon[pc[0]-1][pc[1]-1].equals(mons))
-                {
-                    return mons;
-                }
-            }
-        }
-        return null;
-    }
 
-    public Personnage getPers(int[] pc)
-    {
-        if (_donjon[pc[0]-1][pc[1]-1] != null)
-        {
-            for(Personnage pers : _pers)
-            {
-                if (_donjon[pc[0]-1][pc[1]-1].equals(pers))
-                {
-                    return pers;
-                }
-            }
-        }
-        return null;
-    }
+
 
     public void ramasserEquipement(Equipement equip)
     {
@@ -197,7 +170,7 @@ public class Donjon {
     public StatusDonjon tuerMonstre(Monstre mons)
     {
         _mons.remove(mons);
-        int[] pc = mons.getPos();
+        int[] pc = mons.getPosition();
         emptyCase(pc);
         if (_mons.isEmpty())
         {
@@ -209,7 +182,7 @@ public class Donjon {
     public StatusDonjon tuerPerso(Personnage pers)
     {
         _pers.remove(pers);
-        int[] pc = pers.getPos();
+        int[] pc = pers.getPosition();
         emptyCase(pc);
         return StatusDonjon.JOUEUR_MORT;
     }
@@ -217,8 +190,8 @@ public class Donjon {
 
     public void switchCase(Vivant viv1, Vivant viv2)
     {
-        int[] posViv1 = viv1.getPos();
-        int[] posViv2 = viv2.getPos();
+        int[] posViv1 = viv1.getPosition();
+        int[] posViv2 = viv2.getPosition();
 
         emptyCase(posViv1);
         emptyCase(posViv2);
@@ -248,11 +221,6 @@ public class Donjon {
         }
     }
 
-    public ArrayList<Personnage> getListePerso()
-    {
-        return new ArrayList<>(_pers);
-    }
-
     public ArrayList<Monstre> getListeMonstre()
     {
         return new ArrayList<>(_mons);
@@ -260,6 +228,6 @@ public class Donjon {
 
     public void afficherDJ()
     {
-        _affDJ.afficherDJ(_donjon);
+        _affichageDJ.afficherDJ(_donjon);
     }
 }
