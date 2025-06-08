@@ -88,8 +88,13 @@ public class Personnage implements Vivant {
 
 
 
-    public boolean seDeplacer(Donjon DJ, int[] pos)
+    public Erreurs seDeplacer(Donjon DJ, int[] pos)
     {
+        if (_stats.retVit() < 3)
+        {
+            return Erreurs.VITESSE_SOUS_3;
+        }
+
         try {
             int distDep = _stats.retVit() / 3;
 
@@ -97,33 +102,29 @@ public class Personnage implements Vivant {
 
             if (((pos[0] >= _pos.getAbscisse() - distDep) && (pos[0] <= _pos.getAbscisse() + distDep)) && ((pos[1] >= _pos.getOrdonnee() - distDep) && (pos[1] <= _pos.getOrdonnee() + distDep))) {
 
-                if (!_peutRamasser) {
+                //if (!_peutRamasser) {
                     boolean val = DJ.positionVivant(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        return true;
+                        return Erreurs.TOUT_OK;
                     } else {
-                        return false;
+                        return Erreurs.PROBLEME_CASE;
                     }
-                } else {
+                /*} else {
                     boolean val = DJ.positionVivant(pos, this);
                     if (val) {
                         DJ.emptyCase(posOld);          //vide la case précédement utilisée par le perso
-                        DJ.positionEquipement(posOld, _peutRamEqu);       //remet l'objet dans la case                          GET POSITION
-
-                        _peutRamasser = false;
-                        _peutRamEqu = null;
-                        return true;
+                        return Erreurs.TOUT_OK;
                     } else {
-                        return false;
+                        return Erreurs.PROBLEME_CASE;
                     }
-                }
+                }*/
             } else {
-                return false;
+                return Erreurs.PROBLEME_CASE;
             }
         }
         catch (NullPointerException erreur) {
-            return false;
+            return Erreurs.PROBLEME_CASE;
         }
     }
 
@@ -212,26 +213,28 @@ public class Personnage implements Vivant {
             {
                 if (touche > mons.getArmorClass())
                 {
-                    System.out.println(this._nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+                    System.out.println(_nom + " perce l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+
                     this._deChar.changeDe(arme.getDegats()[0], arme.getDegats()[1]);
                     int atk = this._deChar.roll() + arme.getBonusMagique();
                     int bonus = arme.getBonusMagique();
-                    System.out.println(this._nom + " fait " + atk + " dégats à " + mons + " !");
+                    System.out.println(_nom + " fait " + atk + " dégats à " + mons + " !");
+
                     val = mons.seFaitAttaquer(atk, DJ);
                 }
                 else
                 {
-                    System.out.println(this._nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
+                    System.out.println(_nom + " ne perce pas l'armure de " + mons + " (jet de touche : " + tou + " + " + detou + " = " + touche + ").");
                 }
             }
             else
             {
-                System.out.println(this._nom + " n'a pas une arme à la portée suffisante.");
+                System.out.println(_nom + " n'a pas une arme à la portée suffisante.");
             }
         }
         else
         {
-            System.out.println(_cl.rouge() + this._nom + " n'a pas d'arme équipée." + _cl.reset());
+            System.out.println(_cl.rouge() + _nom + " n'a pas d'arme équipée." + _cl.reset());
         }
         return val;
     }
@@ -267,6 +270,12 @@ public class Personnage implements Vivant {
         _stock.add(_peutRamEqu);
         DJ.ramasserEquipement(_peutRamEqu);
         System.out.println(_peutRamEqu.getName() + " à été ramassé");
+        _peutRamasser = false;
+        _peutRamEqu = null;
+    }
+
+    public void reinilisation()
+    {
         _peutRamasser = false;
         _peutRamEqu = null;
     }
@@ -309,6 +318,11 @@ public class Personnage implements Vivant {
     public ArrayList<Equipement> getEquipees()
     {
         return _equipee;
+    }
+
+    public Equipement getPeutRamEqu()
+    {
+        return _peutRamEqu;
     }
 
     public int getArmorClass() {

@@ -40,6 +40,11 @@ public abstract class Equipement implements Entite {
         _pos.changPos(pos1, pos2);
     }
 
+    public int[] getPosition()
+    {
+        return _pos.getPosition();
+    }
+
     public int getSpeedMalus() {
         return this._speedMalus;
     }

@@ -94,6 +94,7 @@ public class Setup {
         for (Personnage personnage : personnages)
         {
             personnage.regePV();
+            personnage.reinilisation();
         }
 
         System.out.print("\n\n");

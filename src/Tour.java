@@ -80,7 +80,29 @@ public class Tour {
                         _val = _action.actionVivant(_dj, _listeVivant.get(j), _listeMonstre, _listePersonnage, _listeVivant);
 
                         if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
-                            _val = monstreMort(j);
+
+
+                            for (int n = 0; n < _nbViv; n++) {
+                                if (_listeVivant.get(n).getPV() <= 0) {
+                                    _listeVivant.remove(_listeVivant.get(n));
+                                    _nbViv--;
+
+                                    if (n == j)
+                                    {
+                                        i = -1;
+                                    }
+                                    if (n < j) {
+                                        j--;
+                                    }
+                                }
+                            }
+                            for (int n = 0; n < _listeMonstre.size(); n++) {
+                                if (_listeMonstre.get(n).getPV() <= 0) {
+                                    _listeMonstre.remove(_listeMonstre.get(n));
+                                }
+                            }
+                            _val = StatusDonjon.NORMAL;
+
                         }
 
                         if (_listeVivant.get(j).getTypeVivant().equals(TypeVivant.PERSONNAGE)) {
@@ -132,7 +154,29 @@ public class Tour {
                             _dj.afficherDJ();
                             _val = _action.actionMjFinTour(_dj, _mj, _listeVivant);
                             if (_val.equals(StatusDonjon.MONSTRE_MORT)) {
-                                _val = monstreMort(j);
+
+
+                                for (int n = 0; n < _nbViv; n++) {
+                                    if (_listeVivant.get(n).getPV() <= 0) {
+                                        _listeVivant.remove(_listeVivant.get(n));
+                                        _nbViv--;
+
+                                        if (n == j)
+                                        {
+                                            i = -1;
+                                        }
+                                        if (n < j) {
+                                            j--;
+                                        }
+                                    }
+                                }
+                                for (int n = 0; n < _listeMonstre.size(); n++) {
+                                    if (_listeMonstre.get(n).getPV() <= 0) {
+                                        _listeMonstre.remove(_listeMonstre.get(n));
+                                    }
+                                }
+                                _val = StatusDonjon.NORMAL;
+
                             }
                         }
 
@@ -147,14 +191,14 @@ public class Tour {
     }
 
 
-    public StatusDonjon monstreMort(int vivant)
+    public int monstreMort(int vivant)
     {
         for (int n = 0; n < _nbViv; n++) {
             if (_listeVivant.get(n).getPV() <= 0) {
                 _listeVivant.remove(_listeVivant.get(n));
                 _nbViv--;
 
-                if (n <= vivant) {
+                if (n < vivant) {
                     vivant--;
                 }
             }
@@ -164,7 +208,7 @@ public class Tour {
                 _listeMonstre.remove(_listeMonstre.get(n));
             }
         }
-        return StatusDonjon.NORMAL;
+        return vivant;
     }
 
 

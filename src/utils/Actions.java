@@ -229,18 +229,25 @@ public class Actions {
 
         try {
             int choix = Integer.parseInt(sc.nextLine());
-            boolean ok = false;
+            Erreurs erreurs = Erreurs.PROBLEME_CASE;
 
             switch (choix) {
                 case 1:
-                    while(!ok) {
+                    while(erreurs.equals(Erreurs.PROBLEME_CASE))
+                    {
                         int[] pos = _input.choixCase("où se déplacer");
-                        ok = vivant.seDeplacer(DJ, pos);
-                        if (ok) {
+                        erreurs = vivant.seDeplacer(DJ, pos);
+                        if (erreurs.equals(Erreurs.TOUT_OK))
+                        {
                             System.out.println("Déplacement effectué");
                         }
-                        else {
+                        else if (erreurs.equals(Erreurs.PROBLEME_CASE))
+                        {
                             System.out.println(_cl.rouge() + "Problème dans le choix de la case" + _cl.reset());
+                        }
+                        else
+                        {
+                            System.out.println(_cl.rouge() + vivant + " n'a pas une vitesse suffisante pour se déplacer." + _cl.reset());
                         }
                     }
                     break;
@@ -298,6 +305,7 @@ public class Actions {
                 case 3:
                     if (personnage)
                     {
+                        boolean ok = false;
                         while (!ok)
                         {
                             Equipement equip = _input.equiperEquip(((Personnage)vivant));

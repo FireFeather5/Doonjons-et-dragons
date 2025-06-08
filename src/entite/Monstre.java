@@ -1,5 +1,6 @@
 package entite;
 
+import utils.Erreurs;
 import utils.StatusDonjon;
 import utils.Couleurs;
 import utils.TypeVivant;
@@ -68,8 +69,13 @@ public class Monstre implements Vivant {
         _pos.changPos(pos1, pos2);
     }
 
-    public boolean seDeplacer(Donjon DJ, int[] pos)
+    public Erreurs seDeplacer(Donjon DJ, int[] pos)
     {
+        if (_stats.retVit() < 3)
+        {
+            return Erreurs.VITESSE_SOUS_3;
+        }
+
         int distDep = _stats.retVit() / 3;
 
         int[] posOld = getPos();
@@ -80,10 +86,10 @@ public class Monstre implements Vivant {
             {
                 DJ.emptyCase(posOld);          //vide la case précédement utilisée par le monstre
 
-                return true;
+                return Erreurs.TOUT_OK;
             }
         }
-        return false;
+        return Erreurs.PROBLEME_CASE;
     }
 
     public StatusDonjon attaquer(Donjon DJ, Personnage pers)

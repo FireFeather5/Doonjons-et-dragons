@@ -109,6 +109,7 @@ public class MJ {
 
     public void depViv(Donjon DJ, Vivant viv, int[] posF)
     {
+        DJ.emptyCase(viv.getPos());
         DJ.positionVivant(posF, viv);
     }
 

@@ -11,6 +11,7 @@ import entite.personnages.Personnage;
 import utils.TypeVivant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Donjon {
 
@@ -57,33 +58,81 @@ public class Donjon {
         return false;
     }
 
-    public boolean positionVivant(int[] pc, Vivant etreVivant) {
-        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1))) {
-            if (etreVivant.getTypeVivant().equals(TypeVivant.MONSTRE)) {
-                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                    Monstre mons = (Monstre) etreVivant;
-                    if (!_mons.contains(mons)) {
-                        _mons.add(mons);
+    public boolean positionVivant(int[] pc, Vivant etreVivant)
+    {
+        if (((_tc1 >= pc[0]) && (pc[0] >= 1)) && ((_tc2 >= pc[1]) && (pc[1] >= 1)))
+        {
+            if (etreVivant.getTypeVivant().equals(TypeVivant.MONSTRE))
+            {
+                if (!_mons.contains((Monstre) etreVivant))
+                {
+                    _mons.add((Monstre) etreVivant);
+                }
+
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null)
+                {
+                    for (Equipement equip : _equip)
+                    {
+                        if (_donjon[equip.getPosition()[0]-1][equip.getPosition()[1]-1] == null)
+                        {
+                            _donjon[equip.getPosition()[0] - 1][equip.getPosition()[1] - 1] = equip;
+                        }
                     }
-                    mons.setPosition(pc[0], pc[1]);            //donne sa position au monstre
-                    _donjon[pc[0] - 1][pc[1] - 1] = mons;
+
+                    ((Monstre) etreVivant).setPosition(pc[0], pc[1]);            //donne sa position au monstre
+                    _donjon[pc[0] - 1][pc[1] - 1] = ((Monstre) etreVivant);
                     return true;
+                }
+
+                for (Equipement equip : _equip)
+                {
+                    if (Arrays.equals(pc, equip.getPosition()))
+                    {
+                        ((Monstre) etreVivant).setPosition(pc[0], pc[1]);            //donne sa position au monstre
+                        _donjon[pc[0] - 1][pc[1] - 1] = ((Monstre) etreVivant);
+
+                        return true;
+                    }
                 }
             }
             else {
                 Personnage perso = (Personnage) etreVivant;
-                if (_donjon[pc[0] - 1][pc[1] - 1] == null) {
-                    if (!_pers.contains(perso)) {
-                        _pers.add(perso);
+
+                if (!_pers.contains(perso))
+                {
+                    _pers.add(perso);
+                }
+
+                if (_donjon[pc[0] - 1][pc[1] - 1] == null)
+                {
+                    if (perso.peutRam())
+                    {
+                        Equipement equip = perso.getPeutRamEqu();
+                        {
+                            if (_donjon[equip.getPosition()[0]-1][equip.getPosition()[1]-1] == null) {
+                                _donjon[equip.getPosition()[0] - 1][equip.getPosition()[1] - 1] = equip;
+                            }
+                        }
+                        perso.reinilisation();
                     }
+
+                    for (Equipement equip : _equip) {
+                        if (Arrays.equals(pc, equip.getPosition())) {
+                            perso.peutRamasser(equip);
+                        }
+                    }
+
                     perso.setPosition(pc[0], pc[1]);            //donne sa position au joueur
                     _donjon[pc[0] - 1][pc[1] - 1] = perso;
                     return true;
+
                 }
                 else {
-                    for (Equipement var : _equip) {
-                        if (_donjon[pc[0] - 1][pc[1] - 1].equals(var)) {
-                            perso.peutRamasser(var);
+                    for (Equipement equip : _equip) {
+                        if (Arrays.equals(pc, equip.getPosition()))
+                        {
+                            perso.peutRamasser(equip);
+
                             perso.setPosition(pc[0], pc[1]);            //donne sa position au joueur
                             _donjon[pc[0] - 1][pc[1] - 1] = perso;
                             return true;
@@ -171,11 +220,11 @@ public class Donjon {
         int[] posViv1 = viv1.getPos();
         int[] posViv2 = viv2.getPos();
 
-        _donjon[posViv2[0] - 1][posViv2[1] - 1] = viv1;
-        _donjon[posViv1[0] - 1][posViv1[1] - 1] = viv2;
+        emptyCase(posViv1);
+        emptyCase(posViv2);
 
-        viv1.setPosition(posViv2[0], posViv2[1]);
-        viv2.setPosition(posViv1[0], posViv1[1]);
+        positionVivant(posViv2, viv1);
+        positionVivant(posViv1, viv2);
 
         System.out.println("L'échange à fonctionné");
     }
@@ -183,7 +232,20 @@ public class Donjon {
 
     public void emptyCase(int[] pc)
     {
-        _donjon[pc[0]-1][pc[1]-1] = null;
+        boolean test = false;
+        for (Equipement equip : _equip)
+        {
+            if (Arrays.equals(equip.getPosition(), pc))
+            {
+                _donjon[pc[0]-1][pc[1]-1] = equip;
+                test = true;
+
+            }
+        }
+        if (!test)
+        {
+            _donjon[pc[0]-1][pc[1]-1] = null;
+        }
     }
 
     public ArrayList<Personnage> getListePerso()
