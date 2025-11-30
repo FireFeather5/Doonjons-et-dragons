@@ -11,8 +11,6 @@ Jeu créé en Java en suivant les pricipes de POO, où les joueurs incarnent des
 **Langage :** Java
 
 **Application :** IntelliJ
-> [!Warning]  
-> L'application n'est disponible que sous windows.
 
 ## Installation
 
